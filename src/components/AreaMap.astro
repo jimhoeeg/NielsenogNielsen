@@ -1,0 +1,89 @@
+---
+// Skematisk kort over boligområderne omkring Odense (afstande i km fra Odense C).
+// Koordinater er omtrentlige og kun til illustration. TODO: bekræft placeringer.
+interface Area { name: string; text: string; lat: number; lon: number; label?: 'top' | 'right' | 'left' }
+interface Props { areas: Area[] }
+const { areas } = Astro.props;
+const origin = { lat: 55.396, lon: 10.388 }; // Odense C
+const KM_LAT = 111.2;
+const KM_LON = 111.2 * Math.cos((origin.lat * Math.PI) / 180);
+const pos = (a: { lat: number; lon: number }) => ({
+  x: (a.lon - origin.lon) * KM_LON,
+  y: -(a.lat - origin.lat) * KM_LAT,
+});
+const points = areas.map((a, i) => ({ ...a, ...pos(a), i }));
+---
+<figure class="amap" data-amap>
+  <svg viewBox="-17 -9 31 19" role="img" aria-labelledby="amap-title amap-desc">
+    <title id="amap-title">Kort over boligområder omkring Odense</title>
+    <desc id="amap-desc">Skematisk kort med boligområderne {areas.map((a) => a.name).join(', ')} placeret i forhold til Odense C.</desc>
+    <g class="amap__rings" aria-hidden="true">
+      {[5, 10, 15].map((r) => (
+        <>
+          <circle r={r} />
+          <text x={r * 0.71 + 0.3} y={-r * 0.71 - 0.3}>{r} km</text>
+        </>
+      ))}
+    </g>
+    <g class="amap__city" aria-hidden="true">
+      <rect x="-0.55" y="-0.55" width="1.1" height="1.1" rx="0.2" />
+      <text x="0" y="1.9" text-anchor="middle">Odense C</text>
+    </g>
+    {points.map((p) => (
+      <g class="amap__pt" transform={`translate(${p.x.toFixed(2)} ${p.y.toFixed(2)})`} tabindex="0" role="button" aria-label={`${p.name}: ${p.text}`} data-i={p.i} style={`--i:${p.i}`}>
+        <circle class="amap__pulse" r="1.1" />
+        <path class="amap__drop" d="M-0.9 -0.9h0.9a0.9 0.9 0 1 1 -0.9 0.9z" />
+        {(p.label ?? 'top') === 'top' && <text y="-1.6" text-anchor="middle">{p.name}</text>}
+        {p.label === 'right' && <text x="1.4" y="0.3" text-anchor="start">{p.name}</text>}
+        {p.label === 'left' && <text x="-1.4" y="0.3" text-anchor="end">{p.name}</text>}
+      </g>
+    ))}
+  </svg>
+  <figcaption class="amap__panel card" aria-live="polite">
+    <strong data-amap-name>{areas[0].name}</strong>
+    <span class="muted" data-amap-text>{areas[0].text}</span>
+  </figcaption>
+  <p class="amap__note muted">Skematisk kort, omtrentlige placeringer.</p>
+</figure>
+
+<style>
+  .amap { margin: 0; position: relative; background: #fff; border: 1px solid var(--line); border-radius: calc(var(--radius) + 6px); padding: clamp(12px, 2vw, 24px); }
+  .amap svg { width: 100%; height: auto; overflow: hidden; }
+  .amap__rings circle { fill: none; stroke: var(--ink); stroke-opacity: 0.12; stroke-width: 0.05; stroke-dasharray: 0.3 0.3; }
+  .amap__rings text { font-size: 0.55px; fill: var(--muted); }
+  .amap__city rect { fill: var(--ink); }
+  .amap__city text { font-size: 0.75px; fill: var(--ink); font-weight: 500; }
+  .amap__pt { cursor: pointer; outline: none; }
+  .amap__pt text { font-size: 0.8px; fill: var(--ink); font-weight: 500; transition: fill 0.2s; }
+  /* Dråbe fra logoet, drejet så spidsen peger nedad som en kortnål */
+  .amap__drop { fill: var(--red); transform: rotate(-135deg); transform-box: fill-box; transform-origin: center; transition: transform 0.4s var(--ease); }
+  .amap__pulse { fill: var(--red); opacity: 0; transform-box: fill-box; transform-origin: center; animation: amapPulse 2.6s var(--ease) infinite; animation-delay: calc(var(--i) * 0.5s); }
+  .amap__pt:hover .amap__drop, .amap__pt:focus-visible .amap__drop, .amap__pt.is-active .amap__drop { transform: rotate(-135deg) scale(1.35); }
+  .amap__pt.is-active text, .amap__pt:focus-visible text { fill: var(--red); }
+  .amap__pt:focus-visible .amap__pulse { opacity: 0.25; animation: none; }
+  @keyframes amapPulse { 0% { opacity: 0.35; transform: scale(0.6); } 100% { opacity: 0; transform: scale(2.4); } }
+  .amap__panel { display: grid; gap: 2px; padding: 14px 18px !important; margin-top: 12px; background: var(--sand) !important; border-color: transparent !important; }
+  .amap__note { position: absolute; right: 16px; top: 12px; margin: 0; font-size: 0.75rem; }
+  @media (prefers-reduced-motion: reduce) { .amap__pulse { animation: none; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-amap]').forEach((map) => {
+    const pts = [...map.querySelectorAll<SVGGElement>('.amap__pt')];
+    const name = map.querySelector<HTMLElement>('[data-amap-name]')!;
+    const text = map.querySelector<HTMLElement>('[data-amap-text]')!;
+    const select = (g: SVGGElement) => {
+      pts.forEach((p) => p.classList.toggle('is-active', p === g));
+      const [n, t] = g.getAttribute('aria-label')!.split(': ');
+      name.textContent = n;
+      text.textContent = t;
+    };
+    pts.forEach((g) => {
+      g.addEventListener('mouseenter', () => select(g));
+      g.addEventListener('focus', () => select(g));
+      g.addEventListener('click', () => select(g));
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(g); } });
+    });
+    select(pts[0]);
+  });
+</script>

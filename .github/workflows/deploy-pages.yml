@@ -35,6 +35,8 @@ jobs:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
           # Demo: hold github.io-versionen ude af Google. Fjern, når sitet kører på det rigtige domæne.
           PUBLIC_NOINDEX: 'true'
+          # Valgfri: sæt repo-variablen PLAUSIBLE_DOMAIN (Settings → Variables) for at slå statistik til
+          PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.PLAUSIBLE_DOMAIN }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

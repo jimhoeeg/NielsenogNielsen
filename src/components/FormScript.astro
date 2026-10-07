@@ -1,4 +1,5 @@
 <script>
+  import { track } from '../lib/track';
   // Fælles håndtering af alle formularer med [data-form].
   // Har formularen en action (endpoint), sendes den med fetch. Ellers kører den i demo-tilstand.
   document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((form) => {
@@ -28,6 +29,7 @@
         } else {
           await new Promise((r) => setTimeout(r, 600));
         }
+        if (form.dataset.track) track(form.dataset.track);
         form.reset();
         say(form.dataset.success || (en ? 'Thank you – we will be in touch.' : 'Tak – vi vender tilbage hurtigst muligt.'), 'ok');
       } catch {

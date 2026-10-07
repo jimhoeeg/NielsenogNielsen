@@ -40,7 +40,7 @@ const crumbs = [{ label: 'Kontakt' }];
 
       <section class="card" data-reveal="right" aria-labelledby="form-h">
         <h2 id="form-h">Skriv til os</h2>
-        <form class="form" data-form action={formEndpoints.contact || undefined} method="post" novalidate>
+        <form class="form" data-form data-track="Kontakt: sendt" action={formEndpoints.contact || undefined} method="post" novalidate>
           <div class="form-row">
             <div class="field"><label for="c-name">Navn *</label><input id="c-name" name="name" required autocomplete="name" /></div>
             <div class="field"><label for="c-email">E-mail *</label><input id="c-email" name="email" type="email" required autocomplete="email" /></div>
@@ -79,9 +79,10 @@ const crumbs = [{ label: 'Kontakt' }];
           <li>Ingen forpligtelser</li>
         </ul>
         <p class="mq-link" data-reveal>Usikker på, om I passer til os? <a href={url('/match/')}>Tag match-testen på 1 minut</a></p>
+        <p class="mq-link" data-reveal>Er du rådgiver? <a href={url('/raadgivere/')}>Se vores kriterier og kontaktperson</a></p>
       </div>
       <div class="card dark-card" data-reveal="right">
-        <form class="form" data-form action={formEndpoints.dealflow || undefined} method="post" enctype="multipart/form-data" novalidate data-success="Tak for din henvendelse. Vi har modtaget den og vender tilbage inden for 10 arbejdsdage." data-dealflow>
+        <form class="form" data-form data-track="Deal flow: sendt" action={formEndpoints.dealflow || undefined} method="post" enctype="multipart/form-data" novalidate data-success="Tak for din henvendelse. Vi har modtaget den og vender tilbage inden for 10 arbejdsdage." data-dealflow>
           <p class="prefill-note" role="status" data-prefill-note hidden>Vi har udfyldt formularen med dine svar fra match-testen. Tjek dem, og tilføj gerne lidt mere.</p>
           <input type="hidden" name="match_score" data-match-score />
           <div class="form-row">

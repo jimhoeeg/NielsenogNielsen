@@ -3,8 +3,8 @@ import { url } from '../lib/url';
 import Split from './Split.astro';
 import type { Crumb } from './SEO.astro';
 // Brødkrummerne vises her. Det tilsvarende BreadcrumbList-schema genereres i <head> via Base/SEO (samme crumbs-array).
-interface Props { eyebrow?: string; title: string; lead?: string; crumbs?: Crumb[]; sand?: boolean }
-const { eyebrow, title, lead, crumbs = [], sand = false } = Astro.props;
+interface Props { eyebrow?: string; title: string; lead?: string; crumbs?: Crumb[]; sand?: boolean; /** Navn til View Transition-morph fra et kort */ vt?: string }
+const { eyebrow, title, lead, crumbs = [], sand = false, vt } = Astro.props;
 const all: Crumb[] = [{ href: '/', label: 'Forside' }, ...crumbs];
 ---
 <section class:list={['page-hero', { 'section--sand': sand }]}>
@@ -24,7 +24,7 @@ const all: Crumb[] = [{ href: '/', label: 'Forside' }, ...crumbs];
       </nav>
     )}
     {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
-    <Split as="h1" text={title} />
+    {vt ? <h1 style={`view-transition-name: ${vt}`}>{title}</h1> : <Split as="h1" text={title} />}
     {lead && <p class="lead" data-reveal style="--d:3">{lead}</p>}
     <slot />
   </header>

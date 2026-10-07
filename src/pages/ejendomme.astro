@@ -4,14 +4,16 @@ import PageHero from '../components/PageHero.astro';
 import Split from '../components/Split.astro';
 import Visual from '../components/Visual.astro';
 import Icon from '../components/Icon.astro';
+import AreaMap from '../components/AreaMap.astro';
 
 const crumbs = [{ label: 'Ejendomme' }];
 
+// TODO: områdebeskrivelser og konkrete boligområder bekræftes af Nielsen & Nielsen Ejendomme.
 const areas = [
-  { name: 'Højby', text: 'Hvor det hele begyndte i 1989.' },
-  { name: 'Dyrup', text: 'Lejeboliger tæt på Odense med grønne omgivelser.' },
-  { name: 'Bellinge', text: 'Blandt andet boligområdet Romerdalen.' },
-  { name: 'Morud', text: 'Blandt andet boligområdet Ådalslunden.' },
+  { name: 'Højby', text: 'Hvor det hele begyndte i 1989.', lat: 55.330, lon: 10.437 },
+  { name: 'Dyrup', text: 'Lejeboliger tæt på Odense med grønne omgivelser.', lat: 55.358, lon: 10.343, label: 'right' as const },
+  { name: 'Bellinge', text: 'Lejeboliger i landsbymiljø sydvest for Odense.', lat: 55.335, lon: 10.318, label: 'left' as const },
+  { name: 'Morud', text: 'Lejeboliger i Nordfyn med kort vej til Odense.', lat: 55.443, lon: 10.187 },
 ];
 ---
 <Base
@@ -48,6 +50,7 @@ const areas = [
     <div class="wrap">
       <p class="eyebrow" data-reveal>Boligområder</p>
       <Split text="Fire områder på Fyn" />
+      <div class="map-wrap" data-reveal="scale"><AreaMap areas={areas} /></div>
       <div class="grid grid--4" style="margin-top:40px">
         {areas.map((a, i) => (
           <article class="card area" data-reveal style={`--d:${i}`}>
@@ -67,4 +70,5 @@ const areas = [
   :global(.ejd-visual) { aspect-ratio: 4 / 3; }
   .area :global(svg) { color: var(--red); margin-bottom: 1rem; }
   .area h3 { font-weight: 500; }
+  .map-wrap { margin-top: 40px; }
 </style>

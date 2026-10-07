@@ -17,6 +17,17 @@ export const company = {
   founded: 2024,
 };
 
+// Link til online mødebooking (fx Microsoft Bookings eller Calendly). Tom = link til kontaktsiden.
+export const bookingUrl = ''; // TODO
+
+// Kontaktperson for rådgivere og virksomhedsejere. TODO: navn, titel, telefon og foto.
+export const dealContact = {
+  name: 'Navn Efternavn',
+  title: 'Investeringsansvarlig',
+  email: 'investments@nielsen-nielsen.dk', // TODO: bekræft
+  phone: '',
+};
+
 // Endpoint for formularer (fx Formspree, n8n-webhook eller en serverless function). Tom = demo-tilstand.
 export const formEndpoints = {
   contact: '',
@@ -175,6 +186,29 @@ export const investments: Investment[] = [
     body: [
       'Nassau Door udviklede sig under familiernes ejerskab til en betydelig europæisk leverandør af industrielle sektionsporte og blev siden solgt til ASSA ABLOY.',
     ],
+  },
+];
+
+// Citater fra ledere i porteføljeselskaber og samarbejdspartnere.
+// TODO: Erstat pladsholderne med rigtige, godkendte citater (og sæt placeholder: false).
+export const testimonials = [
+  {
+    quote: 'Pladsholder: et citat fra en direktør i porteføljen om, hvordan det er at have familierne som ejere, fx tålmodigheden og den industrielle sparring.',
+    name: 'Navn Efternavn',
+    role: 'Administrerende direktør, porteføljeselskab',
+    placeholder: true,
+  },
+  {
+    quote: 'Pladsholder: et citat fra en tidligere ejer om generationsskiftet og trygheden for medarbejderne.',
+    name: 'Navn Efternavn',
+    role: 'Tidligere ejer',
+    placeholder: true,
+  },
+  {
+    quote: 'Pladsholder: et citat fra en M&A-rådgiver om samarbejdet: fortrolighed, hurtige svar og kort beslutningsvej.',
+    name: 'Navn Efternavn',
+    role: 'Partner, M&A-rådgiver',
+    placeholder: true,
   },
 ];
 

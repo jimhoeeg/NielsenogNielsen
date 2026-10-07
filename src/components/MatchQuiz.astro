@@ -158,6 +158,7 @@ const total = questions.length;
 </style>
 
 <script>
+  import { track } from '../lib/track';
   type Option = { value: string; label: string; points: number; plus?: string; note?: string; prefill?: string };
   type Question = { id: string; title: string; short: string; options: Option[] };
   type Tier = { min: number; key: string; title: string; text: string };
@@ -180,6 +181,7 @@ const total = questions.length;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let current = 0;
     let pointer = false;
+    let started = false;
 
     root.classList.add('is-enhanced');
     // Quizzen validerer selv ét trin ad gangen. Browserens validering ville ellers blokere,
@@ -222,6 +224,7 @@ const total = questions.length;
       const pct = Math.round((score / maxScore) * 100);
       params.set('score', String(pct));
       const tier = tiers.find((t) => pct >= t.min)!;
+      track('Match: resultat', { niveau: tier.key, score: pct });
 
       $('[data-mq-title]').textContent = tier.title;
       $('[data-mq-text]').textContent = tier.text;
@@ -273,6 +276,7 @@ const total = questions.length;
       }
     });
     form.addEventListener('change', () => {
+      if (!started) { started = true; track('Match: start'); }
       render();
       if (pointer && current < steps.length - 1) setTimeout(() => go(current + 1, 1), 380);
     });
@@ -286,6 +290,7 @@ const total = questions.length;
       if (current < steps.length - 1) go(current + 1, 1);
       else showResult();
     });
+    $('[data-mq-cta]').addEventListener('click', () => track('Match: videre til kontakt'));
     back.addEventListener('click', () => current > 0 && go(current - 1, -1));
     $('[data-mq-restart]').addEventListener('click', () => {
       form.reset();

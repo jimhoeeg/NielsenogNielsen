@@ -1,0 +1,134 @@
+---
+// Scrollytelling: en fast "scene" viser årstal og brand-dråber, mens kapitlerne scroller forbi.
+// TODO: Scenen er forberedt til arkivfotos fra familierne (ét pr. kapitel).
+interface Item { year: string; title: string; text: string }
+interface Props { items: Item[] }
+const { items } = Astro.props;
+---
+<div class="story" data-story>
+  <div class="story__stage" aria-hidden="true">
+    <div class="story__stage-inner">
+      <div class="story__shapes" data-story-shapes>
+        <span class="drop drop--a story__a"></span>
+        <span class="drop drop--b story__b"></span>
+      </div>
+      <p class="story__year" data-story-year>{items[0].year}</p>
+      <p class="story__chapter"><span data-story-no>01</span> / {String(items.length).padStart(2, '0')}</p>
+      <ol class="story__dots">
+        {items.map((_, i) => <li class:list={{ 'is-active': i === 0 }}></li>)}
+      </ol>
+    </div>
+  </div>
+
+  <ol class="story__steps">
+    {items.map((it, i) => (
+      <li class:list={['story__step', { 'is-active': i === 0 }]} data-story-step={i} data-year={it.year}>
+        <article class="story__card">
+          <p class="story__card-year">{it.year}</p>
+          <h3>{it.title}</h3>
+          <p>{it.text}</p>
+        </article>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .story { display: grid; gap: clamp(24px, 5vw, 80px); }
+  @media (min-width: 900px) { .story { grid-template-columns: 1fr 1fr; } }
+
+  .story__stage { position: sticky; top: var(--header-h); z-index: 2; }
+  @media (min-width: 900px) { .story__stage { top: calc(var(--header-h) + 32px); height: calc(100svh - var(--header-h) - 64px); } }
+  .story__stage-inner { position: relative; height: 100%; display: grid; align-content: end; justify-items: start; overflow: hidden; border-radius: calc(var(--radius) + 6px); background: #fff; border: 1px solid var(--line); padding: clamp(20px, 4vw, 56px); }
+
+  .story__shapes { position: absolute; right: 10%; top: 10%; width: clamp(120px, 16vw, 230px); aspect-ratio: 1; transition: rotate 1s var(--ease), scale 1s var(--ease); rotate: var(--rot, 0deg); scale: var(--sc, 1); }
+  .story__a, .story__b { width: 50%; height: 50%; transition: translate 1s var(--ease), background 0.6s; }
+  .story__a { left: 0; top: 0; translate: calc(var(--gap, 0) * -1) calc(var(--gap, 0) * -1); }
+  .story__b { left: 50%; top: 50%; translate: var(--gap, 0) var(--gap, 0); background: var(--b, var(--red)); }
+
+  .story__year { position: relative; margin: 0; font-size: clamp(3.5rem, 2rem + 6vw, 7.5rem); font-weight: 300; line-height: 1; letter-spacing: -0.04em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .story__chapter { position: relative; margin: 12px 0 0; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.2em; color: var(--red); }
+  .story__dots { position: relative; display: flex; gap: 6px; list-style: none; margin: 20px 0 0; padding: 0; }
+  .story__dots li { width: 22px; height: 3px; border-radius: 2px; background: var(--line); transition: background 0.4s, width 0.4s var(--ease); }
+  .story__dots li.is-active { width: 40px; background: var(--red); }
+
+  .story__steps { list-style: none; margin: 0; padding: 0; }
+  .story__step { min-height: 70svh; display: flex; align-items: center; padding-block: 24px; }
+  .story__step:first-child { min-height: 50svh; }
+  .story__card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(24px, 3vw, 40px); opacity: 0.35; transform: scale(0.97); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), box-shadow 0.6s var(--ease); }
+  .story__step.is-active .story__card { opacity: 1; transform: none; box-shadow: 0 30px 60px -36px rgba(21, 24, 37, 0.35); }
+  .story__card-year { margin: 0 0 8px; color: var(--red); font-weight: 500; letter-spacing: 0.1em; }
+  .story__card h3 { font-weight: 500; }
+  .story__card p:last-child { margin: 0; color: var(--ink-2); }
+
+  /* Mobil: kompakt scene som bånd øverst */
+  @media (max-width: 899px) {
+    .story__stage-inner { padding: 14px 18px; grid-template-columns: 1fr auto; align-items: center; }
+    .story__year { font-size: 2.6rem; }
+    .story__chapter { margin: 0; grid-column: 2; grid-row: 1; }
+    .story__dots, .story__shapes { display: none; }
+    .story__step { min-height: 60svh; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .story__shapes, .story__a, .story__b, .story__card { transition: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-story]').forEach((story) => {
+    const steps = [...story.querySelectorAll<HTMLElement>('[data-story-step]')];
+    const dots = [...story.querySelectorAll<HTMLElement>('.story__dots li')];
+    const yearEl = story.querySelector<HTMLElement>('[data-story-year]')!;
+    const noEl = story.querySelector<HTMLElement>('[data-story-no]')!;
+    const shapes = story.querySelector<HTMLElement>('[data-story-shapes]')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Én visuel "stemning" pr. kapitel: rotation, skala, afstand mellem dråberne og farve på den nederste
+    const moods = [
+      { rot: 0, sc: 0.8, gap: '0px', b: 'var(--red)' },
+      { rot: 90, sc: 1, gap: '0px', b: 'var(--red)' },
+      { rot: 180, sc: 1.05, gap: '14px', b: 'var(--ink)' },
+      { rot: 270, sc: 0.95, gap: '0px', b: 'var(--red)' },
+      { rot: 360, sc: 1.1, gap: '24px', b: 'var(--ink)' },
+      { rot: 450, sc: 1, gap: '6px', b: 'var(--red)' },
+      { rot: 540, sc: 1.15, gap: '0px', b: 'var(--red)' },
+      { rot: 630, sc: 1.2, gap: '10px', b: 'var(--ink)' },
+    ];
+    let active = 0;
+    let raf = 0;
+
+    const animateYear = (from: string, to: string) => {
+      cancelAnimationFrame(raf);
+      const a = Number(from), b = Number(to);
+      if (reduce || Number.isNaN(a) || Number.isNaN(b)) { yearEl.textContent = to; return; }
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / 700);
+        yearEl.textContent = String(Math.round(a + (b - a) * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+
+    const setActive = (i: number) => {
+      if (i === active) return;
+      const prevYear = steps[active].dataset.year!;
+      active = i;
+      steps.forEach((s, n) => s.classList.toggle('is-active', n === i));
+      dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
+      noEl.textContent = String(i + 1).padStart(2, '0');
+      const m = moods[i % moods.length];
+      shapes.style.setProperty('--rot', `${m.rot}deg`);
+      shapes.style.setProperty('--sc', String(m.sc));
+      shapes.style.setProperty('--gap', m.gap);
+      shapes.style.setProperty('--b', m.b);
+      animateYear(prevYear, steps[i].dataset.year!);
+    };
+
+    // Det kapitel, der krydser midten af skærmen, er aktivt
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(Number((e.target as HTMLElement).dataset.storyStep))),
+      { rootMargin: '-45% 0px -45% 0px' },
+    );
+    steps.forEach((s) => io.observe(s));
+  });
+</script>

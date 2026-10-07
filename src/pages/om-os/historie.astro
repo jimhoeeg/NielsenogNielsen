@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import Timeline from '../../components/Timeline.astro';
+import HistoryStory from '../../components/HistoryStory.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { timeline } from '../../data/site';
 const crumbs = [{ href: '/om-os/', label: 'Om os' }, { label: 'Historie' }];
@@ -17,8 +17,11 @@ const crumbs = [{ href: '/om-os/', label: 'Om os' }, { label: 'Historie' }];
     lead="Scroll gennem de milepæle, der har formet familierne og virksomhederne."
     crumbs={crumbs}
   />
-  <section class="section section--sand">
-    <div class="wrap wrap--narrow"><h2 class="sr-only">Tidslinje 1953 til i dag</h2><Timeline items={timeline} /></div>
+  <section class="section section--sand" aria-labelledby="story-h">
+    <div class="wrap">
+      <h2 id="story-h" class="sr-only">Tidslinje 1953 til i dag</h2>
+      <HistoryStory items={timeline} />
+    </div>
   </section>
   <CtaBand />
 </Base>

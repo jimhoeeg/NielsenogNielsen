@@ -10,6 +10,7 @@ import NewsCard from '../components/NewsCard.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
 import CtaBand from '../components/CtaBand.astro';
 import MatchTeaser from '../components/MatchTeaser.astro';
+import Quotes from '../components/Quotes.astro';
 import { pillars, principles, stats, timeline, investments, news } from '../data/site';
 
 const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
@@ -122,6 +123,8 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
       </div>
     </div>
   </section>
+
+  <Quotes />
 
   <!-- HISTORIE -->
   <section class="section section--sand">

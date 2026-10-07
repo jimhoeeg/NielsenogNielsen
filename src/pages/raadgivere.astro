@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Split from '../components/Split.astro';
+import Icon from '../components/Icon.astro';
+import { url } from '../lib/url';
+import { company, bookingUrl, dealContact } from '../data/site';
+
+const crumbs = [{ href: '/investeringer/', label: 'Investeringer' }, { label: 'For rådgivere' }];
+
+// TODO: Kriterierne er udkast og skal godkendes af Nielsen & Nielsen.
+const criteria: [string, string][] = [
+  ['Omsætning', '50 mio.–1 mia. kr.'],
+  ['Indtjening', 'Positiv og stabil EBITDA'],
+  ['Brancher', 'Industri og produktion, teknologi, B2B-services'],
+  ['Situationer', 'Generationsskifte, delvist salg, vækstkapital'],
+  ['Ejerandel', 'Minoritet eller majoritet'],
+  ['Geografi', 'Primært Danmark og Norden'],
+  ['Horisont', 'Langsigtet, gerne 10 år eller mere'],
+];
+const promises = [
+  { t: 'Fortrolighed', d: 'Alle cases behandles fortroligt. Vi underskriver gerne NDA tidligt i forløbet.' },
+  { t: 'Hurtig tilbagemelding', d: 'Du får et klart svar på, om vi vil gå videre. Vi trækker ikke processen.' },
+  { t: 'Kort beslutningsvej', d: 'Få og erfarne beslutningstagere tæt på ejerfamilierne.' },
+  { t: 'Respekt for processen', d: 'Vi følger rådgiverens proces og tidsplan og gør det let at arbejde med os.' },
+];
+const book = bookingUrl || url('/kontakt/#praesenter');
+---
+<Base
+  title="For M&A-rådgivere – vores investeringskriterier"
+  description="For M&A-rådgivere, revisorer og advokater: Nielsen & Nielsens investeringskriterier, kontaktperson og one-pager. Fortrolig og hurtig tilbagemelding."
+  crumbs={crumbs}
+>
+  <PageHero
+    eyebrow="For rådgivere"
+    title="Har du en case til en langsigtet ejer?"
+    lead="Vi samarbejder med M&A-rådgivere, revisorer, advokater og banker. Her finder du vores kriterier, og hvem du skal ringe til."
+    crumbs={crumbs}
+  >
+    <div class="btn-row" data-reveal style="--d:4">
+      <a class="btn" data-book href={book} target={bookingUrl ? '_blank' : undefined} rel={bookingUrl ? 'noopener' : undefined}>Book et introopkald <Icon name="arrow" /></a>
+      <button class="btn btn--ghost" type="button" data-print><Icon name="download" /> Download one-pager (PDF)</button>
+    </div>
+  </PageHero>
+
+  <section class="section section--sand" aria-labelledby="crit-h">
+    <div class="wrap adv">
+      <div>
+        <p class="eyebrow" data-reveal>Kriterier</p>
+        <h2 id="crit-h" data-reveal>Det kigger vi efter</h2>
+        <p class="muted" data-reveal>Kriterierne er vejledende. Gode cases, der falder lidt uden for, ser vi også gerne.</p>
+      </div>
+      <dl class="crit card" data-reveal="right">
+        {criteria.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="prom-h">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Samarbejde</p>
+      <Split text="Det kan du forvente af os" />
+      <div class="grid grid--4" style="margin-top:40px">
+        {promises.map((p, i) => (
+          <article class="card" data-reveal style={`--d:${i}`}>
+            <span class="no">0{i + 1}</span>
+            <h3>{p.t}</h3>
+            <p class="muted">{p.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--night" aria-labelledby="person-h">
+    <div class="wrap adv">
+      <div>
+        <p class="eyebrow" data-reveal>Kontakt</p>
+        <h2 id="person-h" data-reveal>Din indgang til Nielsen &amp; Nielsen</h2>
+        <p data-reveal>Send teaser eller informationsmemorandum direkte, eller book et kort introopkald.</p>
+      </div>
+      <div class="person card" data-reveal="right">
+        <span class="person__avatar" aria-hidden="true"></span>
+        <div>
+          <strong>{dealContact.name}</strong>
+          <span class="muted">{dealContact.title}, {company.name}</span>
+          <a href={`mailto:${dealContact.email}`}><Icon name="mail" size={16} /> {dealContact.email}</a>
+          {dealContact.phone && <a href={`tel:${dealContact.phone.replace(/\s/g, '')}`}><Icon name="phone" size={16} /> {dealContact.phone}</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { track } from '../lib/track';
+  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((b) => b.addEventListener('click', () => { track('Rådgiver: one-pager'); window.print(); }));
+  document.querySelectorAll<HTMLAnchorElement>('[data-book]').forEach((a) => a.addEventListener('click', () => track('Rådgiver: book opkald')));
+</script>
+
+<style>
+  .adv { display: grid; gap: clamp(28px, 5vw, 80px); align-items: center; }
+  @media (min-width: 960px) { .adv { grid-template-columns: 5fr 7fr; } }
+  .crit { margin: 0; }
+  .crit div { display: grid; grid-template-columns: minmax(110px, 1fr) 2fr; gap: 16px; padding-block: 14px; border-top: 1px solid var(--line); }
+  .crit div:first-child { border-top: 0; }
+  .crit dt { color: var(--muted); }
+  .crit dd { margin: 0; font-weight: 400; }
+  .no { display: block; color: var(--red); font-size: 1.6rem; font-weight: 300; margin-bottom: 1rem; }
+  .card h3 { font-weight: 500; font-size: 1.2rem; }
+  .person { display: flex; gap: 20px; align-items: center; background: #1f2333; border-color: transparent; color: #fff; }
+  .person > div { display: grid; gap: 4px; }
+  .person .muted { color: rgba(255, 255, 255, 0.65); }
+  .person a { display: inline-flex; gap: 8px; align-items: center; color: #fff; text-decoration: none; margin-top: 4px; }
+  .person a:hover { color: #ff8a78; }
+  .person__avatar { flex: none; width: 84px; height: 84px; border-radius: 50% 50% 0 50%; background: var(--red); }
+  @media print {
+    .adv { grid-template-columns: 1fr 1.6fr !important; }
+    .person { background: #fff !important; color: #000 !important; border: 1px solid #ccc !important; }
+    .person a, .person .muted { color: #000 !important; }
+  }
+</style>

@@ -4,7 +4,7 @@ interface Props { lang?: 'da' | 'en' }
 const { lang = 'da' } = Astro.props;
 const en = lang === 'en';
 ---
-<form class="nl" data-form action={formEndpoints.newsletter || undefined} method="post" novalidate>
+<form class="nl" data-form data-track="Nyhedsbrev: tilmeldt" action={formEndpoints.newsletter || undefined} method="post" novalidate>
   <label class="sr-only" for={`nl-email-${lang}`}>{en ? 'Email' : 'E-mail'}</label>
   <div class="nl__row">
     <input id={`nl-email-${lang}`} type="email" name="email" required autocomplete="email" placeholder={en ? 'Your email' : 'Din e-mail'} />

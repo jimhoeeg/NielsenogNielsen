@@ -1,0 +1,76 @@
+---
+import { testimonials } from '../data/site';
+// Roterende citater. Pauser ved hover/fokus og kører ikke automatisk ved "reducer bevægelse".
+const items = testimonials;
+---
+{items.length > 0 && (
+  <section class="section section--night quotes" aria-labelledby="quotes-h" data-quotes>
+    <div class="wrap wrap--narrow">
+      <h2 class="eyebrow" id="quotes-h" data-reveal>Det siger de om os</h2>
+      <div class="quotes__stage" data-reveal="blur">
+        <span class="quotes__mark" aria-hidden="true">“</span>
+        {items.map((t, i) => (
+          <figure class:list={['quotes__item', { 'is-active': i === 0 }]} data-quote={i} aria-hidden={i === 0 ? undefined : 'true'}>
+            {t.placeholder && <span class="tag quotes__ph">Pladsholder – citat indsættes</span>}
+            <blockquote><p>{t.quote}</p></blockquote>
+            <figcaption><strong>{t.name}</strong><span class="muted">{t.role}</span></figcaption>
+          </figure>
+        ))}
+      </div>
+      {items.length > 1 && (
+        <div class="quotes__dots" role="group" aria-label="Vælg citat">
+          {items.map((_, i) => (
+            <button type="button" class:list={{ 'is-active': i === 0 }} data-dot={i} aria-label={`Citat ${i + 1} af ${items.length}`} aria-pressed={i === 0 ? 'true' : 'false'}></button>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style>
+  .quotes__stage { position: relative; display: grid; }
+  .quotes__mark { position: absolute; right: 0; top: -0.3em; font-size: clamp(7rem, 5rem + 8vw, 12rem); line-height: 1; color: var(--red); opacity: 0.15; font-weight: 700; font-family: Georgia, serif; }
+  .quotes__item { grid-area: 1 / 1; margin: 0; opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity 0.7s var(--ease), transform 0.8s var(--ease), visibility 0s 0.7s; }
+  .quotes__item.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity 0.7s var(--ease) 0.15s, transform 0.8s var(--ease) 0.15s; }
+  .quotes__ph { margin-bottom: 1rem; }
+  blockquote { margin: 0 0 1.5rem; }
+  blockquote p { font-size: clamp(1.35rem, 1.05rem + 1.3vw, 2.1rem); line-height: 1.35; font-weight: 300; letter-spacing: -0.01em; margin: 0; }
+  figcaption { display: grid; gap: 2px; }
+  figcaption .muted { color: rgba(255, 255, 255, 0.6); }
+  .quotes blockquote p { color: #fff; }
+  .quotes__mark { opacity: 0.35 !important; }
+  .quotes__dots button { background: rgba(255, 255, 255, 0.2); }
+  .quotes__dots { display: flex; gap: 8px; margin-top: 2rem; }
+  .quotes__dots button { width: 28px; height: 4px; padding: 0; border: 0; border-radius: 2px; background: var(--line); cursor: pointer; transition: background 0.3s, width 0.4s var(--ease); }
+  .quotes__dots button.is-active { width: 48px; background: var(--red); }
+  .quotes__dots button:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-quotes]').forEach((root) => {
+    const items = [...root.querySelectorAll<HTMLElement>('[data-quote]')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+    if (items.length < 2) return;
+    let i = 0;
+    let timer = 0;
+    const show = (n: number) => {
+      i = (n + items.length) % items.length;
+      items.forEach((el, k) => {
+        el.classList.toggle('is-active', k === i);
+        if (k === i) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true');
+      });
+      dots.forEach((d, k) => { d.classList.toggle('is-active', k === i); d.setAttribute('aria-pressed', String(k === i)); });
+    };
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const start = () => { if (!reduce) { clearInterval(timer); timer = window.setInterval(() => show(i + 1), 7000); } };
+    const stop = () => clearInterval(timer);
+    dots.forEach((d, k) => d.addEventListener('click', () => { show(k); start(); }));
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+    // Kør kun, når sektionen er synlig
+    new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(root);
+  });
+</script>

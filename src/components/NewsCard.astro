@@ -10,7 +10,7 @@ const { item, d = 0 } = Astro.props;
     <span class="tag">{item.tag}</span>
     <time datetime={item.date}>{formatDate(item.date)}</time>
   </div>
-  <h3>{item.title}</h3>
+  <h3 style={`view-transition-name: news-${item.slug}`}>{item.title}</h3>
   <p class="muted">{item.excerpt}</p>
   <span class="link-arrow" aria-hidden="true">Læs mere</span>
 </a>

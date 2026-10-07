@@ -11,7 +11,7 @@ const initials = item.name.split(/\s+/).filter((w) => /^[A-ZÆØÅ]/.test(w)).sl
     <span class="pf__mono" aria-hidden="true">{initials}</span>
     <span class:list={['tag', { 'tag--neutral': item.status === 'Realiseret' }]}>{item.status}</span>
   </div>
-  <h3>{item.name}</h3>
+  <h3 style={`view-transition-name: pf-${item.slug}`}>{item.name}</h3>
   <p class="muted">{item.summary}</p>
   <dl class="pf__facts">
     <div><dt>Sektor</dt><dd>{item.sector}</dd></div>
