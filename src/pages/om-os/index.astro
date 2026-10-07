@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Split from '../../components/Split.astro';
+import Visual from '../../components/Visual.astro';
+import Stats from '../../components/Stats.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { stats } from '../../data/site';
+
+// TODO: værdier skal formuleres/godkendes sammen med familierne.
+const values = [
+  { t: 'Ordentlighed', d: 'Vi gør, hvad vi siger, og vi siger, hvad vi gør. Over for medarbejdere, partnere og lokalsamfund.' },
+  { t: 'Tålmodighed', d: 'Vi måler os selv i årtier, ikke i kvartaler.' },
+  { t: 'Fællesskab', d: 'To familier, én retning. Vi træffer beslutninger sammen og med respekt for hinanden.' },
+  { t: 'Ansvar', d: 'Vi vil efterlade virksomheder, boliger og lokalsamfund i bedre stand, end vi fandt dem.' },
+];
+---
+<Base
+  title="Om os – to familier, tre generationer"
+  description="Nielsen & Nielsen er familierne bag Micro Matic. Læs om vores historie siden 1974, vores værdier og hvordan ejerskabet er organiseret."
+>
+  <PageHero
+    eyebrow="Om os"
+    title="To familier. Tre generationer. Én retning."
+    lead="Nielsen & Nielsen er familierne efter Svend-Aage Nielsen og Carl Christian Nielsen, som i 1974 overtog Micro Matic. I dag er anden og tredje generation med i ejerkredsen."
+    crumbs={[{ label: 'Om os' }]}
+  />
+
+  <section class="section section--sand">
+    <div class="wrap story">
+      <Visual kind="history" class="story__visual" />
+      <div class="prose">
+        <p class="eyebrow" data-reveal>Vores historie</p>
+        <Split text="Bygget af medarbejdere, ført videre af familier" />
+        <p data-reveal>I 1974 købte fem ledende medarbejdere Micro Matic af grundlæggeren, ingeniør Bror Kruuse. Blandt dem var Svend-Aage Nielsen og Carl Christian (C.C.) Nielsen. Det blev begyndelsen på et kompagniskab, der har varet i over 50 år.</p>
+        <p data-reveal>Under deres ledelse voksede Micro Matic til en af verdens førende inden for dispensering af fadøl og drikkevarer. Undervejs har familierne også ejet og udviklet Triax, Nassau Door og Senmatic, og siden 1989 har de bygget boliger på Fyn.</p>
+        <p data-reveal>I 2024 samlede familierne en del af formuen i Nielsen &amp; Nielsen Gruppen og Nielsen &amp; Nielsen Investments for at sikre et professionelt og langsigtet fundament for de kommende generationer.</p>
+        <a class="link-arrow" href="/om-os/historie/" data-reveal>Se hele tidslinjen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--night">
+    <div class="wrap"><Stats items={stats} /></div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Værdier</p>
+      <Split text="Det vi står for" />
+      <div class="grid grid--4" style="margin-top:40px">
+        {values.map((v, i) => (
+          <article class="card value" data-reveal style={`--d:${i}`}>
+            <span class="value__drop" aria-hidden="true"></span>
+            <h3>{v.t}</h3>
+            <p class="muted">{v.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand">
+    <div class="wrap grid grid--2">
+      <a class="card link-card" href="/om-os/governance/" data-reveal>
+        <p class="eyebrow">Ejerskab &amp; ledelse</p>
+        <h3>Sådan er gruppen organiseret</h3>
+        <p class="muted">Se ejerstrukturen, bestyrelse og ledelse.</p>
+        <span class="link-arrow">Gå til governance</span>
+      </a>
+      <a class="card link-card" href="/ansvarlighed/" data-reveal style="--d:1">
+        <p class="eyebrow">Ansvarlighed</p>
+        <h3>Ejerskab med ansvar</h3>
+        <p class="muted">Vores tilgang til bæredygtighed, aktivt ejerskab og lokalt engagement.</p>
+        <span class="link-arrow">Læs mere</span>
+      </a>
+    </div>
+  </section>
+
+  <CtaBand title="Vil du vide mere om os?" text="Vi fortæller gerne mere om, hvem vi er, og hvordan vi arbejder." href="/kontakt/" label="Kontakt os" />
+</Base>
+
+<style>
+  .story { display: grid; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  @media (min-width: 960px) { .story { grid-template-columns: 5fr 7fr; } }
+  :global(.story__visual) { aspect-ratio: 1; }
+  .value h3 { font-weight: 500; }
+  .value__drop { display: block; width: 36px; height: 36px; border-radius: 50% 50% 0 50%; background: var(--red); margin-bottom: 1.4rem; transition: border-radius 0.5s var(--ease), transform 0.5s var(--ease); }
+  .value:hover .value__drop { border-radius: 0 50% 50% 50%; transform: rotate(90deg); }
+  .link-card h3 { font-size: 1.6rem; }
+</style>

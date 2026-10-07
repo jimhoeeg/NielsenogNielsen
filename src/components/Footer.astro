@@ -1,0 +1,88 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import NewsletterForm from './NewsletterForm.astro';
+import { company } from '../data/site';
+
+interface Props { lang?: 'da' | 'en' }
+const { lang = 'da' } = Astro.props;
+const en = lang === 'en';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top" data-reveal>
+      <Logo />
+      <p class="footer__claim">{en ? 'Long-term capital with industrial DNA. Since 1974.' : 'Langsigtet kapital med industrielt DNA. Siden 1974.'}</p>
+    </div>
+
+    <div class="footer__grid">
+      <div data-reveal style="--d:1">
+        <h2 class="footer__h">{en ? 'Contact' : 'Kontakt'}</h2>
+        <address>
+          <strong>{company.legalName}</strong><br />
+          {company.street}<br />
+          {company.zip} {company.city}
+        </address>
+        <p><a href={`mailto:${company.email}`} class="footer__link"><Icon name="mail" size={16} /> {company.email}</a></p>
+        <p><a href={company.linkedin} class="footer__link" rel="noopener" target="_blank"><Icon name="linkedin" size={16} /> LinkedIn</a></p>
+      </div>
+
+      <div data-reveal style="--d:2">
+        <h2 class="footer__h">{en ? 'The group' : 'Gruppen'}</h2>
+        <ul>
+          <li><a href={en ? '/en/#approach' : '/investeringer/'}>Nielsen &amp; Nielsen Investments</a></li>
+          <li><a href="https://nnejendomme.dk/" rel="noopener" target="_blank">Nielsen &amp; Nielsen Ejendomme <Icon name="external" size={13} /></a></li>
+          <li><a href="https://www.micro-matic.com/" rel="noopener" target="_blank">Micro Matic <Icon name="external" size={13} /></a></li>
+        </ul>
+      </div>
+
+      <div data-reveal style="--d:3">
+        <h2 class="footer__h">{en ? 'Explore' : 'Genveje'}</h2>
+        {en ? (
+          <ul>
+            <li><a href="/en/#portfolio">Portfolio</a></li>
+            <li><a href="/en/#history">History</a></li>
+            <li><a href="/">Dansk version</a></li>
+          </ul>
+        ) : (
+          <ul>
+            <li><a href="/om-os/historie/">Vores historie</a></li>
+            <li><a href="/om-os/governance/">Ejerskab &amp; ledelse</a></li>
+            <li><a href="/ansvarlighed/">Ansvarlighed</a></li>
+            <li><a href="/kort-om/">Fakta om os</a></li>
+            <li><a href="/nyheder/">Nyheder &amp; presse</a></li>
+            <li><a href="/kontakt/#praesenter">Præsentér din virksomhed</a></li>
+          </ul>
+        )}
+      </div>
+
+      <div data-reveal style="--d:4">
+        <h2 class="footer__h">{en ? 'Newsletter' : 'Nyhedsbrev'}</h2>
+        <p class="muted">{en ? 'Receive our news a few times a year.' : 'Få vores nyheder et par gange om året.'}</p>
+        <NewsletterForm lang={lang} />
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© {year} {company.groupName} · CVR {company.groupCvr}</span>
+      <span><a href="/privatlivspolitik/">{en ? 'Privacy policy' : 'Privatlivspolitik'}</a> · <a href="/tilgaengelighed/">{en ? 'Accessibility' : 'Tilgængelighed'}</a></span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { border-top: 1px solid var(--line); padding-block: clamp(64px, 8vw, 110px) 32px; background: #fff; }
+  .footer__top { display: grid; justify-items: center; text-align: center; gap: 18px; font-size: 18px; margin-bottom: clamp(48px, 6vw, 80px); }
+  .footer__claim { margin: 0; color: var(--muted); font-size: 1rem; }
+  .footer__grid { display: grid; gap: 40px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+  .footer__h { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1.1rem; }
+  .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .footer a { text-decoration: none; }
+  .footer ul a:hover, .footer__link:hover { color: var(--red); }
+  .footer ul a :global(svg) { display: inline; vertical-align: -1px; opacity: 0.5; }
+  address { font-style: normal; margin-bottom: 1rem; }
+  .footer__link { display: inline-flex; align-items: center; gap: 8px; }
+  .footer__bottom { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: 0.85rem; color: var(--muted); }
+  .footer__bottom a:hover { color: var(--red); }
+</style>

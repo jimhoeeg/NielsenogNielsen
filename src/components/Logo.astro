@@ -1,0 +1,25 @@
+---
+// Genskabelse af Nielsen & Nielsen-logoet (to dråber + ordmærke).
+// TODO: erstat med officiel SVG-logofil fra kunden.
+interface Props { sub?: string; inverted?: boolean; class?: string }
+const { sub = 'Investments', inverted = false, class: cls = '' } = Astro.props;
+---
+<span class:list={['logo', { 'logo--inv': inverted }, cls]}>
+  <svg class="logo__mark" viewBox="0 0 104 104" aria-hidden="true">
+    <path d="M0 26A26 26 0 0 1 52 26V52H26A26 26 0 0 1 0 26Z" fill="#df331e" />
+    <path d="M52 52H78A26 26 0 1 1 52 78Z" fill="#df331e" />
+  </svg>
+  <span class="logo__text">
+    <span class="logo__name">Nielsen &amp; Nielsen</span>
+    <span class="logo__sub">{sub}</span>
+  </span>
+</span>
+
+<style>
+  .logo { display: inline-flex; align-items: flex-start; color: var(--ink); line-height: 1; }
+  .logo--inv { color: #fff; }
+  .logo__mark { width: 2.9em; height: 2.9em; flex: none; margin-right: -1.45em; position: relative; z-index: 0; }
+  .logo__text { position: relative; z-index: 1; display: grid; gap: 0.38em; padding-top: 0.05em; }
+  .logo__name { font: 700 1.55em/1 var(--font-logo); letter-spacing: -0.035em; white-space: nowrap; }
+  .logo__sub { font: 500 0.56em/1 var(--font-logo); letter-spacing: 0.42em; text-transform: uppercase; padding-left: 2.6em; }
+</style>

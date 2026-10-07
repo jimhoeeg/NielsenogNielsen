@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Split from '../components/Split.astro';
+import Visual from '../components/Visual.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base
+  title="Micro Matic – familiernes industrielle fundament"
+  description="Micro Matic er grundlagt i 1953 og har siden 1974 været ejet af familierne Nielsen og Nielsen. Verdensførende inden for fadølsanlæg og dispensering af drikkevarer."
+>
+  <PageHero
+    eyebrow="Micro Matic"
+    title="Det industrielle fundament"
+    lead="Micro Matic er familiernes største aktiv og kilden til den erfaring, vi investerer med. Virksomheden er en af verdens førende inden for udstyr til dispensering af fadøl og drikkevarer."
+    crumbs={[{ label: 'Micro Matic' }]}
+  >
+    <div class="btn-row" data-reveal style="--d:4">
+      <a class="btn" href="https://www.micro-matic.com/" target="_blank" rel="noopener">Besøg micro-matic.com <Icon name="external" /></a>
+    </div>
+  </PageHero>
+
+  <section class="section section--night">
+    <div class="wrap split-2">
+      <div>
+        <p class="eyebrow" data-reveal>Siden 1953</p>
+        <Split text="Fra ingeniørværksted til global koncern" class="light" />
+        <p data-reveal>Micro Matic blev grundlagt i 1953 af ingeniør Bror Kruuse. I 1974 overtog fem ledende medarbejdere virksomheden, heriblandt Svend-Aage Nielsen og Carl Christian Nielsen.</p>
+        <p data-reveal>I dag har Micro Matic hovedsæde i Odense og en omsætning på omkring 2,5 mia. kr. Virksomheden ejes af 18 familiemedlemmer fra anden og tredje generation.</p>
+      </div>
+      <Visual kind="micromatic" class="mm-visual" />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .split-2 { display: grid; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  @media (min-width: 960px) { .split-2 { grid-template-columns: 1fr 1fr; } }
+  :global(.mm-visual) { aspect-ratio: 4 / 3; }
+  .light { color: #fff; }
+</style>

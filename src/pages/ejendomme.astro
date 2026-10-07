@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Split from '../components/Split.astro';
+import Visual from '../components/Visual.astro';
+import Icon from '../components/Icon.astro';
+
+const areas = [
+  { name: 'Højby', text: 'Hvor det hele begyndte i 1989.' },
+  { name: 'Dyrup', text: 'Lejeboliger tæt på Odense med grønne omgivelser.' },
+  { name: 'Bellinge', text: 'Blandt andet boligområdet Romerdalen.' },
+  { name: 'Morud', text: 'Blandt andet boligområdet Ådalslunden.' },
+];
+---
+<Base
+  title="Nielsen & Nielsen Ejendomme – lejeboliger på Fyn"
+  description="Nielsen & Nielsen Ejendomme udvikler og driver moderne, bæredygtige lejeboliger i Højby, Dyrup, Bellinge og Morud på Fyn siden 1989."
+>
+  <PageHero
+    eyebrow="Ejendomme"
+    title="Boliger hvor mennesker trives"
+    lead="Siden 1989 har Nielsen & Nielsen Ejendomme udviklet og drevet moderne lejeboliger med fokus på kvalitet, bæredygtighed og fællesskab."
+    crumbs={[{ label: 'Ejendomme' }]}
+  >
+    <div class="btn-row" data-reveal style="--d:4">
+      <a class="btn" href="https://nnejendomme.dk/" target="_blank" rel="noopener">Gå til nnejendomme.dk <Icon name="external" /></a>
+      <a class="btn btn--ghost" href="https://nnejendomme.dk/ejendomme/venteliste/" target="_blank" rel="noopener">Skriv dig på ventelisten</a>
+    </div>
+  </PageHero>
+
+  <section class="section section--sand">
+    <div class="wrap split-2">
+      <Visual kind="ejendomme" class="ejd-visual" />
+      <div class="prose">
+        <p class="eyebrow" data-reveal>Om Ejendomme</p>
+        <Split text="Grønne omgivelser og gennemtænkt arkitektur" />
+        <p data-reveal>Nielsen &amp; Nielsen Ejendomme er en familieejet virksomhed med rødder tilbage til 1989, hvor C.C. Nielsen og Svend-Aage Nielsen opførte de første boliger i Højby.</p>
+        <p data-reveal>I dag skaber vi boliger, hvor mennesker trives, med grønne omgivelser, gode forbindelser og gennemtænkt arkitektur. Boligerne skal også bidrage positivt til lokalområdet.</p>
+        <p data-reveal>Siden 2017 har næste generation stået i spidsen for virksomheden.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Boligområder</p>
+      <Split text="Fire områder på Fyn" />
+      <div class="grid grid--4" style="margin-top:40px">
+        {areas.map((a, i) => (
+          <article class="card area" data-reveal style={`--d:${i}`}>
+            <Icon name="pin" size={28} />
+            <h3>{a.name}</h3>
+            <p class="muted">{a.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .split-2 { display: grid; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  @media (min-width: 960px) { .split-2 { grid-template-columns: 1fr 1fr; } }
+  :global(.ejd-visual) { aspect-ratio: 4 / 3; }
+  .area :global(svg) { color: var(--red); margin-bottom: 1rem; }
+  .area h3 { font-weight: 500; }
+</style>

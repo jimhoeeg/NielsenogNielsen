@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Split from '../components/Split.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+// TODO: Indhold formuleres sammen med kunden (evt. ESG-politik som PDF).
+const themes = [
+  { t: 'Aktivt ejerskab', d: 'Vi stiller krav til god selskabsledelse og tager aktivt del i bestyrelsesarbejdet i de virksomheder, vi ejer.' },
+  { t: 'Ansvarlige investeringer', d: 'Vi indarbejder miljø, sociale forhold og governance (ESG) i vores investeringsbeslutninger.' },
+  { t: 'Bæredygtige boliger', d: 'Vores ejendomme bygges med fokus på energieffektivitet, grønne arealer og lang levetid.' },
+  { t: 'Lokalt engagement', d: 'Vi har rødder på Fyn og støtter de lokalsamfund, vi er en del af.' },
+];
+---
+<Base
+  title="Ansvarlighed – ejerskab med ansvar"
+  description="Nielsen & Nielsens tilgang til ansvarlige investeringer, aktivt ejerskab, bæredygtige boliger og lokalt engagement."
+>
+  <PageHero
+    eyebrow="Ansvarlighed"
+    title="Ejerskab med ansvar"
+    lead="Langsigtet ejerskab og ansvarlighed hænger sammen. Når man ejer i generationer, tænker man i generationer."
+    crumbs={[{ label: 'Ansvarlighed' }]}
+  />
+  <section class="section section--sand">
+    <div class="wrap">
+      <Split text="Fire fokusområder" />
+      <div class="grid grid--2" style="margin-top:40px">
+        {themes.map((t, i) => (
+          <article class="card" data-reveal style={`--d:${i % 2}`}>
+            <span class="no">0{i + 1}</span>
+            <h3>{t.t}</h3>
+            <p class="muted">{t.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+
+<style>
+  .no { display: block; color: var(--red); font-size: 1.6rem; font-weight: 300; margin-bottom: 1rem; }
+  h3 { font-weight: 500; }
+</style>

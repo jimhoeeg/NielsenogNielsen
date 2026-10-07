@@ -1,0 +1,140 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { company, formEndpoints } from '../data/site';
+const mapQuery = encodeURIComponent(`${company.street}, ${company.zip} ${company.city}`);
+const contactLd = {
+  '@type': 'ContactPage',
+  name: 'Kontakt Nielsen & Nielsen Investments',
+  about: { '@id': new URL('/#organization', Astro.site!).href },
+};
+---
+<Base
+  title="Kontakt os – og præsentér din virksomhed"
+  description="Kontakt Nielsen & Nielsen Investments i Odense SV, eller præsentér din virksomhed fortroligt for os."
+  jsonLd={[contactLd]}
+>
+  <PageHero eyebrow="Kontakt" title="Lad os tage en snak" lead="Uanset om du er virksomhedsejer, rådgiver, samarbejdspartner eller journalist, hører vi gerne fra dig." crumbs={[{ label: 'Kontakt' }]} />
+
+  <section class="section section--sand">
+    <div class="wrap contact">
+      <aside class="contact__info">
+        <div class="card" data-reveal>
+          <h2 class="h-small">Kontaktoplysninger</h2>
+          <address>
+            <strong>{company.legalName}</strong><br />{company.street}<br />{company.zip} {company.city}
+          </address>
+          <ul class="info-list">
+            <li><Icon name="mail" /> <a href={`mailto:${company.email}`}>{company.email}</a></li>
+            {company.phone && <li><Icon name="phone" /> <a href={`tel:${company.phone.replace(/\s/g, '')}`}>{company.phone}</a></li>}
+            <li><Icon name="pin" /> <a href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`} target="_blank" rel="noopener">Find vej</a></li>
+            <li><Icon name="linkedin" /> <a href={company.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+        <div class="card" data-reveal style="--d:1">
+          <h2 class="h-small">Søger du en bolig?</h2>
+          <p class="muted">Henvendelser om lejeboliger går til Nielsen &amp; Nielsen Ejendomme.</p>
+          <a class="link-arrow" href="https://nnejendomme.dk/kontakt-os/" target="_blank" rel="noopener">nnejendomme.dk</a>
+        </div>
+      </aside>
+
+      <div class="card" data-reveal="right">
+        <h2>Skriv til os</h2>
+        <form class="form" data-form action={formEndpoints.contact || undefined} method="post" novalidate>
+          <div class="form-row">
+            <div class="field"><label for="c-name">Navn *</label><input id="c-name" name="name" required autocomplete="name" /></div>
+            <div class="field"><label for="c-email">E-mail *</label><input id="c-email" name="email" type="email" required autocomplete="email" /></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="c-company">Virksomhed</label><input id="c-company" name="company" autocomplete="organization" /></div>
+            <div class="field">
+              <label for="c-topic">Emne</label>
+              <select id="c-topic" name="topic">
+                <option>Generel henvendelse</option>
+                <option>Samarbejde</option>
+                <option>Presse</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label for="c-msg">Besked *</label><textarea id="c-msg" name="message" required></textarea></div>
+          <label class="check"><input type="checkbox" name="consent" required /> <span>Jeg accepterer, at mine oplysninger behandles i henhold til <a href="/privatlivspolitik/">privatlivspolitikken</a>. *</span></label>
+          <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div><button class="btn" type="submit">Send besked <Icon name="arrow" /></button></div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- TODO: svartid (10 arbejdsdage) og omsætningsintervaller bekræftes af kunden -->
+  <section class="section section--night" id="praesenter">
+    <div class="wrap contact">
+      <div>
+        <p class="eyebrow" data-reveal>Deal flow</p>
+        <h2 data-reveal>Præsentér din virksomhed</h2>
+        <p data-reveal>Overvejer du et generationsskifte, søger du en langsigtet medejer, eller har du brug for kapital til vækst? Fortæl os om virksomheden. Alle henvendelser behandles fortroligt, og du hører fra os inden for 10 arbejdsdage.</p>
+        <ul class="trust" data-reveal>
+          <li>Fortrolig behandling</li>
+          <li>Svar inden for 10 arbejdsdage</li>
+          <li>Ingen forpligtelser</li>
+        </ul>
+      </div>
+      <div class="card dark-card" data-reveal="right">
+        <form class="form" data-form action={formEndpoints.dealflow || undefined} method="post" enctype="multipart/form-data" novalidate data-success="Tak for din henvendelse. Vi har modtaget den og vender tilbage inden for 10 arbejdsdage.">
+          <div class="form-row">
+            <div class="field"><label for="d-name">Navn *</label><input id="d-name" name="name" required autocomplete="name" /></div>
+            <div class="field"><label for="d-email">E-mail *</label><input id="d-email" name="email" type="email" required autocomplete="email" /></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="d-company">Virksomhed *</label><input id="d-company" name="company" required /></div>
+            <div class="field"><label for="d-phone">Telefon</label><input id="d-phone" name="phone" type="tel" autocomplete="tel" /></div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="d-role">Din rolle</label>
+              <select id="d-role" name="role"><option>Ejer</option><option>Direktør</option><option>Rådgiver</option><option>Andet</option></select>
+            </div>
+            <div class="field">
+              <label for="d-rev">Omsætning (ca.)</label>
+              <select id="d-rev" name="revenue"><option>Under 50 mio. kr.</option><option>50–250 mio. kr.</option><option>250 mio.–1 mia. kr.</option><option>Over 1 mia. kr.</option></select>
+            </div>
+          </div>
+          <div class="field"><label for="d-msg">Kort om virksomheden og situationen *</label><textarea id="d-msg" name="message" required></textarea></div>
+          <div class="field">
+            <label for="d-file">Præsentation (valgfri)</label>
+            <input id="d-file" name="attachment" type="file" accept=".pdf,.ppt,.pptx" />
+            <small>PDF eller PowerPoint, maks. 20 MB.</small>
+          </div>
+          <label class="check"><input type="checkbox" name="consent" required /> <span>Jeg accepterer, at oplysningerne behandles fortroligt og i henhold til <a href="/privatlivspolitik/">privatlivspolitikken</a>. *</span></label>
+          <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div><button class="btn" type="submit">Send fortroligt <Icon name="arrow" /></button></div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact { display: grid; gap: clamp(28px, 4vw, 56px); align-items: start; }
+  @media (min-width: 960px) { .contact { grid-template-columns: 5fr 7fr; } }
+  .contact__info { display: grid; gap: 20px; }
+  .h-small { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); font-weight: 500; }
+  address { font-style: normal; margin-bottom: 1.2rem; }
+  .info-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .info-list li { display: flex; align-items: center; gap: 12px; }
+  .info-list :global(svg) { color: var(--red); }
+  .info-list a { text-decoration: none; }
+  .info-list a:hover { color: var(--red); }
+  .trust { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 12px; }
+  .trust li { display: flex; gap: 12px; align-items: center; }
+  .trust li::before { content: ''; width: 14px; height: 14px; background: var(--red); border-radius: 50% 50% 0 50%; flex: none; }
+  .dark-card { background: #1f2333; border-color: transparent; color: #fff; }
+  .dark-card .field input, .dark-card .field textarea, .dark-card .field select { background: #151825; border-color: #343a50; color: #fff; }
+  .dark-card .field small, .dark-card .check { color: rgba(255, 255, 255, 0.7); }
+  .dark-card a { color: #fff; }
+  .dark-card .form-status[data-state='ok'] { color: #7ee2a8; }
+  .dark-card .form-status[data-state='error'] { color: #ff9b8c; }
+  .section--night h2 { color: #fff; }
+</style>

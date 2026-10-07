@@ -1,0 +1,197 @@
+---
+import Base from '../layouts/Base.astro';
+import Split from '../components/Split.astro';
+import Icon from '../components/Icon.astro';
+import Visual from '../components/Visual.astro';
+import Stats from '../components/Stats.astro';
+import Timeline from '../components/Timeline.astro';
+import NewsCard from '../components/NewsCard.astro';
+import PortfolioCard from '../components/PortfolioCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { pillars, principles, stats, timeline, investments, news } from '../data/site';
+
+const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+const featured = investments.filter((i) => i.status === 'Aktiv');
+const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes(t.year));
+---
+<Base
+  title="Nielsen & Nielsen Investments – langsigtet familiekapital fra Odense"
+  description="Nielsen & Nielsen Investments forvalter formuen for familierne bag Micro Matic. Langsigtet, familieejet kapital med industrielt DNA siden 1974."
+  altHref="/en/"
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__shapes" aria-hidden="true">
+      <span class="drop drop--a hero__d1" data-parallax="0.5"></span>
+      <span class="drop drop--b hero__d2" data-parallax="1"></span>
+    </div>
+    <div class="wrap hero__inner">
+      <p class="eyebrow" data-reveal>Familieejet investeringsselskab · Odense</p>
+      <Split as="h1" text="Langsigtet kapital med industrielt DNA." accent="DNA" class="hero__title" />
+      <p class="lead" data-reveal style="--d:4">
+        Siden 1974 har familierne Nielsen og Nielsen bygget og udviklet virksomheder. I dag forvalter vi familiernes formue med samme tålmodighed.
+      </p>
+      <div class="btn-row" data-reveal style="--d:5">
+        <a class="btn" href="/investeringer/">Vores tilgang <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href="/kontakt/#praesenter">Præsentér din virksomhed</a>
+      </div>
+    </div>
+    <a class="hero__scroll" href="#intro" aria-label="Scroll ned"><span></span></a>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section intro" id="intro">
+    <div class="wrap intro__grid">
+      <p class="eyebrow" data-reveal>Om Nielsen &amp; Nielsen</p>
+      <div>
+        <p class="intro__statement" data-reveal="blur">
+          Vi er to familier og tre generationer med rødder i <span class="accent">Micro Matic</span>. Vi investerer med samme værdier, som byggede virksomheden: tålmodighed, ordentlighed og respekt for de mennesker, der skaber værdien.
+        </p>
+        <a class="link-arrow" href="/om-os/" data-reveal style="--d:2">Læs vores historie</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRE BEN -->
+  <section class="section section--sand">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Gruppen</p>
+      <Split text="Tre ben – ét langsigtet perspektiv" />
+      <div class="grid grid--3 pillars">
+        {pillars.map((p, i) => (
+          <a class="card pillar" href={p.href} data-reveal style={`--d:${i}`}>
+            <Visual kind={p.key as 'investments' | 'ejendomme' | 'micromatic'} class="pillar__visual" />
+            <h3>{p.title}</h3>
+            <p class="muted">{p.text}</p>
+            <span class="link-arrow">{p.cta}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TAL -->
+  <section class="section section--night">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>I tal</p>
+      <Stats items={stats} />
+    </div>
+  </section>
+
+  <!-- PRINCIPPER -->
+  <section class="section">
+    <div class="wrap principles">
+      <div class="principles__head">
+        <p class="eyebrow" data-reveal>Investeringsfilosofi</p>
+        <Split text="Sådan arbejder vi som ejer" />
+        <p class="muted" data-reveal style="--d:2">Fire principper, der går igen i alt, hvad vi gør, fra børsnoterede aktier til boligudlejning på Fyn.</p>
+        <a class="btn btn--ghost" href="/investeringer/" data-reveal style="--d:3">Læs mere</a>
+      </div>
+      <ol class="principles__list">
+        {principles.map((p, i) => (
+          <li data-reveal style={`--d:${i % 2}`}>
+            <span class="principles__no">0{i + 1}</span>
+            <div>
+              <h3>{p.title}</h3>
+              <p class="muted">{p.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- PORTEFØLJE -->
+  <section class="section section--sand">
+    <div class="wrap">
+      <div class="head-row">
+        <div>
+          <p class="eyebrow" data-reveal>Portefølje</p>
+          <Split text="Udvalgte investeringer" />
+        </div>
+        <a class="link-arrow" href="/investeringer/portefolje/" data-reveal>Se hele porteføljen</a>
+      </div>
+      <div class="grid grid--3">
+        {featured.map((item, i) => <PortfolioCard item={item} d={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORIE -->
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow" data-reveal>Historie</p>
+      <Split text="Fra fadøl til familieformue" />
+      <p class="lead" data-reveal style="--d:2">Over 70 års historie, fra ingeniørens værksted i 1953 til tredje generation i ejerkredsen.</p>
+      <div class="tl-wrap"><Timeline items={tlShort} /></div>
+      <div class="center" data-reveal><a class="btn btn--ghost" href="/om-os/historie/">Se hele tidslinjen <Icon name="arrow" /></a></div>
+    </div>
+  </section>
+
+  <!-- NYHEDER -->
+  <section class="section section--sand">
+    <div class="wrap">
+      <div class="head-row">
+        <div>
+          <p class="eyebrow" data-reveal>Nyheder</p>
+          <Split text="Seneste nyt" />
+        </div>
+        <a class="link-arrow" href="/nyheder/" data-reveal>Alle nyheder</a>
+      </div>
+      <div class="grid grid--3">
+        {latest.map((n, i) => <NewsCard item={n} d={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: center; padding-top: var(--header-h); overflow: hidden; }
+  .hero__inner { position: relative; z-index: 1; padding-block: clamp(48px, 8vw, 120px); }
+  :global(.hero__title) { max-width: 720px; margin-bottom: 0.4em; }
+  .hero .lead { max-width: 40ch; }
+  .hero__shapes { position: absolute; inset: 0; pointer-events: none; }
+  .hero__d1, .hero__d2 { --s: clamp(160px, 22vw, 360px); width: var(--s); height: var(--s); }
+  .hero__d1 { right: calc(3vw + var(--s) * 0.5); top: 18%; animation: dropIn 1.4s var(--ease) both 0.2s; }
+  .hero__d2 { right: calc(3vw - var(--s) * 0.5); top: calc(18% + var(--s)); animation: dropIn 1.4s var(--ease) both 0.45s; }
+  @keyframes dropIn { from { opacity: 0; scale: 0.6; } to { opacity: var(--o, 1); scale: 1; } }
+  @media (max-width: 900px) {
+    .hero__d1, .hero__d2 { --s: 46vw; --o: 0.12; opacity: 0.12; }
+    .hero__d1 { right: 20vw; top: 8%; }
+    .hero__d2 { right: -26vw; top: calc(8% + var(--s)); }
+  }
+  .hero__scroll { position: absolute; left: 50%; bottom: 28px; width: 28px; height: 46px; border: 2px solid var(--ink); border-radius: 20px; transform: translateX(-50%); opacity: 0.5; }
+  .hero__scroll span { position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: var(--red); animation: wheel 1.8s infinite; }
+  @keyframes wheel { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
+
+  .intro__grid { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 900px) { .intro__grid { grid-template-columns: 1fr 3fr; } }
+  .intro__statement { font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.6rem); line-height: 1.3; font-weight: 300; letter-spacing: -0.01em; margin-bottom: 1.5rem; }
+
+  .pillars { margin-top: clamp(32px, 4vw, 56px); }
+  .pillar { display: flex !important; flex-direction: column; padding: 14px 14px 28px !important; }
+  .pillar :global(.pillar__visual) { aspect-ratio: 16 / 10; margin-bottom: 24px; transition: transform 0.6s var(--ease); }
+  .pillar:hover :global(.pillar__visual) { transform: scale(1.02); }
+  .pillar h3, .pillar p, .pillar .link-arrow { padding-inline: 14px; }
+  .pillar .link-arrow { margin-top: auto; }
+
+  .principles { display: grid; gap: clamp(32px, 6vw, 96px); }
+  @media (min-width: 960px) {
+    .principles { grid-template-columns: 5fr 7fr; }
+    .principles__head { position: sticky; top: calc(var(--header-h) + 40px); align-self: start; }
+  }
+  .principles__list { list-style: none; margin: 0; padding: 0; }
+  .principles__list li { display: grid; grid-template-columns: auto 1fr; gap: clamp(16px, 3vw, 40px); padding-block: clamp(24px, 3vw, 40px); border-top: 1px solid var(--line); }
+  .principles__list li:last-child { border-bottom: 1px solid var(--line); }
+  .principles__no { font-size: clamp(1.4rem, 1rem + 1vw, 2rem); color: var(--red); font-weight: 300; }
+  .principles__list h3 { font-weight: 500; }
+  .principles__list p { margin: 0; }
+
+  .head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: clamp(28px, 4vw, 48px); }
+  .head-row h2 { margin: 0; }
+
+  .tl-wrap { margin-block: clamp(40px, 6vw, 72px); }
+  .center { text-align: center; }
+</style>

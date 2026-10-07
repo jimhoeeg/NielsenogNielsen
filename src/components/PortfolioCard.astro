@@ -1,0 +1,29 @@
+---
+import type { Investment } from '../data/site';
+interface Props { item: Investment; d?: number }
+const { item, d = 0 } = Astro.props;
+const initials = item.name.split(/\s+/).filter((w) => /^[A-ZÆØÅ]/.test(w)).slice(0, 2).map((w) => w[0]).join('');
+---
+<a class="card pf" href={`/investeringer/${item.slug}/`} data-reveal style={`--d:${d}`} data-sector={item.sector} data-status={item.status}>
+  <div class="pf__top">
+    <span class="pf__mono" aria-hidden="true">{initials}</span>
+    <span class:list={['tag', { 'tag--neutral': item.status === 'Realiseret' }]}>{item.status}</span>
+  </div>
+  <h3>{item.name}</h3>
+  <p class="muted">{item.summary}</p>
+  <dl class="pf__facts">
+    <div><dt>Sektor</dt><dd>{item.sector}</dd></div>
+    {item.since && <div><dt>Siden</dt><dd>{item.since}{item.exit ? `–${item.exit}` : ''}</dd></div>}
+  </dl>
+</a>
+
+<style>
+  .pf { display: flex !important; flex-direction: column; height: 100%; }
+  .pf__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.6rem; }
+  .pf__mono { width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50% 50% 0 50%; background: var(--ink); color: #fff; font-weight: 500; letter-spacing: 0.04em; transition: background 0.3s, border-radius 0.5s var(--ease); }
+  .pf:hover .pf__mono { background: var(--red); border-radius: 0 50% 50% 50%; }
+  .pf h3 { font-size: 1.4rem; }
+  .pf__facts { display: flex; gap: 28px; margin: auto 0 0; padding-top: 1.2rem; border-top: 1px solid var(--line); font-size: 0.85rem; }
+  .pf__facts dt { color: var(--muted); }
+  .pf__facts dd { margin: 0; font-weight: 500; }
+</style>

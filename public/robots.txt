@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nielsen-nielsen.dk/sitemap-index.xml

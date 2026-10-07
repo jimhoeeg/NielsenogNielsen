@@ -1,0 +1,128 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Split from '../../components/Split.astro';
+import Visual from '../../components/Visual.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { principles } from '../../data/site';
+
+// TODO: Kriterier og aktivklasser skal godkendes af Nielsen & Nielsen.
+const assetClasses = [
+  { title: 'Børsnoterede værdipapirer', text: 'En diversificeret portefølje af aktier og obligationer med fokus på kvalitet, kapitalbevarelse og langsigtet afkast.' },
+  { title: 'Direkte investeringer', text: 'Minoritets- og majoritetsposter i veldrevne, unoterede virksomheder, hvor vi kan bidrage med kapital, erfaring og ro.' },
+  { title: 'Ejendomme', text: 'Udvikling og drift af boligejendomme på Fyn gennem Nielsen & Nielsen Ejendomme.' },
+];
+
+const criteria = [
+  'Sunde virksomheder med en dokumenteret forretningsmodel og positiv indtjening',
+  'Stærk og engageret ledelse, som vi kan bygge et tillidsfuldt samarbejde med',
+  'Industri, produktion, teknologi og B2B-services, gerne med international vækst',
+  'Situationer med generationsskifte, hvor ejeren ønsker en ansvarlig ny ejer',
+  'Mulighed for langsigtet ejerskab, gerne 10 år eller mere',
+];
+
+const process = [
+  { step: 'Første samtale', text: 'Et uforpligtende og fortroligt møde, hvor vi lærer hinanden og virksomheden at kende.' },
+  { step: 'Gensidig afklaring', text: 'Vi deler vores syn på ejerskab, og I deler jeres ambitioner. Vi passer sammen, eller også siger vi det hurtigt.' },
+  { step: 'Analyse og tilbud', text: 'En grundig, men pragmatisk proces med få og erfarne beslutningstagere.' },
+  { step: 'Langsigtet partnerskab', text: 'Vi er en aktiv ejer i bestyrelsen og en tålmodig sparringspartner for ledelsen.' },
+];
+---
+<Base
+  title="Investeringer – vores tilgang som langsigtet ejer"
+  description="Sådan investerer Nielsen & Nielsen Investments: tålmodig, familieejet kapital i børsnoterede værdipapirer, direkte investeringer og ejendomme."
+>
+  <PageHero
+    eyebrow="Investeringer"
+    title="Tålmodig kapital. Aktivt ejerskab."
+    lead="Vi forvalter familiernes formue med et perspektiv, der rækker generationer frem, og med erfaringen fra selv at have bygget en global industrivirksomhed."
+    crumbs={[{ label: 'Investeringer' }]}
+  />
+
+  <section class="section section--sand">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Aktivklasser</p>
+      <Split text="Hvor vi investerer" />
+      <div class="grid grid--3 mt">
+        {assetClasses.map((a, i) => (
+          <article class="card" data-reveal style={`--d:${i}`}>
+            <span class="num">0{i + 1}</span>
+            <h3>{a.title}</h3>
+            <p class="muted">{a.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split-2">
+      <div>
+        <p class="eyebrow" data-reveal>Investeringsfilosofi</p>
+        <Split text="Fire principper" />
+        <Visual kind="investments" class="phil-visual" />
+      </div>
+      <dl class="phil">
+        {principles.map((p, i) => (
+          <div data-reveal style={`--d:${i % 2}`}>
+            <dt>{p.title}</dt>
+            <dd class="muted">{p.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--night">
+    <div class="wrap split-2">
+      <div>
+        <p class="eyebrow" data-reveal>Hvad vi kigger efter</p>
+        <Split text="Investeringskriterier" class="light" />
+        <p data-reveal style="--d:2">Passer jeres virksomhed ikke helt ind i boksene? Tag alligevel fat i os. Gode partnerskaber starter ofte med en samtale.</p>
+      </div>
+      <ul class="criteria">
+        {criteria.map((c, i) => <li data-reveal style={`--d:${i}`}>{c}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Processen</p>
+      <Split text="Fra første samtale til partnerskab" />
+      <ol class="process">
+        {process.map((p, i) => (
+          <li data-reveal style={`--d:${i}`}>
+            <span class="process__no">{i + 1}</span>
+            <h3>{p.step}</h3>
+            <p class="muted">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="btn-row" data-reveal><a class="btn btn--ghost" href="/investeringer/portefolje/">Se porteføljen</a></div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .mt { margin-top: clamp(28px, 4vw, 48px); }
+  .num { display: block; color: var(--red); font-size: 1.6rem; font-weight: 300; margin-bottom: 1.2rem; }
+  .card h3 { font-weight: 500; }
+  .split-2 { display: grid; gap: clamp(32px, 6vw, 96px); }
+  @media (min-width: 960px) { .split-2 { grid-template-columns: 5fr 7fr; } }
+  :global(.phil-visual) { aspect-ratio: 4 / 3; margin-top: 2rem; }
+  .phil { margin: 0; display: grid; gap: 0; }
+  .phil > div { padding-block: 28px; border-top: 1px solid var(--line); }
+  .phil dt { font-size: 1.3rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .phil dd { margin: 0; }
+  .light { color: #fff; }
+  .criteria { list-style: none; margin: 0; padding: 0; }
+  .criteria li { position: relative; padding: 22px 0 22px 44px; border-top: 1px solid rgba(255, 255, 255, 0.14); font-size: 1.15rem; }
+  .criteria li::before { content: ''; position: absolute; left: 0; top: 30px; width: 16px; height: 16px; background: var(--red); border-radius: 50% 50% 0 50%; }
+  .process { list-style: none; padding: 0; margin: clamp(32px, 4vw, 56px) 0 0; display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); counter-reset: s; }
+  .process li { position: relative; padding-top: 28px; border-top: 2px solid var(--ink); }
+  .process__no { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 500; margin-bottom: 1rem; }
+  .process h3 { font-weight: 500; font-size: 1.2rem; }
+</style>

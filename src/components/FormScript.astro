@@ -1,0 +1,40 @@
+<script>
+  // Fælles håndtering af alle formularer med [data-form].
+  // Har formularen en action (endpoint), sendes den med fetch. Ellers kører den i demo-tilstand.
+  document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form-status');
+    const en = document.documentElement.lang === 'en';
+    const say = (msg: string, state: 'ok' | 'error') => {
+      if (!status) return;
+      status.textContent = msg;
+      status.dataset.state = state;
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if ((form.querySelector('.hp') as HTMLInputElement | null)?.value) return; // spam
+      if (!form.checkValidity()) {
+        const first = form.querySelector<HTMLElement>(':invalid');
+        first?.focus();
+        say(en ? 'Please fill in the required fields.' : 'Udfyld venligst de påkrævede felter.', 'error');
+        return;
+      }
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
+      btn?.setAttribute('disabled', '');
+      try {
+        const action = form.getAttribute('action');
+        if (action) {
+          const res = await fetch(action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+          if (!res.ok) throw new Error(String(res.status));
+        } else {
+          await new Promise((r) => setTimeout(r, 600));
+        }
+        form.reset();
+        say(form.dataset.success || (en ? 'Thank you – we will be in touch.' : 'Tak – vi vender tilbage hurtigst muligt.'), 'ok');
+      } catch {
+        say(en ? 'Something went wrong. Please try again or email us.' : 'Noget gik galt. Prøv igen, eller skriv til os på e-mail.', 'error');
+      } finally {
+        btn?.removeAttribute('disabled');
+      }
+    });
+  });
+</script>

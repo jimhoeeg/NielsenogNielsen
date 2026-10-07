@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { company } from '../data/site';
+---
+<Base title="Tilgængelighed" description="Tilgængelighedserklæring for nielsen-nielsen.dk.">
+  <PageHero title="Tilgængelighed" crumbs={[{ label: 'Tilgængelighed' }]} />
+  <section class="section section--sand">
+    <div class="wrap wrap--narrow prose">
+      <p>Vi ønsker, at alle kan bruge vores hjemmeside. Siden er udviklet med udgangspunkt i WCAG 2.2 niveau AA.</p>
+      <ul>
+        <li>Hele siden kan betjenes med tastatur.</li>
+        <li>Animationer slås fra, hvis du har valgt "reducer bevægelse" i dit styresystem.</li>
+        <li>Tekst og baggrund har tilstrækkelig kontrast.</li>
+        <li>Billeder og ikoner har tekstalternativer eller er markeret som dekorative.</li>
+      </ul>
+      <p>Oplever du problemer, så skriv til <a href={`mailto:${company.email}`}>{company.email}</a>.</p>
+    </div>
+  </section>
+</Base>

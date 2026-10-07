@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import PortfolioCard from '../../components/PortfolioCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { investments, type Investment } from '../../data/site';
+
+export function getStaticPaths() {
+  return investments.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+const { item } = Astro.props as { item: Investment };
+const others = investments.filter((i) => i.slug !== item.slug).slice(0, 3);
+const facts = [
+  ['Status', item.status],
+  ['Sektor', item.sector],
+  ['Ejet siden', item.since],
+  ['Realiseret', item.exit],
+  ['Vores rolle', item.role],
+].filter(([, v]) => v) as [string, string][];
+---
+<Base title={`${item.name} – portefølje`} description={`${item.name}: ${item.summary}`}>
+  <PageHero
+    eyebrow={`${item.sector} · ${item.status}`}
+    title={item.name}
+    lead={item.summary}
+    crumbs={[{ href: '/investeringer/', label: 'Investeringer' }, { href: '/investeringer/portefolje/', label: 'Portefølje' }, { label: item.name }]}
+  />
+  <section class="section section--sand">
+    <div class="wrap case">
+      <div class="prose">
+        {item.body.map((p, i) => <p data-reveal style={`--d:${i}`}>{p}</p>)}
+        {item.quote && (
+          <blockquote data-reveal>
+            <p>“{item.quote.text}”</p>
+            <cite>{item.quote.by}</cite>
+          </blockquote>
+        )}
+        {item.url && <a class="btn" href={item.url} target="_blank" rel="noopener" data-reveal>Besøg {item.name} <Icon name="external" /></a>}
+      </div>
+      <aside class="card facts" data-reveal="right">
+        <h2 class="facts__h">Fakta</h2>
+        <dl>
+          {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+      </aside>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <h2 data-reveal>Flere i porteføljen</h2>
+      <div class="grid grid--3" style="margin-top:32px">
+        {others.map((o, i) => <PortfolioCard item={o} d={i} />)}
+      </div>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+
+<style>
+  .case { display: grid; gap: clamp(32px, 5vw, 80px); align-items: start; }
+  @media (min-width: 960px) { .case { grid-template-columns: 1fr 360px; } .facts { position: sticky; top: calc(var(--header-h) + 32px); } }
+  .prose p { font-size: 1.15rem; }
+  blockquote { margin: 2rem 0; padding-left: 24px; border-left: 3px solid var(--red); font-size: 1.4rem; }
+  cite { font-style: normal; color: var(--muted); font-size: 0.95rem; }
+  .facts__h { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); font-weight: 500; }
+  .facts dl { margin: 0; }
+  .facts dl div { display: flex; justify-content: space-between; gap: 16px; padding-block: 12px; border-top: 1px solid var(--line); }
+  .facts dt { color: var(--muted); }
+  .facts dd { margin: 0; font-weight: 500; text-align: right; }
+</style>

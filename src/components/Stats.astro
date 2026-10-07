@@ -1,0 +1,25 @@
+---
+interface Stat { value: number; label: string; suffix?: string; plain?: boolean }
+interface Props { items: Stat[] }
+const { items } = Astro.props;
+---
+<dl class="stats">
+  {items.map((s, i) => (
+    <div class="stat" data-reveal style={`--d:${i}`}>
+      <dt class="stat__label">{s.label}</dt>
+      <dd class="stat__value">
+        <span data-count={s.value} data-plain={s.plain ? '' : undefined}>{s.plain ? s.value : s.value.toLocaleString('da-DK')}</span>{s.suffix}
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0; margin: 0; }
+  .stat { display: flex; flex-direction: column; gap: 10px; padding: 28px clamp(16px, 2vw, 32px); border-left: 1px solid rgba(255, 255, 255, 0.14); }
+  .stat:first-child { border-left: 0; padding-left: 0; }
+  @media (max-width: 960px) { .stat { border-left: 0; border-top: 1px solid rgba(255, 255, 255, 0.14); padding-left: 0; } .stat:first-child { border-top: 0; } }
+  .stat__value { order: -1; margin: 0; font-size: clamp(2.8rem, 2rem + 3vw, 4.6rem); font-weight: 300; line-height: 1; letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+  .stat__suffix { font-size: 0.45em; margin-left: 0.15em; letter-spacing: 0; }
+  .stat__label { color: rgba(255, 255, 255, 0.7); font-size: 0.98rem; max-width: 24ch; }
+</style>

@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { news, formatDate, company, type NewsItem } from '../../data/site';
+
+export function getStaticPaths() {
+  return news.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+const { item } = Astro.props as { item: NewsItem };
+const more = news.filter((n) => n.slug !== item.slug).slice(0, 3);
+const site = Astro.site!;
+const articleLd = {
+  '@type': 'NewsArticle',
+  headline: item.title,
+  description: item.excerpt,
+  datePublished: item.date,
+  inLanguage: 'da-DK',
+  mainEntityOfPage: new URL(Astro.url.pathname, site).href,
+  image: new URL('/og-image.png', site).href,
+  author: { '@type': 'Organization', name: company.name },
+  publisher: { '@id': new URL('/#organization', site).href },
+};
+---
+<Base title={item.title} description={item.excerpt} type="article" jsonLd={[articleLd]}>
+  <PageHero
+    eyebrow={`${item.tag} · ${formatDate(item.date)}`}
+    title={item.title}
+    lead={item.excerpt}
+    crumbs={[{ href: '/nyheder/', label: 'Nyheder' }, { label: item.title }]}
+  />
+  <article class="section section--sand">
+    <div class="wrap wrap--narrow prose">
+      {item.body.map((p, i) => <p data-reveal style={`--d:${i}`}>{p}</p>)}
+      <p class="share" data-reveal>
+        Del: <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(new URL(Astro.url.pathname, site).href)}`} target="_blank" rel="noopener">LinkedIn</a>
+      </p>
+    </div>
+  </article>
+  {more.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <h2 data-reveal>Flere nyheder</h2>
+        <div class="grid grid--3" style="margin-top:32px">{more.map((n, i) => <NewsCard item={n} d={i} />)}</div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .prose p { font-size: 1.2rem; }
+  .share { font-size: 0.95rem !important; color: var(--muted); margin-top: 2rem; }
+  .share a { color: var(--red); }
+</style>

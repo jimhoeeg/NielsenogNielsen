@@ -1,0 +1,13 @@
+---
+// Overskrift der "flyder ind" ord for ord, når den scrolles i view.
+interface Props { as?: 'h1' | 'h2' | 'h3' | 'p'; text: string; class?: string; accent?: string }
+const { as: Tag = 'h2', text, class: cls = '', accent } = Astro.props;
+const words = text.split(' ');
+---
+<Tag class:list={['split', cls]} data-split aria-label={text}>
+  {words.map((w, i) => (
+    <>
+      <span class="split-word" aria-hidden="true" style={`--i:${i}`}><span class:list={{ accent: accent && w.replace(/[.,]/g, '') === accent }}>{w}</span></span>{' '}
+    </>
+  ))}
+</Tag>

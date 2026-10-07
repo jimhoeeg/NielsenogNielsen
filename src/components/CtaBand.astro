@@ -1,0 +1,35 @@
+---
+import Icon from './Icon.astro';
+import Split from './Split.astro';
+interface Props { title?: string; text?: string; href?: string; label?: string }
+const {
+  title = 'Har du en virksomhed, der søger en langsigtet ejer?',
+  text = 'Vi hører gerne fra virksomhedsejere, ledere og rådgivere. Alle henvendelser behandles fortroligt.',
+  href = '/kontakt/#praesenter',
+  label = 'Præsentér din virksomhed',
+} = Astro.props;
+---
+<section class="cta">
+  <span class="drop drop--a cta__d1" data-parallax="0.6"></span>
+  <span class="drop drop--b cta__d2" data-parallax="1.2"></span>
+  <div class="wrap cta__inner">
+    <Split text={title} class="cta__title" />
+    <p data-reveal style="--d:2">{text}</p>
+    <div class="btn-row" data-reveal style="--d:3">
+      <a class="btn cta__btn" href={href}>{label} <Icon name="arrow" /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta { position: relative; overflow: hidden; background: var(--red); color: #fff; padding-block: clamp(80px, 10vw, 150px); }
+  .cta__inner { position: relative; z-index: 1; }
+  .cta__title { max-width: 18ch; color: #fff; }
+  .cta p { max-width: 52ch; font-size: 1.15rem; color: rgba(255, 255, 255, 0.9); }
+  .cta__btn { --bg: #fff; --fg: var(--ink); }
+  .cta__btn:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .cta__d1, .cta__d2 { --s: clamp(140px, 20vw, 300px); width: var(--s); height: var(--s); }
+  .cta__d1 { right: calc(6% + var(--s)); top: 8%; background: rgba(255, 255, 255, 0.12); }
+  .cta__d2 { right: 6%; top: calc(8% + var(--s)); background: rgba(21, 24, 37, 0.14); }
+  @media (max-width: 700px) { .cta__d1, .cta__d2 { opacity: 0.5; } }
+</style>

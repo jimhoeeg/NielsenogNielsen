@@ -1,0 +1,132 @@
+---
+import Base from '../../layouts/Base.astro';
+import Split from '../../components/Split.astro';
+import Icon from '../../components/Icon.astro';
+import Visual from '../../components/Visual.astro';
+import Stats from '../../components/Stats.astro';
+import Timeline from '../../components/Timeline.astro';
+import { company } from '../../data/site';
+
+const stats = [
+  { value: 1974, label: 'The families take over Micro Matic', plain: true },
+  { value: 3, label: 'Generations of owners' },
+  { value: 18, label: 'Family members behind Micro Matic' },
+  { value: 224, suffix: 'm', label: 'DKK invested in Nielsen & Nielsen Gruppen in 2024' },
+];
+const principles = [
+  { title: 'Patient capital', text: 'No exit horizon to meet. We invest with generations in mind.' },
+  { title: 'Industrial DNA', text: 'The families built a global industrial company themselves. We speak the language of management.' },
+  { title: 'Active, respectful ownership', text: 'Engaged in the boardroom, never in the way of day-to-day operations.' },
+  { title: 'Rooted on Funen, global outlook', text: 'Our roots are in Odense. Our investments and network reach far beyond Denmark.' },
+];
+const portfolio = [
+  { name: 'Micro Matic', sector: 'Industry', status: 'Active', text: 'Global leader in draught beer and beverage dispensing equipment. Owned since 1974.', url: 'https://www.micro-matic.com/' },
+  { name: 'Nielsen & Nielsen Ejendomme', sector: 'Real estate', status: 'Active', text: 'Modern, sustainable rental homes on Funen since 1989.', url: 'https://nnejendomme.dk/' },
+  { name: 'Listed securities', sector: 'Financial assets', status: 'Active', text: 'A diversified, long-term portfolio of listed equities and bonds.' },
+  { name: 'Triax', sector: 'Industry', status: 'Realised', text: 'Owned for 28 years. Sold to Polaris Private Equity in 2015.' },
+];
+const timeline = [
+  { year: '1953', title: 'Micro Matic is founded', text: 'Engineer Bror Kruuse founds Micro Matic.' },
+  { year: '1974', title: 'The families take over', text: 'Five senior employees, including Svend-Aage Nielsen and Carl Christian Nielsen, acquire the company.' },
+  { year: '1989', title: 'The first homes', text: 'The first rental homes are built in Højby – the start of Nielsen & Nielsen Ejendomme.' },
+  { year: '2024', title: 'A new chapter', text: 'Nielsen & Nielsen Gruppen and Nielsen & Nielsen Investments are founded.' },
+];
+---
+<Base
+  lang="en"
+  altHref="/"
+  title="Nielsen & Nielsen Investments – long-term family capital from Denmark"
+  description="Nielsen & Nielsen Investments manages the wealth of the families behind Micro Matic. Patient, family-owned capital with industrial DNA since 1974."
+>
+  <section class="hero">
+    <span class="drop drop--a hero__d1" data-parallax="0.5" aria-hidden="true"></span>
+    <span class="drop drop--b hero__d2" data-parallax="1" aria-hidden="true"></span>
+    <div class="wrap hero__inner">
+      <p class="eyebrow" data-reveal>Family-owned investment company · Odense, Denmark</p>
+      <Split as="h1" text="Long-term capital with industrial DNA." accent="DNA" class="hero__title" />
+      <p class="lead" data-reveal style="--d:4">Since 1974, the Nielsen and Nielsen families have built and developed businesses. Today we manage the families' wealth with the same patience.</p>
+      <div class="btn-row" data-reveal style="--d:5">
+        <a class="btn" href="#approach">Our approach <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="approach">
+    <div class="wrap principles">
+      <div>
+        <p class="eyebrow" data-reveal>Approach</p>
+        <Split text="How we work as owners" />
+        <Visual kind="investments" class="en-visual" />
+      </div>
+      <ol class="plist">
+        {principles.map((p, i) => (
+          <li data-reveal style={`--d:${i % 2}`}><span>0{i + 1}</span><div><h3>{p.title}</h3><p class="muted">{p.text}</p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--night"><div class="wrap"><Stats items={stats} /></div></section>
+
+  <section class="section" id="portfolio">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Portfolio</p>
+      <Split text="Businesses we have built and own" />
+      <div class="grid grid--2" style="margin-top:40px">
+        {portfolio.map((p, i) => (
+          <article class="card" data-reveal style={`--d:${i % 2}`}>
+            <div class="row"><span class="tag">{p.status}</span><span class="muted small">{p.sector}</span></div>
+            <h3>{p.name}</h3>
+            <p class="muted">{p.text}</p>
+            {p.url && <a class="link-arrow" href={p.url} target="_blank" rel="noopener">Visit website</a>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="history">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow" data-reveal>History</p>
+      <Split text="From draught beer to family capital" />
+      <div style="margin-top:48px"><Timeline items={timeline} /></div>
+    </div>
+  </section>
+
+  <section class="section section--night" id="contact">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Contact</p>
+      <Split text="Looking for a long-term owner?" class="light" />
+      <p data-reveal>We welcome enquiries from business owners, advisers and partners. All enquiries are treated confidentially.</p>
+      <address data-reveal>{company.legalName} · {company.street} · DK-{company.zip} {company.city}</address>
+      <div class="btn-row" data-reveal>
+        <a class="btn" href={`mailto:${company.email}`}><Icon name="mail" /> {company.email}</a>
+        <a class="btn btn--ghost" href={company.linkedin} target="_blank" rel="noopener"><Icon name="linkedin" /> LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; min-height: 92svh; display: flex; align-items: center; padding-top: var(--header-h); overflow: hidden; }
+  .hero__inner { position: relative; z-index: 1; }
+  :global(.hero__title) { max-width: 720px; }
+  .hero__d1, .hero__d2 { --s: clamp(160px, 22vw, 360px); width: var(--s); height: var(--s); }
+  .hero__d1 { right: calc(3vw + var(--s) * 0.5); top: 18%; }
+  .hero__d2 { right: calc(3vw - var(--s) * 0.5); top: calc(18% + var(--s)); }
+  @media (max-width: 900px) { .hero__d1, .hero__d2 { opacity: 0.12; } }
+  .principles { display: grid; gap: clamp(32px, 6vw, 96px); }
+  @media (min-width: 960px) { .principles { grid-template-columns: 5fr 7fr; } }
+  :global(.en-visual) { aspect-ratio: 4 / 3; margin-top: 2rem; }
+  .plist { list-style: none; margin: 0; padding: 0; }
+  .plist li { display: grid; grid-template-columns: auto 1fr; gap: 24px; padding-block: 28px; border-top: 1px solid var(--line); }
+  .plist span { color: var(--red); font-size: 1.6rem; font-weight: 300; }
+  .plist h3 { font-weight: 500; }
+  .plist p { margin: 0; }
+  .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+  .small { font-size: 0.85rem; }
+  .card h3 { font-weight: 500; }
+  .light { color: #fff; }
+  address { font-style: normal; color: rgba(255, 255, 255, 0.7); }
+</style>

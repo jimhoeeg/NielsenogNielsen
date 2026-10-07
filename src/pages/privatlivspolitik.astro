@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { company } from '../data/site';
+---
+<Base title="Privatlivspolitik" description="Sådan behandler Nielsen & Nielsen Investments dine personoplysninger.">
+  <PageHero title="Privatlivspolitik" crumbs={[{ label: 'Privatlivspolitik' }]} />
+  <section class="section section--sand">
+    <div class="wrap wrap--narrow prose">
+      <!-- TODO: Skal gennemgås og godkendes juridisk før lancering. -->
+      <p><strong>Dataansvarlig:</strong> {company.legalName}, {company.street}, {company.zip} {company.city}. E-mail: {company.email}.</p>
+      <h2>Hvilke oplysninger behandler vi?</h2>
+      <p>Når du kontakter os via formularer eller e-mail, behandler vi de oplysninger, du selv giver os, fx navn, e-mail, telefonnummer, virksomhed og indholdet af din henvendelse, herunder eventuelle vedhæftede filer.</p>
+      <h2>Formål og retsgrundlag</h2>
+      <p>Oplysningerne bruges alene til at besvare og behandle din henvendelse (GDPR art. 6, stk. 1, litra b og f) og, hvis du har tilmeldt dig, til at sende vores nyhedsbrev (art. 6, stk. 1, litra a).</p>
+      <h2>Opbevaring</h2>
+      <p>Vi sletter henvendelser, når de ikke længere er relevante, og senest 12 måneder efter sidste kontakt, medmindre der er indgået et samarbejde.</p>
+      <h2>Cookies og statistik</h2>
+      <p>Hjemmesiden bruger cookieløs, anonym besøgsstatistik. Vi sætter ikke marketing- eller tracking-cookies, og derfor viser vi ikke et cookie-banner.</p>
+      <h2>Dine rettigheder</h2>
+      <p>Du har ret til indsigt, berigtigelse, sletning, begrænsning, dataportabilitet og indsigelse. Du kan klage til Datatilsynet (datatilsynet.dk).</p>
+    </div>
+  </section>
+</Base>

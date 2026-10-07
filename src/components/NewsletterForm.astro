@@ -1,0 +1,24 @@
+---
+import { formEndpoints } from '../data/site';
+interface Props { lang?: 'da' | 'en' }
+const { lang = 'da' } = Astro.props;
+const en = lang === 'en';
+---
+<form class="nl" data-form action={formEndpoints.newsletter || undefined} method="post" novalidate>
+  <label class="sr-only" for={`nl-email-${lang}`}>{en ? 'Email' : 'E-mail'}</label>
+  <div class="nl__row">
+    <input id={`nl-email-${lang}`} type="email" name="email" required autocomplete="email" placeholder={en ? 'Your email' : 'Din e-mail'} />
+    <button class="btn" type="submit">{en ? 'Sign up' : 'Tilmeld'}</button>
+  </div>
+  <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .nl__row { display: flex; gap: 8px; border: 1px solid var(--line); border-radius: var(--pill); padding: 5px; background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+  .nl__row:focus-within { border-color: var(--red); box-shadow: 0 0 0 4px var(--red-soft); }
+  .nl input[type='email'] { flex: 1; min-width: 0; border: 0; background: transparent; padding: 0 14px; font: 300 1rem var(--font); color: var(--ink); }
+  .nl input:focus { outline: none; }
+  .nl .btn { padding: 12px 20px; }
+  .nl .form-status { font-size: 0.85rem; margin-top: 8px; }
+</style>
