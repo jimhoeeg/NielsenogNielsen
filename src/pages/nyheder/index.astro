@@ -1,4 +1,6 @@
 ---
+import { absUrl } from '../../lib/url';
+import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import NewsCard from '../../components/NewsCard.astro';
@@ -10,7 +12,7 @@ const site = Astro.site!;
 const itemList = {
   mainEntity: {
     '@type': 'ItemList',
-    itemListElement: sorted.map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(`/nyheder/${n.slug}/`, site).href, name: n.title })),
+    itemListElement: sorted.map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: absUrl(`/nyheder/${n.slug}/`, site), name: n.title })),
   },
 };
 ---
@@ -40,8 +42,8 @@ const itemList = {
       </div>
       <ul class="downloads">
         <!-- TODO: læg rigtige filer i /public/presse/ -->
-        <li data-reveal><a href="/favicon.svg" download="nielsen-nielsen-logo.svg"><Icon name="download" /> Logo (SVG)</a></li>
-        <li data-reveal style="--d:1"><a href="/kort-om/"><Icon name="download" /> Faktaark</a></li>
+        <li data-reveal><a href={url('/favicon.svg')} download="nielsen-nielsen-logo.svg"><Icon name="download" /> Logo (SVG)</a></li>
+        <li data-reveal style="--d:1"><a href={url('/kort-om/')}><Icon name="download" /> Faktaark</a></li>
         <li data-reveal style="--d:2"><span class="soon"><Icon name="download" /> Pressebilleder (kommer snart)</span></li>
       </ul>
     </div>

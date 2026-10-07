@@ -1,5 +1,6 @@
 ---
 import { company } from '../data/site';
+import { absUrl } from '../lib/url';
 
 export interface Crumb { href?: string; label: string }
 export type PageType = 'WebPage' | 'AboutPage' | 'CollectionPage' | 'ContactPage' | 'FAQPage';
@@ -29,7 +30,7 @@ const {
 } = Astro.props;
 
 const site = Astro.site!;
-const abs = (p: string) => new URL(p, site).href;
+const abs = (p: string) => absUrl(p, site);
 const canonical = abs(Astro.url.pathname);
 const ogImage = abs(image);
 
@@ -57,7 +58,7 @@ const graph: Record<string, unknown>[] = [
     name: company.name,
     legalName: company.legalName,
     alternateName: 'Nielsen og Nielsen Investments',
-    url: site.href,
+    url: abs('/'),
     logo: { '@type': 'ImageObject', url: abs('/logo.png'), width: 512, height: 512 },
     image: ogImage,
     description: 'Familieejet investeringsselskab i Odense, der forvalter formuen for familierne bag Micro Matic.',
@@ -82,7 +83,7 @@ const graph: Record<string, unknown>[] = [
   {
     '@type': 'WebSite',
     '@id': siteId,
-    url: site.href,
+    url: abs('/'),
     name: 'Nielsen & Nielsen',
     inLanguage: ['da-DK', 'en-GB'],
     publisher: { '@id': orgId },
@@ -119,7 +120,7 @@ const ld = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+<meta name="robots" content={noindex || import.meta.env.PUBLIC_NOINDEX === 'true' ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
 {altHref && (
   <>
     <link rel="alternate" hreflang={lang} href={canonical} />

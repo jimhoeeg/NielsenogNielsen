@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { nav } from '../data/site';
@@ -16,33 +17,33 @@ const navItems = lang === 'en'
   : nav;
 const home = lang === 'en' ? '/en/' : '/';
 const contactHref = lang === 'en' ? '/en/#contact' : '/kontakt/';
-const isActive = (href: string) => href !== '/' && path.startsWith(href) && !(href === '/investeringer/' && path.startsWith('/investeringer/portefolje'));
+const isActive = (href: string) => href !== '/' && path.startsWith(url(href)) && !(href === '/investeringer/' && path.startsWith(url('/investeringer/portefolje')));
 ---
 <div class="progress" aria-hidden="true"><span></span></div>
 <header class="site-header" data-header>
   <div class="site-header__inner">
-    <a href={home} class="site-header__logo" aria-label="Nielsen & Nielsen Investments – forside">
+    <a href={url(home)} class="site-header__logo" aria-label="Nielsen & Nielsen Investments – forside">
       <Logo />
     </a>
 
     <nav class="site-nav" id="site-nav" aria-label={lang === 'en' ? 'Main menu' : 'Hovedmenu'}>
       <ul>
         {navItems.map((item) => (
-          <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+          <li><a href={url(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
         ))}
       </ul>
       <div class="site-nav__mobile-extra">
-        <a class="btn" href={contactHref}><Icon name="mail" /> {lang === 'en' ? 'Contact us' : 'Kontakt os'}</a>
+        <a class="btn" href={url(contactHref)}><Icon name="mail" /> {lang === 'en' ? 'Contact us' : 'Kontakt os'}</a>
       </div>
     </nav>
 
     <div class="site-header__actions">
       {altHref && (
-        <a class="lang" href={altHref} hreflang={lang === 'da' ? 'en' : 'da'} lang={lang === 'da' ? 'en' : 'da'}>
+        <a class="lang" href={url(altHref)} hreflang={lang === 'da' ? 'en' : 'da'} lang={lang === 'da' ? 'en' : 'da'}>
           {lang === 'da' ? 'EN' : 'DA'}
         </a>
       )}
-      <a class="btn btn--header" href={contactHref}><Icon name="mail" /> {lang === 'en' ? 'Contact us' : 'Kontakt os'}</a>
+      <a class="btn btn--header" href={url(contactHref)}><Icon name="mail" /> {lang === 'en' ? 'Contact us' : 'Kontakt os'}</a>
       <button class="burger" aria-controls="site-nav" aria-expanded="false" data-burger>
         <span class="sr-only">{lang === 'en' ? 'Open menu' : 'Åbn menu'}</span>
         <span></span><span></span>

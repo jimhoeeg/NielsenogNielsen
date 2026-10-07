@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Split from '../../components/Split.astro';
 import Visual from '../../components/Visual.astro';
+import { url } from '../../lib/url';
 import CtaBand from '../../components/CtaBand.astro';
 
 // TODO: Strukturen er udledt af offentlige kilder og SKAL bekræftes af kunden før lancering.
@@ -18,6 +19,8 @@ const nodes = {
 };
 
 const crumbs = [{ href: '/om-os/', label: 'Om os' }, { label: 'Governance' }];
+// Base-bevidste links til brug i klient-scriptet
+for (const n of Object.values(nodes) as { href?: string }[]) if (n.href) n.href = url(n.href);
 
 // TODO: navne og fotos godkendes af kunden
 const people = [

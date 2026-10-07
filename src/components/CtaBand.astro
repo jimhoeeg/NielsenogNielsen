@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Icon from './Icon.astro';
 import Split from './Split.astro';
 interface Props { title?: string; text?: string; href?: string; label?: string }
@@ -16,7 +17,7 @@ const {
     <Split text={title} class="cta__title" />
     <p data-reveal style="--d:2">{text}</p>
     <div class="btn-row" data-reveal style="--d:3">
-      <a class="btn cta__btn" href={href}>{label} <Icon name="arrow" /></a>
+      <a class="btn cta__btn" href={url(href)}>{label} <Icon name="arrow" /></a>
     </div>
   </div>
 </section>

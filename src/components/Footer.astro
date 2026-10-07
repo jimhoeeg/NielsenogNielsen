@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import NewsletterForm from './NewsletterForm.astro';
@@ -31,7 +32,7 @@ const year = new Date().getFullYear();
       <nav data-reveal style="--d:2" aria-labelledby="f-group">
         <h2 class="footer__h" id="f-group">{en ? 'The group' : 'Gruppen'}</h2>
         <ul>
-          <li><a href={en ? '/en/#approach' : '/investeringer/'}>Nielsen &amp; Nielsen Investments</a></li>
+          <li><a href={url(en ? '/en/#approach' : '/investeringer/')}>Nielsen &amp; Nielsen Investments</a></li>
           <li><a href="https://nnejendomme.dk/" rel="noopener" target="_blank">Nielsen &amp; Nielsen Ejendomme<span class="sr-only"> (åbner i nyt vindue)</span> <Icon name="external" size={13} /></a></li>
           <li><a href="https://www.micro-matic.com/" rel="noopener" target="_blank">Micro Matic <Icon name="external" size={13} /></a></li>
         </ul>
@@ -41,18 +42,18 @@ const year = new Date().getFullYear();
         <h2 class="footer__h" id="f-links">{en ? 'Explore' : 'Genveje'}</h2>
         {en ? (
           <ul>
-            <li><a href="/en/#portfolio">Portfolio</a></li>
-            <li><a href="/en/#history">History</a></li>
-            <li><a href="/">Dansk version</a></li>
+            <li><a href={url('/en/#portfolio')}>Portfolio</a></li>
+            <li><a href={url('/en/#history')}>History</a></li>
+            <li><a href={url('/')}>Dansk version</a></li>
           </ul>
         ) : (
           <ul>
-            <li><a href="/om-os/historie/">Vores historie</a></li>
-            <li><a href="/om-os/governance/">Ejerskab &amp; ledelse</a></li>
-            <li><a href="/ansvarlighed/">Ansvarlighed</a></li>
-            <li><a href="/kort-om/">Fakta om os</a></li>
-            <li><a href="/nyheder/">Nyheder &amp; presse</a></li>
-            <li><a href="/kontakt/#praesenter">Præsentér din virksomhed</a></li>
+            <li><a href={url('/om-os/historie/')}>Vores historie</a></li>
+            <li><a href={url('/om-os/governance/')}>Ejerskab &amp; ledelse</a></li>
+            <li><a href={url('/ansvarlighed/')}>Ansvarlighed</a></li>
+            <li><a href={url('/kort-om/')}>Fakta om os</a></li>
+            <li><a href={url('/nyheder/')}>Nyheder &amp; presse</a></li>
+            <li><a href={url('/kontakt/#praesenter')}>Præsentér din virksomhed</a></li>
           </ul>
         )}
       </nav>
@@ -66,7 +67,7 @@ const year = new Date().getFullYear();
 
     <div class="footer__bottom">
       <span>© {year} {company.groupName} · CVR {company.groupCvr}</span>
-      <nav aria-label={en ? 'Legal' : 'Juridisk'}><a href="/privatlivspolitik/">{en ? 'Privacy policy' : 'Privatlivspolitik'}</a> · <a href="/tilgaengelighed/">{en ? 'Accessibility' : 'Tilgængelighed'}</a></nav>
+      <nav aria-label={en ? 'Legal' : 'Juridisk'}><a href={url('/privatlivspolitik/')}>{en ? 'Privacy policy' : 'Privatlivspolitik'}</a> · <a href={url('/tilgaengelighed/')}>{en ? 'Accessibility' : 'Tilgængelighed'}</a></nav>
     </div>
   </div>
 </footer>

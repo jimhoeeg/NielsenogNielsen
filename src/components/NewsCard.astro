@@ -1,10 +1,11 @@
 ---
+import { url } from '../lib/url';
 import { formatDate, type NewsItem } from '../data/site';
 interface Props { item: NewsItem; d?: number }
 const { item, d = 0 } = Astro.props;
 ---
 <article class="news-item" data-reveal style={`--d:${d}`}>
-<a class="card news-card" href={`/nyheder/${item.slug}/`}>
+<a class="card news-card" href={url(`/nyheder/${item.slug}/`)}>
   <div class="news-card__meta">
     <span class="tag">{item.tag}</span>
     <time datetime={item.date}>{formatDate(item.date)}</time>

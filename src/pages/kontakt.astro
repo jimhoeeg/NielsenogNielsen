@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
@@ -55,7 +56,7 @@ const crumbs = [{ label: 'Kontakt' }];
             </div>
           </div>
           <div class="field"><label for="c-msg">Besked *</label><textarea id="c-msg" name="message" required></textarea></div>
-          <label class="check"><input type="checkbox" name="consent" required /> <span>Jeg accepterer, at mine oplysninger behandles i henhold til <a href="/privatlivspolitik/">privatlivspolitikken</a>. *</span></label>
+          <label class="check"><input type="checkbox" name="consent" required /> <span>Jeg accepterer, at mine oplysninger behandles i henhold til <a href={url('/privatlivspolitik/')}>privatlivspolitikken</a>. *</span></label>
           <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div><button class="btn" type="submit">Send besked <Icon name="arrow" /></button></div>
           <p class="form-status" role="status" aria-live="polite"></p>
@@ -103,7 +104,7 @@ const crumbs = [{ label: 'Kontakt' }];
             <input id="d-file" name="attachment" type="file" accept=".pdf,.ppt,.pptx" />
             <small>PDF eller PowerPoint, maks. 20 MB.</small>
           </div>
-          <label class="check"><input type="checkbox" name="consent" required /> <span>Jeg accepterer, at oplysningerne behandles fortroligt og i henhold til <a href="/privatlivspolitik/">privatlivspolitikken</a>. *</span></label>
+          <label class="check"><input type="checkbox" name="consent" required /> <span>Jeg accepterer, at oplysningerne behandles fortroligt og i henhold til <a href={url('/privatlivspolitik/')}>privatlivspolitikken</a>. *</span></label>
           <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div><button class="btn" type="submit">Send fortroligt <Icon name="arrow" /></button></div>
           <p class="form-status" role="status" aria-live="polite"></p>

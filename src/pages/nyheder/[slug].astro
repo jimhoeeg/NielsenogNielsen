@@ -1,4 +1,5 @@
 ---
+import { absUrl } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import NewsCard from '../../components/NewsCard.astro';
@@ -13,17 +14,17 @@ const crumbs = [{ href: '/nyheder/', label: 'Nyheder' }, { label: item.title }];
 const site = Astro.site!;
 const articleLd = {
   '@type': 'NewsArticle',
-  '@id': `${new URL(Astro.url.pathname, site).href}#article`,
+  '@id': `${absUrl(Astro.url.pathname, site)}#article`,
   headline: item.title,
   description: item.excerpt,
   datePublished: item.date,
   dateModified: item.date,
   articleSection: item.tag,
   inLanguage: 'da-DK',
-  mainEntityOfPage: { '@id': `${new URL(Astro.url.pathname, site).href}#webpage` },
-  image: [new URL('/og-image.png', site).href],
-  author: { '@type': 'Organization', name: company.name, url: site.href },
-  publisher: { '@id': new URL('/#organization', site).href },
+  mainEntityOfPage: { '@id': `${absUrl(Astro.url.pathname, site)}#webpage` },
+  image: [absUrl('/og-image.png', site)],
+  author: { '@type': 'Organization', name: company.name, url: absUrl('/', site) },
+  publisher: { '@id': absUrl('/#organization', site) },
 };
 ---
 <Base title={item.title} description={item.excerpt} type="article" published={item.date} crumbs={crumbs} jsonLd={[articleLd]}>
@@ -37,7 +38,7 @@ const articleLd = {
     <div class="wrap wrap--narrow prose">
       {item.body.map((p, i) => <p data-reveal style={`--d:${i}`}>{p}</p>)}
       <p class="share" data-reveal>
-        Del: <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(new URL(Astro.url.pathname, site).href)}`} target="_blank" rel="noopener">LinkedIn</a>
+        Del: <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(absUrl(Astro.url.pathname, site))}`} target="_blank" rel="noopener">LinkedIn</a>
       </p>
     </div>
   </article>

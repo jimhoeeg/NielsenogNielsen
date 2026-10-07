@@ -1,0 +1,50 @@
+name: Deploy til GitHub Pages
+
+on:
+  push:
+    branches: [main, claude/funny-noether-ynnqyg]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - id: pages
+        uses: actions/configure-pages@v5
+      - run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          # Origin (https://<bruger>.github.io) og undermappe (/<repo>) leveres af configure-pages,
+          # så det også virker, hvis repoet omdøbes eller får eget domæne.
+          SITE: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          # Demo: hold github.io-versionen ude af Google. Fjern, når sitet kører på det rigtige domæne.
+          PUBLIC_NOINDEX: 'true'
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

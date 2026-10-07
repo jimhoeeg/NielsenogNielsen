@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Split from '../../components/Split.astro';
@@ -39,7 +40,7 @@ const values = [
         <p data-reveal>I 1974 købte fem ledende medarbejdere Micro Matic af grundlæggeren, ingeniør Bror Kruuse. Blandt dem var Svend-Aage Nielsen og Carl Christian (C.C.) Nielsen. Det blev begyndelsen på et kompagniskab, der har varet i over 50 år.</p>
         <p data-reveal>Under deres ledelse voksede Micro Matic til en af verdens førende inden for dispensering af fadøl og drikkevarer. Undervejs har familierne også ejet og udviklet Triax, Nassau Door og Senmatic, og siden 1989 har de bygget boliger på Fyn.</p>
         <p data-reveal>I 2024 samlede familierne en del af formuen i Nielsen &amp; Nielsen Gruppen og Nielsen &amp; Nielsen Investments for at sikre et professionelt og langsigtet fundament for de kommende generationer.</p>
-        <a class="link-arrow" href="/om-os/historie/" data-reveal>Se hele tidslinjen</a>
+        <a class="link-arrow" href={url('/om-os/historie/')} data-reveal>Se hele tidslinjen</a>
       </div>
     </div>
   </section>
@@ -67,13 +68,13 @@ const values = [
   <section class="section section--sand">
     <div class="wrap grid grid--2">
       <h2 class="sr-only">Læs mere om os</h2>
-      <a class="card link-card" href="/om-os/governance/" data-reveal>
+      <a class="card link-card" href={url('/om-os/governance/')} data-reveal>
         <p class="eyebrow">Ejerskab &amp; ledelse</p>
         <h3>Sådan er gruppen organiseret</h3>
         <p class="muted">Se ejerstrukturen, bestyrelse og ledelse.</p>
         <span class="link-arrow">Gå til governance</span>
       </a>
-      <a class="card link-card" href="/ansvarlighed/" data-reveal style="--d:1">
+      <a class="card link-card" href={url('/ansvarlighed/')} data-reveal style="--d:1">
         <p class="eyebrow">Ansvarlighed</p>
         <h3>Ejerskab med ansvar</h3>
         <p class="muted">Vores tilgang til bæredygtighed, aktivt ejerskab og lokalt engagement.</p>
@@ -82,7 +83,7 @@ const values = [
     </div>
   </section>
 
-  <CtaBand title="Vil du vide mere om os?" text="Vi fortæller gerne mere om, hvem vi er, og hvordan vi arbejder." href="/kontakt/" label="Kontakt os" />
+  <CtaBand title="Vil du vide mere om os?" text="Vi fortæller gerne mere om, hvem vi er, og hvordan vi arbejder." href={url('/kontakt/')} label="Kontakt os" />
 </Base>
 
 <style>

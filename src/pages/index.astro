@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import Split from '../components/Split.astro';
 import Icon from '../components/Icon.astro';
@@ -32,8 +33,8 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
         Siden 1974 har familierne Nielsen og Nielsen bygget og udviklet virksomheder. I dag forvalter vi familiernes formue med samme tålmodighed.
       </p>
       <div class="btn-row" data-reveal style="--d:5">
-        <a class="btn" href="/investeringer/">Vores tilgang <Icon name="arrow" /></a>
-        <a class="btn btn--ghost" href="/kontakt/#praesenter">Præsentér din virksomhed</a>
+        <a class="btn" href={url('/investeringer/')}>Vores tilgang <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href={url('/kontakt/#praesenter')}>Præsentér din virksomhed</a>
       </div>
     </div>
     <a class="hero__scroll" href="#intro" aria-label="Scroll ned"><span></span></a>
@@ -47,7 +48,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
         <p class="intro__statement" data-reveal="blur">
           Vi er to familier og tre generationer med rødder i <span class="accent">Micro Matic</span>. Vi investerer med samme værdier, som byggede virksomheden: tålmodighed, ordentlighed og respekt for de mennesker, der skaber værdien.
         </p>
-        <a class="link-arrow" href="/om-os/" data-reveal style="--d:2">Læs vores historie</a>
+        <a class="link-arrow" href={url('/om-os/')} data-reveal style="--d:2">Læs vores historie</a>
       </div>
     </div>
   </section>
@@ -60,7 +61,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
       <div class="grid grid--3 pillars">
         {pillars.map((p, i) => (
           <article class="pillar-item" data-reveal style={`--d:${i}`}>
-            <a class="card pillar" href={p.href}>
+            <a class="card pillar" href={url(p.href)}>
               <Visual kind={p.key as 'investments' | 'ejendomme' | 'micromatic'} class="pillar__visual" />
               <h3>{p.title}</h3>
               <p class="muted">{p.text}</p>
@@ -87,7 +88,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
         <p class="eyebrow" data-reveal>Investeringsfilosofi</p>
         <Split text="Sådan arbejder vi som ejer" />
         <p class="muted" data-reveal style="--d:2">Fire principper, der går igen i alt, hvad vi gør, fra børsnoterede aktier til boligudlejning på Fyn.</p>
-        <a class="btn btn--ghost" href="/investeringer/" data-reveal style="--d:3">Læs mere</a>
+        <a class="btn btn--ghost" href={url('/investeringer/')} data-reveal style="--d:3">Læs mere</a>
       </div>
       <ol class="principles__list">
         {principles.map((p, i) => (
@@ -111,7 +112,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
           <p class="eyebrow" data-reveal>Portefølje</p>
           <Split text="Udvalgte investeringer" />
         </div>
-        <a class="link-arrow" href="/investeringer/portefolje/" data-reveal>Se hele porteføljen</a>
+        <a class="link-arrow" href={url('/investeringer/portefolje/')} data-reveal>Se hele porteføljen</a>
       </div>
       <div class="grid grid--3">
         {featured.map((item, i) => <PortfolioCard item={item} d={i} />)}
@@ -126,7 +127,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
       <Split text="Fra fadøl til familieformue" />
       <p class="lead" data-reveal style="--d:2">Over 70 års historie, fra ingeniørens værksted i 1953 til tredje generation i ejerkredsen.</p>
       <div class="tl-wrap"><Timeline items={tlShort} /></div>
-      <div class="center" data-reveal><a class="btn btn--ghost" href="/om-os/historie/">Se hele tidslinjen <Icon name="arrow" /></a></div>
+      <div class="center" data-reveal><a class="btn btn--ghost" href={url('/om-os/historie/')}>Se hele tidslinjen <Icon name="arrow" /></a></div>
     </div>
   </section>
 
@@ -138,7 +139,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
           <p class="eyebrow" data-reveal>Nyheder</p>
           <Split text="Seneste nyt" />
         </div>
-        <a class="link-arrow" href="/nyheder/" data-reveal>Alle nyheder</a>
+        <a class="link-arrow" href={url('/nyheder/')} data-reveal>Alle nyheder</a>
       </div>
       <div class="grid grid--3">
         {latest.map((n, i) => <NewsCard item={n} d={i} />)}

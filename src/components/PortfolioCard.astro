@@ -1,11 +1,12 @@
 ---
+import { url } from '../lib/url';
 import type { Investment } from '../data/site';
 interface Props { item: Investment; d?: number }
 const { item, d = 0 } = Astro.props;
 const initials = item.name.split(/\s+/).filter((w) => /^[A-ZÆØÅ]/.test(w)).slice(0, 2).map((w) => w[0]).join('');
 ---
 <article class="pf-item" data-reveal style={`--d:${d}`} data-sector={item.sector} data-status={item.status}>
-<a class="card pf" href={`/investeringer/${item.slug}/`}>
+<a class="card pf" href={url(`/investeringer/${item.slug}/`)}>
   <div class="pf__top">
     <span class="pf__mono" aria-hidden="true">{initials}</span>
     <span class:list={['tag', { 'tag--neutral': item.status === 'Realiseret' }]}>{item.status}</span>
