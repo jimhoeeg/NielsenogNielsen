@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import { company, formEndpoints } from '../data/site';
+import { questions } from '../data/match';
 const mapQuery = encodeURIComponent(`${company.street}, ${company.zip} ${company.city}`);
 const crumbs = [{ label: 'Kontakt' }];
 ---
@@ -77,9 +78,12 @@ const crumbs = [{ label: 'Kontakt' }];
           <li>Svar inden for 10 arbejdsdage</li>
           <li>Ingen forpligtelser</li>
         </ul>
+        <p class="mq-link" data-reveal>Usikker på, om I passer til os? <a href={url('/match/')}>Tag match-testen på 1 minut</a></p>
       </div>
       <div class="card dark-card" data-reveal="right">
-        <form class="form" data-form action={formEndpoints.dealflow || undefined} method="post" enctype="multipart/form-data" novalidate data-success="Tak for din henvendelse. Vi har modtaget den og vender tilbage inden for 10 arbejdsdage.">
+        <form class="form" data-form action={formEndpoints.dealflow || undefined} method="post" enctype="multipart/form-data" novalidate data-success="Tak for din henvendelse. Vi har modtaget den og vender tilbage inden for 10 arbejdsdage." data-dealflow>
+          <p class="prefill-note" role="status" data-prefill-note hidden>Vi har udfyldt formularen med dine svar fra match-testen. Tjek dem, og tilføj gerne lidt mere.</p>
+          <input type="hidden" name="match_score" data-match-score />
           <div class="form-row">
             <div class="field"><label for="d-name">Navn *</label><input id="d-name" name="name" required autocomplete="name" /></div>
             <div class="field"><label for="d-email">E-mail *</label><input id="d-email" name="email" type="email" required autocomplete="email" /></div>
@@ -135,4 +139,36 @@ const crumbs = [{ label: 'Kontakt' }];
   .dark-card .form-status[data-state='ok'] { color: #7ee2a8; }
   .dark-card .form-status[data-state='error'] { color: #ff9b8c; }
   .section--night h2 { color: #fff; }
+  .mq-link { margin-top: 1.6rem; }
+  .mq-link a { color: #fff; text-underline-offset: 3px; }
+  .mq-link a:hover { color: #ff8a78; }
+  .prefill-note { margin: 0; padding: 14px 16px; border-radius: 12px; background: rgba(223, 51, 30, 0.18); border: 1px solid rgba(223, 51, 30, 0.5); color: #fff !important; font-size: 0.95rem; }
 </style>
+
+<script type="application/json" id="match-questions" set:html={JSON.stringify(questions)} />
+<script>
+  // Forudfyld deal flow-formularen med svar fra match-testen (?fra=match&branche=...).
+  type Q = { id: string; short: string; options: { value: string; label: string; prefill?: string }[] };
+  const params = new URLSearchParams(location.search);
+  const form = document.querySelector<HTMLFormElement>('[data-dealflow]');
+  if (form && params.get('fra') === 'match') {
+    const questions = JSON.parse(document.getElementById('match-questions')!.textContent!) as Q[];
+    const pick = (id: string) => questions.find((q) => q.id === id)?.options.find((o) => o.value === params.get(id));
+    const setSelect = (sel: string, value?: string) => {
+      const el = form.querySelector<HTMLSelectElement>(sel);
+      if (el && value && [...el.options].some((o) => o.value === value)) el.value = value;
+    };
+    setSelect('#d-role', pick('rolle')?.prefill);
+    setSelect('#d-rev', pick('omsaetning')?.prefill);
+    const lines = questions
+      .filter((q) => !['rolle', 'omsaetning'].includes(q.id))
+      .map((q) => [q.short, pick(q.id)?.label] as const)
+      .filter(([, v]) => v)
+      .map(([k, v]) => `• ${k}: ${v}`);
+    const msg = form.querySelector<HTMLTextAreaElement>('#d-msg');
+    if (msg && lines.length && !msg.value) msg.value = `Fra match-testen:\n${lines.join('\n')}\n\nKort om virksomheden:\n`;
+    const score = params.get('score');
+    if (score) form.querySelector<HTMLInputElement>('[data-match-score]')!.value = score;
+    form.querySelector<HTMLElement>('[data-prefill-note]')!.hidden = false;
+  }
+</script>

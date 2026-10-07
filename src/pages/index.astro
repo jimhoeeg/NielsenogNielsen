@@ -9,6 +9,7 @@ import Timeline from '../components/Timeline.astro';
 import NewsCard from '../components/NewsCard.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
 import CtaBand from '../components/CtaBand.astro';
+import MatchTeaser from '../components/MatchTeaser.astro';
 import { pillars, principles, stats, timeline, investments, news } from '../data/site';
 
 const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
@@ -104,8 +105,10 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
     </div>
   </section>
 
+  <MatchTeaser />
+
   <!-- PORTEFØLJE -->
-  <section class="section section--sand">
+  <section class="section">
     <div class="wrap">
       <div class="head-row">
         <div>
@@ -121,7 +124,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
   </section>
 
   <!-- HISTORIE -->
-  <section class="section">
+  <section class="section section--sand">
     <div class="wrap wrap--narrow">
       <p class="eyebrow" data-reveal>Historie</p>
       <Split text="Fra fadøl til familieformue" />
@@ -132,7 +135,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
   </section>
 
   <!-- NYHEDER -->
-  <section class="section section--sand">
+  <section class="section">
     <div class="wrap">
       <div class="head-row">
         <div>

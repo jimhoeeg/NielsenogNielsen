@@ -13,5 +13,6 @@
 - [Portefølje](https://nielsen-nielsen.dk/investeringer/portefolje/)
 - [Historie](https://nielsen-nielsen.dk/om-os/historie/)
 - [Ejerskab og governance](https://nielsen-nielsen.dk/om-os/governance/)
+- [Match-test](https://nielsen-nielsen.dk/match/): seks spørgsmål om, hvorvidt en virksomhed passer til Nielsen & Nielsen som ejer
 - [Kontakt og deal flow](https://nielsen-nielsen.dk/kontakt/)
 - [English](https://nielsen-nielsen.dk/en/)

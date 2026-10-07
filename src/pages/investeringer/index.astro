@@ -5,6 +5,7 @@ import PageHero from '../../components/PageHero.astro';
 import Split from '../../components/Split.astro';
 import Visual from '../../components/Visual.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
 import { principles } from '../../data/site';
 
 // TODO: Kriterier og aktivklasser skal godkendes af Nielsen & Nielsen.
@@ -83,6 +84,7 @@ const process = [
         <p class="eyebrow" data-reveal>Hvad vi kigger efter</p>
         <Split text="Investeringskriterier" class="light" />
         <p data-reveal style="--d:2">Passer jeres virksomhed ikke helt ind i boksene? Tag alligevel fat i os. Gode partnerskaber starter ofte med en samtale.</p>
+        <div class="btn-row" data-reveal style="--d:3"><a class="btn" href={url('/match/')}>Tag match-testen <Icon name="arrow" /></a></div>
       </div>
       <ul class="criteria">
         {criteria.map((c, i) => <li data-reveal style={`--d:${i}`}>{c}</li>)}

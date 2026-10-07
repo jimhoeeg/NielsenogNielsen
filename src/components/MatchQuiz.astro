@@ -1,0 +1,301 @@
+---
+import Icon from './Icon.astro';
+import { url } from '../lib/url';
+import { questions, tiers, maxScore, nextSteps } from '../data/match';
+
+const contact = url('/kontakt/');
+const data = { questions, tiers, maxScore };
+const total = questions.length;
+---
+<div class="mq" data-mq data-contact={contact}>
+  <script type="application/json" data-mq-data set:html={JSON.stringify(data)} />
+
+  <div class="mq__head" data-mq-head>
+    <p class="mq__count" aria-live="polite"><span data-mq-count>Spørgsmål 1 af {total}</span></p>
+    <div class="mq__bar" aria-hidden="true"><span data-mq-bar style={`--p:${1 / total}`}></span></div>
+  </div>
+
+  <!-- Uden JavaScript sendes svarene som GET-parametre til kontaktsiden, som forudfylder formularen. -->
+  <form class="mq__form" action={`${contact}#praesenter`} method="get" data-mq-form>
+    <input type="hidden" name="fra" value="match" />
+    {questions.map((q, i) => (
+      <fieldset class:list={['mq__step', { 'is-active': i === 0 }]} data-step={i}>
+        <legend class="mq__q" tabindex="-1">
+          <span class="mq__qno" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <span>{q.title}</span>
+        </legend>
+        <div class="mq__opts">
+          {q.options.map((o) => (
+            <label class="mq__opt">
+              <input type="radio" name={q.id} value={o.value} required />
+              <span class="mq__opt-text">
+                <span class="mq__opt-label">{o.label}</span>
+                {o.hint && <span class="mq__opt-hint">{o.hint}</span>}
+              </span>
+              <span class="mq__tick" aria-hidden="true"></span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+    <div class="mq__nav">
+      <button type="button" class="btn btn--ghost mq__back" data-mq-back hidden>Tilbage</button>
+      <button type="submit" class="btn mq__next" data-mq-next>
+        <span data-mq-next-label>Næste</span> <Icon name="arrow" />
+      </button>
+    </div>
+  </form>
+
+  <section class="mq__result" data-mq-result hidden tabindex="-1" aria-labelledby="mq-result-title">
+    <div class="mq__result-top">
+      <div class="mq__ring" role="img" data-mq-ring-label aria-label="Match">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="54" class="mq__ring-bg" />
+          <circle cx="60" cy="60" r="54" class="mq__ring-fg" data-mq-ring />
+        </svg>
+        <span class="mq__ring-val"><span data-mq-score>0</span><small>%</small></span>
+      </div>
+      <div>
+        <p class="eyebrow">Dit resultat</p>
+        <h2 id="mq-result-title" data-mq-title></h2>
+        <p class="lead" data-mq-text></p>
+      </div>
+    </div>
+
+    <div class="mq__lists">
+      <div data-mq-plus-wrap>
+        <h3>Det taler for et match</h3>
+        <ul class="mq__list mq__list--plus" data-mq-plus></ul>
+      </div>
+      <div data-mq-note-wrap>
+        <h3>Godt at vide</h3>
+        <ul class="mq__list mq__list--note" data-mq-note></ul>
+      </div>
+    </div>
+
+    <h3 class="mq__steps-h">Sådan kommer du videre</h3>
+    <ol class="mq__steps">
+      {nextSteps.map((s, i) => (
+        <li><span class="mq__step-no">{i + 1}</span><div><strong>{s.title}</strong><p class="muted">{s.text}</p></div></li>
+      ))}
+    </ol>
+
+    <div class="btn-row">
+      <a class="btn" href={`${contact}#praesenter`} data-mq-cta>Fortsæt til fortrolig henvendelse <Icon name="arrow" /></a>
+      <button type="button" class="btn btn--ghost" data-mq-restart>Tag testen igen</button>
+    </div>
+    <p class="mq__privacy muted">Testen er vejledende. Dine svar gemmes ikke og sendes først, når du selv vælger at kontakte os.</p>
+  </section>
+</div>
+
+<style>
+  .mq { scroll-margin-top: calc(var(--header-h) + 24px); position: relative; background: #fff; border: 1px solid var(--line); border-radius: calc(var(--radius) + 6px); padding: clamp(24px, 4vw, 56px); box-shadow: 0 40px 80px -50px rgba(21, 24, 37, 0.35); max-width: 860px; margin-inline: auto; }
+
+  .mq__head { display: none; margin-bottom: clamp(24px, 3vw, 40px); }
+  .mq.is-enhanced .mq__head { display: block; }
+  .mq__count { margin: 0 0 10px; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .mq__bar { height: 4px; border-radius: 4px; background: var(--sand); overflow: hidden; }
+  .mq__bar span { display: block; height: 100%; background: var(--red); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); transition: transform 0.6s var(--ease); }
+
+  .mq__step { border: 0; padding: 0; margin: 0 0 40px; min-width: 0; }
+  .mq.is-enhanced .mq__step { margin: 0; }
+  .mq.is-enhanced .mq__step:not(.is-active) { display: none; }
+  .mq__q { display: flex; gap: 16px; align-items: baseline; padding: 0; margin-bottom: 24px; font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem); line-height: 1.2; font-weight: 400; letter-spacing: -0.01em; outline: none; }
+  .mq__qno { color: var(--red); font-size: 0.6em; font-weight: 500; letter-spacing: 0.08em; }
+
+  .mq__opts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+  .mq__opt { position: relative; display: flex; align-items: center; gap: 14px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; cursor: pointer; background: #fff; transition: border-color 0.2s, background 0.2s, transform 0.35s var(--ease), box-shadow 0.35s var(--ease); }
+  .mq__opt:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 14px 28px -20px rgba(21, 24, 37, 0.4); }
+  .mq__opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .mq__opt-text { display: grid; gap: 2px; flex: 1; }
+  .mq__opt-label { font-weight: 400; }
+  .mq__opt-hint { font-size: 0.85rem; color: var(--muted); }
+  .mq__tick { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line); transition: all 0.3s var(--ease); }
+  .mq__opt:has(input:checked) { border-color: var(--red); background: var(--red-soft); }
+  .mq__opt:has(input:checked) .mq__tick { border-color: var(--red); background: var(--red); border-radius: 50% 50% 0 50%; box-shadow: inset 0 0 0 4px var(--red-soft); }
+  .mq__opt:has(input:focus-visible) { outline: 3px solid var(--red); outline-offset: 3px; }
+
+  .mq__nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 32px; }
+  .mq__next { margin-left: auto; }
+  .mq__next[aria-disabled='true'] { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* Resultat */
+  .mq__result[hidden] { display: none; }
+  .mq__result { outline: none; }
+  .mq__result-top { display: grid; gap: clamp(24px, 4vw, 48px); align-items: center; margin-bottom: 40px; }
+  @media (min-width: 720px) { .mq__result-top { grid-template-columns: auto 1fr; } }
+  .mq__result h2 { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.5rem); }
+  .mq__result .lead { margin: 0; }
+  .mq__ring { position: relative; width: clamp(150px, 22vw, 190px); aspect-ratio: 1; }
+  .mq__ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .mq__ring circle { fill: none; stroke-width: 9; }
+  .mq__ring-bg { stroke: var(--sand); }
+  .mq__ring-fg { stroke: var(--red); stroke-linecap: round; stroke-dasharray: 339.3; stroke-dashoffset: 339.3; transition: stroke-dashoffset 1.6s var(--ease) 0.2s; }
+  .mq__ring-val { position: absolute; inset: 0; display: grid; place-content: center; grid-auto-flow: column; align-items: baseline; font-size: clamp(2.4rem, 2rem + 1.5vw, 3.2rem); font-weight: 300; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .mq__ring-val small { font-size: 0.45em; margin-left: 2px; }
+
+  .mq__lists { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); padding-block: 32px; border-block: 1px solid var(--line); }
+  .mq__lists h3, .mq__steps-h { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; }
+  .mq__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  /* li-elementerne oprettes af JS og har ikke Astros scope-attribut – derfor :global */
+  .mq__list :global(li) { position: relative; padding-left: 30px; color: var(--ink-2); }
+  .mq__list :global(li)::before { content: ''; position: absolute; left: 0; top: 7px; width: 14px; height: 14px; border-radius: 50% 50% 0 50%; background: var(--red); }
+  .mq__list--note :global(li)::before { background: transparent; border: 1.5px solid var(--muted); border-radius: 50%; }
+  .mq__list :global(li) { opacity: 0; transform: translateY(10px); animation: mqIn 0.6s var(--ease) forwards; animation-delay: calc(var(--i) * 90ms + 500ms); }
+  @keyframes mqIn { to { opacity: 1; transform: none; } }
+
+  .mq__steps-h { margin-top: 32px; }
+  .mq__steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+  .mq__steps li { display: flex; gap: 14px; }
+  .mq__step-no { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 500; font-size: 0.9rem; }
+  .mq__steps p { margin: 2px 0 0; font-size: 0.95rem; }
+  .mq__privacy { font-size: 0.85rem; margin: 20px 0 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mq__list :global(li) { opacity: 1; transform: none; animation: none; }
+    .mq__ring-fg, .mq__bar span { transition: none; }
+  }
+</style>
+
+<script>
+  type Option = { value: string; label: string; points: number; plus?: string; note?: string; prefill?: string };
+  type Question = { id: string; title: string; short: string; options: Option[] };
+  type Tier = { min: number; key: string; title: string; text: string };
+
+  document.querySelectorAll<HTMLElement>('[data-mq]').forEach((root) => {
+    const { questions, tiers, maxScore } = JSON.parse(root.querySelector('[data-mq-data]')!.textContent!) as {
+      questions: Question[]; tiers: Tier[]; maxScore: number;
+    };
+    const $ = <T extends Element = HTMLElement>(s: string) => root.querySelector<T>(s)!;
+    const form = $<HTMLFormElement>('[data-mq-form]');
+    const steps = [...root.querySelectorAll<HTMLFieldSetElement>('.mq__step')];
+    const head = $('[data-mq-head]');
+    const count = $('[data-mq-count]');
+    const bar = $('[data-mq-bar]');
+    const back = $<HTMLButtonElement>('[data-mq-back]');
+    const next = $<HTMLButtonElement>('[data-mq-next]');
+    const nextLabel = $('[data-mq-next-label]');
+    const result = $('[data-mq-result]');
+    const contact = root.dataset.contact!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    let pointer = false;
+
+    root.classList.add('is-enhanced');
+    // Quizzen validerer selv ét trin ad gangen. Browserens validering ville ellers blokere,
+    // fordi senere (skjulte) trin har required-felter. Uden JS bruges required som fallback.
+    form.noValidate = true;
+
+    const answer = (i: number) => form.querySelector<HTMLInputElement>(`input[name="${questions[i].id}"]:checked`);
+
+    const render = () => {
+      steps.forEach((s, i) => s.classList.toggle('is-active', i === current));
+      count.textContent = `Spørgsmål ${current + 1} af ${steps.length}`;
+      bar.style.setProperty('--p', String((current + 1) / steps.length));
+      back.hidden = current === 0;
+      nextLabel.textContent = current === steps.length - 1 ? 'Se resultat' : 'Næste';
+      next.setAttribute('aria-disabled', String(!answer(current)));
+    };
+
+    const go = (to: number, dir: 1 | -1) => {
+      current = to;
+      render();
+      const el = steps[current];
+      if (!reduce) {
+        el.animate([{ opacity: 0, transform: `translateX(${dir * 40}px)` }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.22,1,.36,1)' });
+      }
+      el.querySelector<HTMLElement>('legend')!.focus({ preventScroll: true });
+    };
+
+    const showResult = () => {
+      let score = 0;
+      const plus: string[] = [];
+      const notes: string[] = [];
+      const params = new URLSearchParams({ fra: 'match' });
+      questions.forEach((q, i) => {
+        const opt = q.options.find((o) => o.value === answer(i)!.value)!;
+        score += opt.points;
+        if (opt.plus) plus.push(opt.plus);
+        if (opt.note) notes.push(opt.note);
+        params.set(q.id, opt.value);
+      });
+      const pct = Math.round((score / maxScore) * 100);
+      params.set('score', String(pct));
+      const tier = tiers.find((t) => pct >= t.min)!;
+
+      $('[data-mq-title]').textContent = tier.title;
+      $('[data-mq-text]').textContent = tier.text;
+      const fill = (sel: string, wrap: string, items: string[]) => {
+        $(wrap).hidden = items.length === 0;
+        $(sel).replaceChildren(...items.slice(0, 4).map((t, i) => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          li.style.setProperty('--i', String(i));
+          return li;
+        }));
+      };
+      fill('[data-mq-plus]', '[data-mq-plus-wrap]', plus);
+      fill('[data-mq-note]', '[data-mq-note-wrap]', notes);
+      $<HTMLAnchorElement>('[data-mq-cta]').href = `${contact}?${params}#praesenter`;
+      $('[data-mq-ring-label]').setAttribute('aria-label', `Match: ${pct} procent`);
+
+      form.hidden = true;
+      head.hidden = true;
+      result.hidden = false;
+      result.focus({ preventScroll: true });
+      root.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+
+      // Animér ring og tal
+      const ring = $<SVGCircleElement>('[data-mq-ring]');
+      const scoreEl = $('[data-mq-score]');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        ring.style.strokeDashoffset = String(339.3 * (1 - pct / 100));
+      }));
+      if (reduce) { scoreEl.textContent = String(pct); return; }
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0 - 200) / 1600);
+        scoreEl.textContent = String(Math.round(pct * (1 - Math.pow(1 - Math.max(0, p), 4))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    // Musen/touch: gå automatisk videre ved valg. Tastatur: brug "Næste" (piletaster skifter valg).
+    form.addEventListener('pointerdown', () => { pointer = true; });
+    form.addEventListener('keydown', (e) => {
+      pointer = false;
+      // Enter på en valgt svarmulighed går videre (browsere sender ikke formularen fra radioknapper)
+      const t = e.target as HTMLInputElement;
+      if (e.key === 'Enter' && t.type === 'radio') {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    });
+    form.addEventListener('change', () => {
+      render();
+      if (pointer && current < steps.length - 1) setTimeout(() => go(current + 1, 1), 380);
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!answer(current)) {
+        steps[current].querySelector<HTMLInputElement>('input')!.focus();
+        return;
+      }
+      if (current < steps.length - 1) go(current + 1, 1);
+      else showResult();
+    });
+    back.addEventListener('click', () => current > 0 && go(current - 1, -1));
+    $('[data-mq-restart]').addEventListener('click', () => {
+      form.reset();
+      result.hidden = true;
+      form.hidden = false;
+      head.hidden = false;
+      $<SVGCircleElement>('[data-mq-ring]').style.strokeDashoffset = '';
+      go(0, -1);
+    });
+
+    render();
+  });
+</script>

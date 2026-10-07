@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import Split from './Split.astro';
+import { url } from '../lib/url';
+// Indgang til match-testen fra forside og investeringsside.
+---
+<section class="section teaser" aria-labelledby="teaser-h">
+  <div class="wrap teaser__inner">
+    <div>
+      <p class="eyebrow" data-reveal>Match-test · 1 minut</p>
+      <Split text="Er vi den rigtige ejer for jeres virksomhed?" />
+      <p class="lead" data-reveal style="--d:2">Seks spørgsmål om branche, størrelse og situation. Du får et personligt svar med det samme, helt uforpligtende.</p>
+      <div class="btn-row" data-reveal style="--d:3">
+        <a class="btn" href={url('/match/')}>Tag match-testen <Icon name="arrow" /></a>
+      </div>
+    </div>
+    <ul class="teaser__preview" aria-hidden="true" data-reveal="right">
+      <li class="is-on">Vi står foran et generationsskifte</li>
+      <li>Vi ønsker at sælge en del</li>
+      <li>Vi søger kapital til vækst</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .teaser { background: var(--sand); }
+  .teaser__inner { display: grid; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  @media (min-width: 960px) { .teaser__inner { grid-template-columns: 7fr 5fr; } }
+  .teaser :global(h2) { max-width: 18ch; }
+  .teaser__preview { list-style: none; margin: 0; padding: clamp(20px, 3vw, 32px); display: grid; gap: 12px; background: #fff; border-radius: calc(var(--radius) + 6px); box-shadow: 0 40px 80px -50px rgba(21, 24, 37, 0.35); }
+  .teaser__preview li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; }
+  .teaser__preview li::after { content: ''; flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--line); }
+  .teaser__preview .is-on { border-color: var(--red); background: var(--red-soft); }
+  .teaser__preview .is-on::after { border-color: var(--red); background: var(--red); border-radius: 50% 50% 0 50%; animation: tick 2.4s var(--ease) infinite; }
+  @keyframes tick { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+</style>

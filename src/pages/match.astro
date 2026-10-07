@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import MatchQuiz from '../components/MatchQuiz.astro';
+import { questions } from '../data/match';
+
+const crumbs = [{ href: '/investeringer/', label: 'Investeringer' }, { label: 'Match-test' }];
+---
+<Base
+  title="Er vi det rigtige match? Test på 1 minut"
+  description="Overvejer du generationsskifte, delvist salg eller vækstkapital? Svar på seks spørgsmål og se, om Nielsen & Nielsen er den rigtige langsigtede ejer."
+  crumbs={crumbs}
+>
+  <PageHero
+    eyebrow="Match-test"
+    title="Er vi det rigtige match?"
+    lead={`${questions.length} hurtige spørgsmål på under ét minut. Du får et personligt svar med det samme, og intet bliver sendt, før du selv vælger det.`}
+    crumbs={crumbs}
+  />
+  <section class="section section--sand mq-section" aria-labelledby="mq-h">
+    <div class="wrap">
+      <h2 id="mq-h" class="sr-only">Spørgsmål</h2>
+      <div data-reveal="scale"><MatchQuiz /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .mq-section { padding-top: clamp(40px, 5vw, 72px); }
+</style>
