@@ -35,7 +35,7 @@ const timeline = [
 <Base
   lang="en"
   altHref="/"
-  title="Nielsen & Nielsen Investments – long-term family capital from Denmark"
+  title="Nielsen & Nielsen Investments | Danish family capital"
   description="Nielsen & Nielsen Investments manages the wealth of the families behind Micro Matic. Patient, family-owned capital with industrial DNA since 1974."
 >
   <section class="hero">
@@ -67,7 +67,7 @@ const timeline = [
     </div>
   </section>
 
-  <section class="section section--night"><div class="wrap"><Stats items={stats} /></div></section>
+  <section class="section section--night" aria-labelledby="stats-h"><div class="wrap"><h2 id="stats-h" class="sr-only">Key figures</h2><Stats items={stats} /></div></section>
 
   <section class="section" id="portfolio">
     <div class="wrap">
@@ -76,7 +76,7 @@ const timeline = [
       <div class="grid grid--2" style="margin-top:40px">
         {portfolio.map((p, i) => (
           <article class="card" data-reveal style={`--d:${i % 2}`}>
-            <div class="row"><span class="tag">{p.status}</span><span class="muted small">{p.sector}</span></div>
+            <p class="row"><span class="tag">{p.status}</span><span class="muted small">{p.sector}</span></p>
             <h3>{p.name}</h3>
             <p class="muted">{p.text}</p>
             {p.url && <a class="link-arrow" href={p.url} target="_blank" rel="noopener">Visit website</a>}

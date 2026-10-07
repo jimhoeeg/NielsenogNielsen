@@ -15,7 +15,7 @@ const featured = investments.filter((i) => i.status === 'Aktiv');
 const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes(t.year));
 ---
 <Base
-  title="Nielsen & Nielsen Investments – langsigtet familiekapital fra Odense"
+  title="Nielsen & Nielsen Investments | Familieejet kapital, Odense"
   description="Nielsen & Nielsen Investments forvalter formuen for familierne bag Micro Matic. Langsigtet, familieejet kapital med industrielt DNA siden 1974."
   altHref="/en/"
 >
@@ -40,9 +40,9 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
   </section>
 
   <!-- INTRO -->
-  <section class="section intro" id="intro">
+  <section class="section intro" id="intro" aria-labelledby="intro-h">
     <div class="wrap intro__grid">
-      <p class="eyebrow" data-reveal>Om Nielsen &amp; Nielsen</p>
+      <h2 class="eyebrow" id="intro-h" data-reveal>Om Nielsen &amp; Nielsen</h2>
       <div>
         <p class="intro__statement" data-reveal="blur">
           Vi er to familier og tre generationer med rødder i <span class="accent">Micro Matic</span>. Vi investerer med samme værdier, som byggede virksomheden: tålmodighed, ordentlighed og respekt for de mennesker, der skaber værdien.
@@ -59,21 +59,23 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
       <Split text="Tre ben – ét langsigtet perspektiv" />
       <div class="grid grid--3 pillars">
         {pillars.map((p, i) => (
-          <a class="card pillar" href={p.href} data-reveal style={`--d:${i}`}>
-            <Visual kind={p.key as 'investments' | 'ejendomme' | 'micromatic'} class="pillar__visual" />
-            <h3>{p.title}</h3>
-            <p class="muted">{p.text}</p>
-            <span class="link-arrow">{p.cta}</span>
-          </a>
+          <article class="pillar-item" data-reveal style={`--d:${i}`}>
+            <a class="card pillar" href={p.href}>
+              <Visual kind={p.key as 'investments' | 'ejendomme' | 'micromatic'} class="pillar__visual" />
+              <h3>{p.title}</h3>
+              <p class="muted">{p.text}</p>
+              <span class="link-arrow" aria-hidden="true">{p.cta}</span>
+            </a>
+          </article>
         ))}
       </div>
     </div>
   </section>
 
   <!-- TAL -->
-  <section class="section section--night">
+  <section class="section section--night" aria-labelledby="stats-h">
     <div class="wrap">
-      <p class="eyebrow" data-reveal>I tal</p>
+      <h2 class="eyebrow" id="stats-h" data-reveal>Nielsen &amp; Nielsen i tal</h2>
       <Stats items={stats} />
     </div>
   </section>
@@ -171,6 +173,7 @@ const tlShort = timeline.filter((t) => ['1953', '1974', '1989', '2024'].includes
   .intro__statement { font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.6rem); line-height: 1.3; font-weight: 300; letter-spacing: -0.01em; margin-bottom: 1.5rem; }
 
   .pillars { margin-top: clamp(32px, 4vw, 56px); }
+  .pillar-item { display: grid; }
   .pillar { display: flex !important; flex-direction: column; padding: 14px 14px 28px !important; }
   .pillar :global(.pillar__visual) { aspect-ratio: 16 / 10; margin-bottom: 24px; transition: transform 0.6s var(--ease); }
   .pillar:hover :global(.pillar__visual) { transform: scale(1.02); }

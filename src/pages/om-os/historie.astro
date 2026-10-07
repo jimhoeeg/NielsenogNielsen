@@ -4,19 +4,21 @@ import PageHero from '../../components/PageHero.astro';
 import Timeline from '../../components/Timeline.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { timeline } from '../../data/site';
+const crumbs = [{ href: '/om-os/', label: 'Om os' }, { label: 'Historie' }];
 ---
 <Base
   title="Vores historie – fra 1953 til i dag"
-  description="Tidslinje over Nielsen & Nielsen: fra Micro Matics grundlæggelse i 1953 og familiernes overtagelse i 1974 til stiftelsen af Nielsen & Nielsen Investments i 2024."
+  crumbs={crumbs}
+  description="Tidslinje: fra Micro Matics grundlæggelse i 1953 og familiernes overtagelse i 1974 til stiftelsen af Nielsen & Nielsen Investments i 2024."
 >
   <PageHero
     eyebrow="Historie"
     title="Mere end 70 års historie"
     lead="Scroll gennem de milepæle, der har formet familierne og virksomhederne."
-    crumbs={[{ href: '/om-os/', label: 'Om os' }, { label: 'Historie' }]}
+    crumbs={crumbs}
   />
   <section class="section section--sand">
-    <div class="wrap wrap--narrow"><Timeline items={timeline} /></div>
+    <div class="wrap wrap--narrow"><h2 class="sr-only">Tidslinje 1953 til i dag</h2><Timeline items={timeline} /></div>
   </section>
   <CtaBand />
 </Base>

@@ -5,14 +5,26 @@ import NewsCard from '../../components/NewsCard.astro';
 import Icon from '../../components/Icon.astro';
 import { news, company } from '../../data/site';
 const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
+const crumbs = [{ label: 'Nyheder' }];
+const site = Astro.site!;
+const itemList = {
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: sorted.map((n, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(`/nyheder/${n.slug}/`, site).href, name: n.title })),
+  },
+};
 ---
 <Base
   title="Nyheder og presse"
+  pageType="CollectionPage"
+  page={itemList}
+  crumbs={crumbs}
   description="Nyheder, pressemeddelelser og pressemateriale fra Nielsen & Nielsen Investments, Ejendomme og Micro Matic-familierne."
 >
-  <PageHero eyebrow="Nyheder" title="Nyheder og presse" lead="Følg med i, hvad der sker i Nielsen & Nielsen." crumbs={[{ label: 'Nyheder' }]} />
-  <section class="section section--sand">
+  <PageHero eyebrow="Nyheder" title="Nyheder og presse" lead="Følg med i, hvad der sker i Nielsen & Nielsen." crumbs={crumbs} />
+  <section class="section section--sand" aria-labelledby="news-h">
     <div class="wrap">
+      <h2 id="news-h" class="sr-only">Alle nyheder</h2>
       <div class="grid grid--3">
         {sorted.map((n, i) => <NewsCard item={n} d={i % 3} />)}
       </div>
@@ -30,7 +42,7 @@ const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
         <!-- TODO: læg rigtige filer i /public/presse/ -->
         <li data-reveal><a href="/favicon.svg" download="nielsen-nielsen-logo.svg"><Icon name="download" /> Logo (SVG)</a></li>
         <li data-reveal style="--d:1"><a href="/kort-om/"><Icon name="download" /> Faktaark</a></li>
-        <li data-reveal style="--d:2"><a href="#" aria-disabled="true"><Icon name="download" /> Pressebilleder (kommer snart)</a></li>
+        <li data-reveal style="--d:2"><span class="soon"><Icon name="download" /> Pressebilleder (kommer snart)</span></li>
       </ul>
     </div>
   </section>
@@ -40,8 +52,9 @@ const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
   .press { display: grid; gap: 48px; }
   @media (min-width: 900px) { .press { grid-template-columns: 1fr 1fr; align-items: center; } }
   .downloads { list-style: none; margin: 0; padding: 0; }
-  .downloads a { display: flex; align-items: center; gap: 14px; padding: 22px 4px; border-top: 1px solid var(--line); text-decoration: none; font-size: 1.15rem; transition: color 0.2s, padding 0.3s var(--ease); }
-  .downloads li:last-child a { border-bottom: 1px solid var(--line); }
+  .downloads a, .downloads .soon { display: flex; align-items: center; gap: 14px; padding: 22px 4px; border-top: 1px solid var(--line); text-decoration: none; font-size: 1.15rem; transition: color 0.2s, padding 0.3s var(--ease); }
+  .downloads .soon { color: var(--muted); }
+  .downloads li:last-child > * { border-bottom: 1px solid var(--line); }
   .downloads a:hover { color: var(--red); padding-left: 12px; }
   .downloads :global(svg) { color: var(--red); }
 </style>

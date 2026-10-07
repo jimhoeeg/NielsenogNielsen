@@ -10,6 +10,15 @@ export function getStaticPaths() {
   return investments.map((item) => ({ params: { slug: item.slug }, props: { item } }));
 }
 const { item } = Astro.props as { item: Investment };
+const crumbs = [{ href: '/investeringer/', label: 'Investeringer' }, { href: '/investeringer/portefolje/', label: 'Portefølje' }, { label: item.name }];
+const subject = {
+  mainEntity: {
+    '@type': 'Organization',
+    name: item.name,
+    description: item.summary,
+    ...(item.url ? { url: item.url, sameAs: [item.url] } : {}),
+  },
+};
 const others = investments.filter((i) => i.slug !== item.slug).slice(0, 3);
 const facts = [
   ['Status', item.status],
@@ -19,16 +28,16 @@ const facts = [
   ['Vores rolle', item.role],
 ].filter(([, v]) => v) as [string, string][];
 ---
-<Base title={`${item.name} – portefølje`} description={`${item.name}: ${item.summary}`}>
+<Base title={`${item.name} – portefølje`} description={`${item.name}: ${item.summary}`.slice(0, 155)} crumbs={crumbs} page={subject}>
   <PageHero
     eyebrow={`${item.sector} · ${item.status}`}
     title={item.name}
     lead={item.summary}
-    crumbs={[{ href: '/investeringer/', label: 'Investeringer' }, { href: '/investeringer/portefolje/', label: 'Portefølje' }, { label: item.name }]}
+    crumbs={crumbs}
   />
   <section class="section section--sand">
     <div class="wrap case">
-      <div class="prose">
+      <article class="prose">
         {item.body.map((p, i) => <p data-reveal style={`--d:${i}`}>{p}</p>)}
         {item.quote && (
           <blockquote data-reveal>
@@ -37,7 +46,7 @@ const facts = [
           </blockquote>
         )}
         {item.url && <a class="btn" href={item.url} target="_blank" rel="noopener" data-reveal>Besøg {item.name} <Icon name="external" /></a>}
-      </div>
+      </article>
       <aside class="card facts" data-reveal="right">
         <h2 class="facts__h">Fakta</h2>
         <dl>

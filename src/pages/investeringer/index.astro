@@ -21,6 +21,8 @@ const criteria = [
   'Mulighed for langsigtet ejerskab, gerne 10 år eller mere',
 ];
 
+const crumbs = [{ label: 'Investeringer' }];
+
 const process = [
   { step: 'Første samtale', text: 'Et uforpligtende og fortroligt møde, hvor vi lærer hinanden og virksomheden at kende.' },
   { step: 'Gensidig afklaring', text: 'Vi deler vores syn på ejerskab, og I deler jeres ambitioner. Vi passer sammen, eller også siger vi det hurtigt.' },
@@ -30,13 +32,14 @@ const process = [
 ---
 <Base
   title="Investeringer – vores tilgang som langsigtet ejer"
-  description="Sådan investerer Nielsen & Nielsen Investments: tålmodig, familieejet kapital i børsnoterede værdipapirer, direkte investeringer og ejendomme."
+  crumbs={crumbs}
+  description="Sådan investerer vi: tålmodig, familieejet kapital i børsnoterede værdipapirer, direkte investeringer og ejendomme. Se kriterier og proces."
 >
   <PageHero
     eyebrow="Investeringer"
     title="Tålmodig kapital. Aktivt ejerskab."
     lead="Vi forvalter familiernes formue med et perspektiv, der rækker generationer frem, og med erfaringen fra selv at have bygget en global industrivirksomhed."
-    crumbs={[{ label: 'Investeringer' }]}
+    crumbs={crumbs}
   />
 
   <section class="section section--sand">

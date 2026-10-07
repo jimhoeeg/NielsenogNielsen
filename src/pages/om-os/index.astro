@@ -4,9 +4,10 @@ import PageHero from '../../components/PageHero.astro';
 import Split from '../../components/Split.astro';
 import Visual from '../../components/Visual.astro';
 import Stats from '../../components/Stats.astro';
-import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { stats } from '../../data/site';
+
+const crumbs = [{ label: 'Om os' }];
 
 // TODO: værdier skal formuleres/godkendes sammen med familierne.
 const values = [
@@ -18,13 +19,15 @@ const values = [
 ---
 <Base
   title="Om os – to familier, tre generationer"
+  pageType="AboutPage"
+  crumbs={crumbs}
   description="Nielsen & Nielsen er familierne bag Micro Matic. Læs om vores historie siden 1974, vores værdier og hvordan ejerskabet er organiseret."
 >
   <PageHero
     eyebrow="Om os"
     title="To familier. Tre generationer. Én retning."
     lead="Nielsen & Nielsen er familierne efter Svend-Aage Nielsen og Carl Christian Nielsen, som i 1974 overtog Micro Matic. I dag er anden og tredje generation med i ejerkredsen."
-    crumbs={[{ label: 'Om os' }]}
+    crumbs={crumbs}
   />
 
   <section class="section section--sand">
@@ -41,8 +44,8 @@ const values = [
     </div>
   </section>
 
-  <section class="section section--night">
-    <div class="wrap"><Stats items={stats} /></div>
+  <section class="section section--night" aria-labelledby="stats-h">
+    <div class="wrap"><h2 id="stats-h" class="sr-only">Nøgletal</h2><Stats items={stats} /></div>
   </section>
 
   <section class="section">
@@ -63,6 +66,7 @@ const values = [
 
   <section class="section section--sand">
     <div class="wrap grid grid--2">
+      <h2 class="sr-only">Læs mere om os</h2>
       <a class="card link-card" href="/om-os/governance/" data-reveal>
         <p class="eyebrow">Ejerskab &amp; ledelse</p>
         <h3>Sådan er gruppen organiseret</h3>

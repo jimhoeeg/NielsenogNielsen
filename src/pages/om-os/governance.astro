@@ -17,6 +17,8 @@ const nodes = {
   ejd: { title: 'Nielsen & Nielsen Ejendomme A/S', text: 'Udvikler og driver lejeboliger på Fyn siden 1989.', href: '/ejendomme/' },
 };
 
+const crumbs = [{ href: '/om-os/', label: 'Om os' }, { label: 'Governance' }];
+
 // TODO: navne og fotos godkendes af kunden
 const people = [
   { name: 'Navn Efternavn', role: 'Bestyrelsesformand' },
@@ -27,18 +29,20 @@ const people = [
 ---
 <Base
   title="Ejerskab og governance"
+  crumbs={crumbs}
   description="Se ejerstrukturen bag Nielsen & Nielsen: familierne, holdingselskaberne, Micro Matic, Nielsen & Nielsen Gruppen, Investments og Ejendomme."
 >
   <PageHero
     eyebrow="Governance"
     title="Ejerskab og ledelse"
     lead="To familier ejer gruppen ligeligt gennem hver sit holdingselskab. Klik på et selskab i diagrammet for at læse mere."
-    crumbs={[{ href: '/om-os/', label: 'Om os' }, { label: 'Governance' }]}
+    crumbs={crumbs}
   />
 
-  <section class="section section--sand">
+  <section class="section section--sand" aria-labelledby="org-h">
     <div class="wrap">
-      <div class="org" data-org>
+      <h2 id="org-h" class="sr-only">Ejerstruktur</h2>
+      <figure class="org" data-org aria-describedby="org-note">
         <div class="org__row" data-reveal>
           <button class="node node--fam" data-node="famA">Familien Svend-Aage Nielsen</button>
           <button class="node node--fam" data-node="famB">Familien C.C. Nielsen</button>
@@ -64,8 +68,8 @@ const people = [
           <p class="muted" data-panel-text>{nodes.inv.text}</p>
           <a class="link-arrow" href={nodes.inv.href} data-panel-link>Læs mere</a>
         </div>
-        <p class="org__note muted">Forenklet illustration. Strukturen er under afklaring.</p>
-      </div>
+        <figcaption class="org__note muted" id="org-note">Forenklet illustration. Strukturen er under afklaring.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -107,7 +111,7 @@ const people = [
 </script>
 
 <style>
-  .org { display: grid; justify-items: center; gap: 0; }
+  .org { display: grid; justify-items: center; gap: 0; margin: 0; }
   .org__row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: clamp(12px, 3vw, 40px); width: 100%; }
   .org__row--3 { align-items: flex-start; }
   .org__col { display: grid; justify-items: center; }
@@ -125,7 +129,7 @@ const people = [
   .node[aria-pressed='true'] { outline: 3px solid var(--red); outline-offset: 3px; }
   .org__panel { margin-top: 40px; width: min(100%, 640px); text-align: center; }
   .org__panel h3 { font-weight: 500; }
-  .org__note { margin-top: 16px; font-size: 0.85rem; }
+  .org__note { margin: 16px 0 1.1em; font-size: 0.85rem; }
   .people { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
   .person { margin: 0; }
   :global(.person__img) { aspect-ratio: 4 / 5; margin-bottom: 14px; }

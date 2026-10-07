@@ -3,18 +3,21 @@ import { formatDate, type NewsItem } from '../data/site';
 interface Props { item: NewsItem; d?: number }
 const { item, d = 0 } = Astro.props;
 ---
-<a class="card news-card" href={`/nyheder/${item.slug}/`} data-reveal style={`--d:${d}`}>
+<article class="news-item" data-reveal style={`--d:${d}`}>
+<a class="card news-card" href={`/nyheder/${item.slug}/`}>
   <div class="news-card__meta">
     <span class="tag">{item.tag}</span>
     <time datetime={item.date}>{formatDate(item.date)}</time>
   </div>
   <h3>{item.title}</h3>
   <p class="muted">{item.excerpt}</p>
-  <span class="link-arrow">Læs mere</span>
+  <span class="link-arrow" aria-hidden="true">Læs mere</span>
 </a>
+</article>
 
 <style>
-  .news-card { display: flex !important; flex-direction: column; height: 100%; }
+  .news-item { display: grid; }
+  .news-card { display: flex !important; flex-direction: column; }
   .news-card__meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--muted); }
   .news-card h3 { font-size: 1.35rem; }
   .news-card .link-arrow { margin-top: auto; }

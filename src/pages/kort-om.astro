@@ -20,19 +20,22 @@ const faq = [
   { q: 'Hvad er forbindelsen til Micro Matic?', a: 'Familierne bag Nielsen & Nielsen har ejet Micro Matic siden 1974. I dag er 18 familiemedlemmer fra anden og tredje generation med i ejerkredsen.' },
   { q: 'Hvordan præsenterer jeg min virksomhed for Nielsen & Nielsen?', a: 'Brug formularen "Præsentér din virksomhed" på kontaktsiden. Alle henvendelser behandles fortroligt.' },
 ];
+const crumbs = [{ label: 'Fakta' }];
 const faqLd = {
-  '@type': 'FAQPage',
   mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 };
 ---
 <Base
   title="Fakta om Nielsen & Nielsen Investments"
   description="Kort om Nielsen & Nielsen Investments: ejere, struktur, historie og aktiviteter, samlet ét sted."
-  jsonLd={[faqLd]}
+  pageType="FAQPage"
+  page={faqLd}
+  crumbs={crumbs}
 >
-  <PageHero eyebrow="Fakta" title="Kort om Nielsen & Nielsen" lead="De vigtigste fakta, samlet ét sted." crumbs={[{ label: 'Fakta' }]} />
+  <PageHero eyebrow="Fakta" title="Kort om Nielsen & Nielsen" lead="De vigtigste fakta, samlet ét sted." crumbs={crumbs} />
   <section class="section section--sand">
     <div class="wrap wrap--narrow">
+      <h2 class="sr-only">Nøglefakta</h2>
       <dl class="facts card" data-reveal>
         {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
       </dl>

@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import { company } from '../data/site';
+const crumbs = [{ label: 'Tilgængelighed' }];
 ---
-<Base title="Tilgængelighed" description="Tilgængelighedserklæring for nielsen-nielsen.dk.">
-  <PageHero title="Tilgængelighed" crumbs={[{ label: 'Tilgængelighed' }]} />
+<Base title="Tilgængelighed" description="Tilgængelighedserklæring for nielsen-nielsen.dk: siden er udviklet efter WCAG 2.2 AA og kan betjenes med tastatur." crumbs={crumbs}>
+  <PageHero title="Tilgængelighed" crumbs={crumbs} />
   <section class="section section--sand">
     <div class="wrap wrap--narrow prose">
       <p>Vi ønsker, at alle kan bruge vores hjemmeside. Siden er udviklet med udgangspunkt i WCAG 2.2 niveau AA.</p>

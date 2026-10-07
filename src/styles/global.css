@@ -1,7 +1,6 @@
 @import '@fontsource/roboto/latin-300.css';
 @import '@fontsource/roboto/latin-400.css';
 @import '@fontsource/roboto/latin-500.css';
-@import '@fontsource/roboto/latin-700.css';
 
 /* ===== Design tokens (aflæst fra nnejendomme.dk) ===== */
 :root {
@@ -64,7 +63,7 @@ strong { font-weight: 500; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 0.8rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--red); margin-bottom: 1.2rem;
+  color: var(--red); margin: 0 0 1.2rem; line-height: 1.65;
 }
 .eyebrow::before { content: ''; width: 28px; height: 2px; background: currentColor; }
 .lead { font-size: clamp(1.15rem, 1rem + 0.6vw, 1.45rem); color: var(--ink-2); max-width: 46ch; }
@@ -107,7 +106,6 @@ strong { font-weight: 500; }
   transform: translate3d(0, 40px, 0);
   transition: opacity 0.9s var(--ease), transform 1.1s var(--ease), filter 1.1s var(--ease);
   transition-delay: calc(var(--d, 0) * 90ms);
-  will-change: opacity, transform;
 }
 .js [data-reveal='left'] { transform: translate3d(-60px, 0, 0); }
 .js [data-reveal='right'] { transform: translate3d(60px, 0, 0); }

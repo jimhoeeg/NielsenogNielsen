@@ -4,6 +4,10 @@ import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormScript from '../components/FormScript.astro';
+import type { Crumb, PageType } from '../components/SEO.astro';
+// Preload af de to skriftsnit, der bruges i toppen af siden (brødtekst 300, overskrifter 400) – forbedrer LCP.
+import roboto300 from '@fontsource/roboto/files/roboto-latin-300-normal.woff2?url';
+import roboto400 from '@fontsource/roboto/files/roboto-latin-400-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -11,6 +15,10 @@ interface Props {
   lang?: 'da' | 'en';
   altHref?: string;
   type?: 'website' | 'article';
+  pageType?: PageType;
+  page?: Record<string, unknown>;
+  crumbs?: Crumb[];
+  published?: string;
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
 }
@@ -22,7 +30,10 @@ const { lang = 'da', altHref, ...seo } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#df331e" />
+    <link rel="preload" href={roboto300} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={roboto400} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <script is:inline>document.documentElement.classList.add('js');</script>
     <SEO lang={lang} altHref={altHref} {...seo} />

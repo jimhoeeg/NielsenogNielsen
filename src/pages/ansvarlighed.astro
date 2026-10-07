@@ -5,6 +5,8 @@ import Split from '../components/Split.astro';
 import CtaBand from '../components/CtaBand.astro';
 
 // TODO: Indhold formuleres sammen med kunden (evt. ESG-politik som PDF).
+const crumbs = [{ label: 'Ansvarlighed' }];
+
 const themes = [
   { t: 'Aktivt ejerskab', d: 'Vi stiller krav til god selskabsledelse og tager aktivt del i bestyrelsesarbejdet i de virksomheder, vi ejer.' },
   { t: 'Ansvarlige investeringer', d: 'Vi indarbejder miljø, sociale forhold og governance (ESG) i vores investeringsbeslutninger.' },
@@ -14,13 +16,14 @@ const themes = [
 ---
 <Base
   title="Ansvarlighed – ejerskab med ansvar"
+  crumbs={crumbs}
   description="Nielsen & Nielsens tilgang til ansvarlige investeringer, aktivt ejerskab, bæredygtige boliger og lokalt engagement."
 >
   <PageHero
     eyebrow="Ansvarlighed"
     title="Ejerskab med ansvar"
     lead="Langsigtet ejerskab og ansvarlighed hænger sammen. Når man ejer i generationer, tænker man i generationer."
-    crumbs={[{ label: 'Ansvarlighed' }]}
+    crumbs={crumbs}
   />
   <section class="section section--sand">
     <div class="wrap">

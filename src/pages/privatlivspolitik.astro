@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import { company } from '../data/site';
+const crumbs = [{ label: 'Privatlivspolitik' }];
 ---
-<Base title="Privatlivspolitik" description="Sådan behandler Nielsen & Nielsen Investments dine personoplysninger.">
-  <PageHero title="Privatlivspolitik" crumbs={[{ label: 'Privatlivspolitik' }]} />
+<Base title="Privatlivspolitik" description="Sådan behandler Nielsen & Nielsen Investments dine personoplysninger: formål, retsgrundlag, opbevaring, cookies og dine rettigheder." crumbs={crumbs}>
+  <PageHero title="Privatlivspolitik" crumbs={crumbs} />
   <section class="section section--sand">
     <div class="wrap wrap--narrow prose">
       <!-- TODO: Skal gennemgås og godkendes juridisk før lancering. -->

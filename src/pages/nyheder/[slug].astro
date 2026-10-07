@@ -9,25 +9,29 @@ export function getStaticPaths() {
 }
 const { item } = Astro.props as { item: NewsItem };
 const more = news.filter((n) => n.slug !== item.slug).slice(0, 3);
+const crumbs = [{ href: '/nyheder/', label: 'Nyheder' }, { label: item.title }];
 const site = Astro.site!;
 const articleLd = {
   '@type': 'NewsArticle',
+  '@id': `${new URL(Astro.url.pathname, site).href}#article`,
   headline: item.title,
   description: item.excerpt,
   datePublished: item.date,
+  dateModified: item.date,
+  articleSection: item.tag,
   inLanguage: 'da-DK',
-  mainEntityOfPage: new URL(Astro.url.pathname, site).href,
-  image: new URL('/og-image.png', site).href,
-  author: { '@type': 'Organization', name: company.name },
+  mainEntityOfPage: { '@id': `${new URL(Astro.url.pathname, site).href}#webpage` },
+  image: [new URL('/og-image.png', site).href],
+  author: { '@type': 'Organization', name: company.name, url: site.href },
   publisher: { '@id': new URL('/#organization', site).href },
 };
 ---
-<Base title={item.title} description={item.excerpt} type="article" jsonLd={[articleLd]}>
+<Base title={item.title} description={item.excerpt} type="article" published={item.date} crumbs={crumbs} jsonLd={[articleLd]}>
   <PageHero
     eyebrow={`${item.tag} · ${formatDate(item.date)}`}
     title={item.title}
     lead={item.excerpt}
-    crumbs={[{ href: '/nyheder/', label: 'Nyheder' }, { label: item.title }]}
+    crumbs={crumbs}
   />
   <article class="section section--sand">
     <div class="wrap wrap--narrow prose">

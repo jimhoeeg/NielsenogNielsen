@@ -1,55 +1,117 @@
 ---
 import { company } from '../data/site';
 
+export interface Crumb { href?: string; label: string }
+export type PageType = 'WebPage' | 'AboutPage' | 'CollectionPage' | 'ContactPage' | 'FAQPage';
+
 interface Props {
   title: string;
   description: string;
   lang: 'da' | 'en';
   altHref?: string;
   image?: string;
+  imageAlt?: string;
   type?: 'website' | 'article';
+  pageType?: PageType;
+  /** Ekstra felter på WebPage-noden, fx mainEntity for FAQPage */
+  page?: Record<string, unknown>;
+  crumbs?: Crumb[];
+  /** ISO-dato for artikler (article:published_time) */
+  published?: string;
   jsonLd?: Record<string, unknown>[];
   noindex?: boolean;
 }
-const { title, description, lang, altHref, image = '/og-image.png', type = 'website', jsonLd = [], noindex = false } = Astro.props;
-const site = Astro.site!;
-const canonical = new URL(Astro.url.pathname, site).href;
-const ogImage = new URL(image, site).href;
-const fullTitle = title.includes('Nielsen & Nielsen') ? title : `${title} | Nielsen & Nielsen Investments`;
+const {
+  title, description, lang, altHref,
+  image = '/og-image.png',
+  imageAlt = 'Nielsen & Nielsen Investments – langsigtet kapital med industrielt DNA',
+  type = 'website', pageType = 'WebPage', page = {}, crumbs = [], published, jsonLd = [], noindex = false,
+} = Astro.props;
 
-const orgId = new URL('/#organization', site).href;
-const graph = [
+const site = Astro.site!;
+const abs = (p: string) => new URL(p, site).href;
+const canonical = abs(Astro.url.pathname);
+const ogImage = abs(image);
+
+// Titel: maks. 60 tegn. Brandsuffix tilføjes kun, når der er plads.
+const brandLong = ' | Nielsen & Nielsen Investments';
+const brandShort = ' | Nielsen & Nielsen';
+const fullTitle = title.includes('Nielsen & Nielsen')
+  ? title
+  : (title + brandLong).length <= 60 ? title + brandLong
+  : (title + brandShort).length <= 60 ? title + brandShort
+  : title;
+if (import.meta.env.DEV && (fullTitle.length > 60 || description.length > 155)) {
+  console.warn(`[SEO] ${Astro.url.pathname}: titel ${fullTitle.length}/60, beskrivelse ${description.length}/155`);
+}
+
+const orgId = abs('/#organization');
+const siteId = abs('/#website');
+const pageId = `${canonical}#webpage`;
+const allCrumbs: Crumb[] = crumbs.length ? [{ href: '/', label: lang === 'en' ? 'Home' : 'Forside' }, ...crumbs] : [];
+
+const graph: Record<string, unknown>[] = [
   {
     '@type': 'Organization',
     '@id': orgId,
     name: company.name,
     legalName: company.legalName,
+    alternateName: 'Nielsen og Nielsen Investments',
     url: site.href,
-    logo: new URL('/favicon.svg', site).href,
+    logo: { '@type': 'ImageObject', url: abs('/logo.png'), width: 512, height: 512 },
+    image: ogImage,
+    description: 'Familieejet investeringsselskab i Odense, der forvalter formuen for familierne bag Micro Matic.',
     foundingDate: String(company.founded),
     email: company.email,
     address: {
       '@type': 'PostalAddress',
       streetAddress: company.street,
       postalCode: company.zip,
-      addressLocality: company.city.replace(' SV', ''),
+      addressLocality: 'Odense SV',
       addressCountry: company.country,
     },
-    parentOrganization: { '@type': 'Organization', name: company.groupName, identifier: `CVR ${company.groupCvr}` },
+    areaServed: 'DK',
+    parentOrganization: {
+      '@type': 'Organization',
+      name: company.groupName,
+      identifier: { '@type': 'PropertyValue', propertyID: 'CVR', value: company.groupCvr },
+    },
     sameAs: [company.linkedin],
-    subOrganization: [
-      { '@type': 'Organization', name: 'Nielsen & Nielsen Ejendomme A/S', url: 'https://nnejendomme.dk/' },
-    ],
-    knowsAbout: ['Langsigtet investering', 'Familieejet kapital', 'Aktivt ejerskab', 'Ejendomme'],
+    knowsAbout: ['Langsigtet investering', 'Familieejet kapital', 'Aktivt ejerskab', 'Generationsskifte', 'Ejendomme'],
   },
   {
     '@type': 'WebSite',
-    '@id': new URL('/#website', site).href,
+    '@id': siteId,
     url: site.href,
     name: 'Nielsen & Nielsen',
     inLanguage: ['da-DK', 'en-GB'],
     publisher: { '@id': orgId },
   },
+  {
+    '@type': pageType,
+    '@id': pageId,
+    url: canonical,
+    name: fullTitle,
+    description,
+    inLanguage: lang === 'en' ? 'en-GB' : 'da-DK',
+    isPartOf: { '@id': siteId },
+    about: { '@id': orgId },
+    primaryImageOfPage: { '@type': 'ImageObject', url: ogImage },
+    ...(allCrumbs.length ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
+    ...page,
+  },
+  ...(allCrumbs.length
+    ? [{
+        '@type': 'BreadcrumbList',
+        '@id': `${canonical}#breadcrumb`,
+        itemListElement: allCrumbs.map((c, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: c.label,
+          item: abs(c.href ?? Astro.url.pathname),
+        })),
+      }]
+    : []),
   ...jsonLd,
 ];
 const ld = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
@@ -57,12 +119,12 @@ const ld = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-{noindex && <meta name="robots" content="noindex" />}
+<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
 {altHref && (
   <>
     <link rel="alternate" hreflang={lang} href={canonical} />
-    <link rel="alternate" hreflang={lang === 'da' ? 'en' : 'da'} href={new URL(altHref, site).href} />
-    <link rel="alternate" hreflang="x-default" href={new URL(lang === 'da' ? Astro.url.pathname : altHref, site).href} />
+    <link rel="alternate" hreflang={lang === 'da' ? 'en' : 'da'} href={abs(altHref)} />
+    <link rel="alternate" hreflang="x-default" href={abs(lang === 'da' ? Astro.url.pathname : altHref)} />
   </>
 )}
 <meta property="og:type" content={type} />
@@ -72,7 +134,14 @@ const ld = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
+<meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
+{published && <meta property="article:published_time" content={published} />}
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={imageAlt} />
 <script type="application/ld+json" set:html={ld} />

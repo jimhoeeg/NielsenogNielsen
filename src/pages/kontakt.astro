@@ -4,18 +4,15 @@ import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import { company, formEndpoints } from '../data/site';
 const mapQuery = encodeURIComponent(`${company.street}, ${company.zip} ${company.city}`);
-const contactLd = {
-  '@type': 'ContactPage',
-  name: 'Kontakt Nielsen & Nielsen Investments',
-  about: { '@id': new URL('/#organization', Astro.site!).href },
-};
+const crumbs = [{ label: 'Kontakt' }];
 ---
 <Base
   title="Kontakt os – og præsentér din virksomhed"
-  description="Kontakt Nielsen & Nielsen Investments i Odense SV, eller præsentér din virksomhed fortroligt for os."
-  jsonLd={[contactLd]}
+  pageType="ContactPage"
+  crumbs={crumbs}
+  description="Kontakt Nielsen & Nielsen Investments på Hvidkærvej 54 i Odense SV, eller præsentér din virksomhed fortroligt for os som langsigtet ejer."
 >
-  <PageHero eyebrow="Kontakt" title="Lad os tage en snak" lead="Uanset om du er virksomhedsejer, rådgiver, samarbejdspartner eller journalist, hører vi gerne fra dig." crumbs={[{ label: 'Kontakt' }]} />
+  <PageHero eyebrow="Kontakt" title="Lad os tage en snak" lead="Uanset om du er virksomhedsejer, rådgiver, samarbejdspartner eller journalist, hører vi gerne fra dig." crumbs={crumbs} />
 
   <section class="section section--sand">
     <div class="wrap contact">
@@ -39,8 +36,8 @@ const contactLd = {
         </div>
       </aside>
 
-      <div class="card" data-reveal="right">
-        <h2>Skriv til os</h2>
+      <section class="card" data-reveal="right" aria-labelledby="form-h">
+        <h2 id="form-h">Skriv til os</h2>
         <form class="form" data-form action={formEndpoints.contact || undefined} method="post" novalidate>
           <div class="form-row">
             <div class="field"><label for="c-name">Navn *</label><input id="c-name" name="name" required autocomplete="name" /></div>
@@ -63,16 +60,16 @@ const contactLd = {
           <div><button class="btn" type="submit">Send besked <Icon name="arrow" /></button></div>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
-      </div>
+      </section>
     </div>
   </section>
 
   <!-- TODO: svartid (10 arbejdsdage) og omsætningsintervaller bekræftes af kunden -->
-  <section class="section section--night" id="praesenter">
+  <section class="section section--night" id="praesenter" aria-labelledby="deal-h">
     <div class="wrap contact">
       <div>
         <p class="eyebrow" data-reveal>Deal flow</p>
-        <h2 data-reveal>Præsentér din virksomhed</h2>
+        <h2 id="deal-h" data-reveal>Præsentér din virksomhed</h2>
         <p data-reveal>Overvejer du et generationsskifte, søger du en langsigtet medejer, eller har du brug for kapital til vækst? Fortæl os om virksomheden. Alle henvendelser behandles fortroligt, og du hører fra os inden for 10 arbejdsdage.</p>
         <ul class="trust" data-reveal>
           <li>Fortrolig behandling</li>

@@ -17,8 +17,8 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer__grid">
-      <div data-reveal style="--d:1">
-        <h2 class="footer__h">{en ? 'Contact' : 'Kontakt'}</h2>
+      <section data-reveal style="--d:1" aria-labelledby="f-contact">
+        <h2 class="footer__h" id="f-contact">{en ? 'Contact' : 'Kontakt'}</h2>
         <address>
           <strong>{company.legalName}</strong><br />
           {company.street}<br />
@@ -26,19 +26,19 @@ const year = new Date().getFullYear();
         </address>
         <p><a href={`mailto:${company.email}`} class="footer__link"><Icon name="mail" size={16} /> {company.email}</a></p>
         <p><a href={company.linkedin} class="footer__link" rel="noopener" target="_blank"><Icon name="linkedin" size={16} /> LinkedIn</a></p>
-      </div>
+      </section>
 
-      <div data-reveal style="--d:2">
-        <h2 class="footer__h">{en ? 'The group' : 'Gruppen'}</h2>
+      <nav data-reveal style="--d:2" aria-labelledby="f-group">
+        <h2 class="footer__h" id="f-group">{en ? 'The group' : 'Gruppen'}</h2>
         <ul>
           <li><a href={en ? '/en/#approach' : '/investeringer/'}>Nielsen &amp; Nielsen Investments</a></li>
-          <li><a href="https://nnejendomme.dk/" rel="noopener" target="_blank">Nielsen &amp; Nielsen Ejendomme <Icon name="external" size={13} /></a></li>
+          <li><a href="https://nnejendomme.dk/" rel="noopener" target="_blank">Nielsen &amp; Nielsen Ejendomme<span class="sr-only"> (åbner i nyt vindue)</span> <Icon name="external" size={13} /></a></li>
           <li><a href="https://www.micro-matic.com/" rel="noopener" target="_blank">Micro Matic <Icon name="external" size={13} /></a></li>
         </ul>
-      </div>
+      </nav>
 
-      <div data-reveal style="--d:3">
-        <h2 class="footer__h">{en ? 'Explore' : 'Genveje'}</h2>
+      <nav data-reveal style="--d:3" aria-labelledby="f-links">
+        <h2 class="footer__h" id="f-links">{en ? 'Explore' : 'Genveje'}</h2>
         {en ? (
           <ul>
             <li><a href="/en/#portfolio">Portfolio</a></li>
@@ -55,18 +55,18 @@ const year = new Date().getFullYear();
             <li><a href="/kontakt/#praesenter">Præsentér din virksomhed</a></li>
           </ul>
         )}
-      </div>
+      </nav>
 
-      <div data-reveal style="--d:4">
-        <h2 class="footer__h">{en ? 'Newsletter' : 'Nyhedsbrev'}</h2>
+      <section data-reveal style="--d:4" aria-labelledby="f-news">
+        <h2 class="footer__h" id="f-news">{en ? 'Newsletter' : 'Nyhedsbrev'}</h2>
         <p class="muted">{en ? 'Receive our news a few times a year.' : 'Få vores nyheder et par gange om året.'}</p>
         <NewsletterForm lang={lang} />
-      </div>
+      </section>
     </div>
 
     <div class="footer__bottom">
       <span>© {year} {company.groupName} · CVR {company.groupCvr}</span>
-      <span><a href="/privatlivspolitik/">{en ? 'Privacy policy' : 'Privatlivspolitik'}</a> · <a href="/tilgaengelighed/">{en ? 'Accessibility' : 'Tilgængelighed'}</a></span>
+      <nav aria-label={en ? 'Legal' : 'Juridisk'}><a href="/privatlivspolitik/">{en ? 'Privacy policy' : 'Privatlivspolitik'}</a> · <a href="/tilgaengelighed/">{en ? 'Accessibility' : 'Tilgængelighed'}</a></nav>
     </div>
   </div>
 </footer>

@@ -4,20 +4,39 @@ import PageHero from '../../components/PageHero.astro';
 import PortfolioCard from '../../components/PortfolioCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { investments, sectors } from '../../data/site';
+
+const crumbs = [{ href: '/investeringer/', label: 'Investeringer' }, { label: 'Portefølje' }];
+const site = Astro.site!;
+const itemList = {
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: investments.length,
+    itemListElement: investments.map((i, n) => ({
+      '@type': 'ListItem',
+      position: n + 1,
+      url: new URL(`/investeringer/${i.slug}/`, site).href,
+      name: i.name,
+    })),
+  },
+};
 ---
 <Base
   title="Portefølje – aktive og realiserede investeringer"
-  description="Se porteføljen hos Nielsen & Nielsen: Micro Matic, Nielsen & Nielsen Ejendomme, børsnoterede værdipapirer og realiserede investeringer som Triax og Nassau Door."
+  pageType="CollectionPage"
+  page={itemList}
+  crumbs={crumbs}
+  description="Se porteføljen: Micro Matic, Nielsen & Nielsen Ejendomme, børsnoterede værdipapirer og realiserede investeringer som Triax og Nassau Door."
 >
   <PageHero
     eyebrow="Portefølje"
     title="Virksomheder vi har bygget og ejer"
     lead="Fra fadølsanlæg til boliger på Fyn. Her er de aktiver og virksomheder, der har formet familiernes historie."
-    crumbs={[{ href: '/investeringer/', label: 'Investeringer' }, { label: 'Portefølje' }]}
+    crumbs={crumbs}
   />
 
-  <section class="section section--sand">
+  <section class="section section--sand" aria-labelledby="pf-h">
     <div class="wrap">
+      <h2 id="pf-h" class="sr-only">Alle investeringer</h2>
       <div class="filters" role="group" aria-label="Filtrér portefølje" data-reveal>
         <button class="chip is-active" data-filter="all" aria-pressed="true">Alle</button>
         <button class="chip" data-filter="status:Aktiv" aria-pressed="false">Aktive</button>
@@ -41,13 +60,12 @@ import { investments, sectors } from '../../data/site';
   .chip { font: 400 0.95rem var(--font); padding: 10px 20px; border-radius: var(--pill); border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; transition: all 0.25s; }
   .chip:hover { border-color: var(--ink); }
   .chip.is-active { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .pf-grid :global(.pf) { transition: opacity 0.4s var(--ease), transform 0.5s var(--ease); }
-  .pf-grid :global(.pf.is-hidden) { display: none !important; }
+  .pf-grid :global(.is-hidden) { display: none !important; }
 </style>
 
 <script>
   const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
-  const cards = [...document.querySelectorAll<HTMLElement>('[data-grid] .pf')];
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-grid] [data-sector]')];
   const live = document.querySelector<HTMLElement>('[data-count-live]')!;
   const apply = (filter: string) => {
     let n = 0;

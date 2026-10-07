@@ -1,39 +1,32 @@
 ---
 import Split from './Split.astro';
-interface Crumb { href?: string; label: string }
+import type { Crumb } from './SEO.astro';
+// Brødkrummerne vises her. Det tilsvarende BreadcrumbList-schema genereres i <head> via Base/SEO (samme crumbs-array).
 interface Props { eyebrow?: string; title: string; lead?: string; crumbs?: Crumb[]; sand?: boolean }
 const { eyebrow, title, lead, crumbs = [], sand = false } = Astro.props;
 const all: Crumb[] = [{ href: '/', label: 'Forside' }, ...crumbs];
-const site = Astro.site!;
-const ld = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: all.map((c, i) => ({
-    '@type': 'ListItem', position: i + 1, name: c.label,
-    item: new URL(c.href ?? Astro.url.pathname, site).href,
-  })),
-};
 ---
 <section class:list={['page-hero', { 'section--sand': sand }]}>
   <span class="drop drop--a ph__d1" data-parallax="0.6" aria-hidden="true"></span>
   <span class="drop drop--b ph__d2" data-parallax="1.1" aria-hidden="true"></span>
-  <div class="wrap">
+  <header class="wrap">
     {crumbs.length > 0 && (
       <nav class="breadcrumbs" aria-label="Brødkrummer" data-reveal="fade">
-        {all.map((c, i) => (
-          <>
-            {i > 0 && <span aria-hidden="true">/</span>}
-            {c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
-          </>
-        ))}
+        <ol>
+          {all.map((c, i) => (
+            <li>
+              {i > 0 && <span aria-hidden="true">/</span>}
+              {c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+            </li>
+          ))}
+        </ol>
       </nav>
     )}
     {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
     <Split as="h1" text={title} />
     {lead && <p class="lead" data-reveal style="--d:3">{lead}</p>}
     <slot />
-  </div>
-  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </header>
 </section>
 
 <style>
@@ -42,4 +35,5 @@ const ld = {
   .ph__d2 { right: 4vw; top: calc(var(--header-h) + 30px + var(--s)); }
   @media (max-width: 800px) { .ph__d1, .ph__d2 { opacity: 0.12; } }
   .page-hero .wrap { position: relative; z-index: 1; }
+  .breadcrumbs ol { display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
 </style>
