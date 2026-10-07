@@ -22,7 +22,7 @@ const isActive = (href: string) => href !== '/' && path.startsWith(url(href)) &&
 <div class="progress" aria-hidden="true"><span></span></div>
 <header class="site-header" data-header>
   <div class="site-header__inner">
-    <a href={url(home)} class="site-header__logo" aria-label="Nielsen & Nielsen Investments – forside">
+    <a href={url(home)} class="site-header__logo" aria-label="Nielsen & Nielsen Gruppen – forside">
       <Logo />
     </a>
 
@@ -33,6 +33,7 @@ const isActive = (href: string) => href !== '/' && path.startsWith(url(href)) &&
         ))}
       </ul>
       <div class="site-nav__mobile-extra">
+        <a class="btn btn--ghost" href={url('/ejendomme/#lejeboliger')}><Icon name="home" /> {lang === 'en' ? 'Find a home' : 'Find bolig'}</a>
         <a class="btn" href={url(contactHref)}><Icon name="mail" /> {lang === 'en' ? 'Contact us' : 'Kontakt os'}</a>
       </div>
     </nav>
@@ -43,6 +44,7 @@ const isActive = (href: string) => href !== '/' && path.startsWith(url(href)) &&
           {lang === 'da' ? 'EN' : 'DA'}
         </a>
       )}
+      <a class="home-link" href={url('/ejendomme/#lejeboliger')}><Icon name="home" size={18} /> {lang === 'en' ? 'Find a home' : 'Find bolig'}</a>
       <a class="btn btn--header" href={url(contactHref)}><Icon name="mail" /> {lang === 'en' ? 'Contact us' : 'Kontakt os'}</a>
       <button class="burger" aria-controls="site-nav" aria-expanded="false" data-burger>
         <span class="sr-only">{lang === 'en' ? 'Open menu' : 'Åbn menu'}</span>
@@ -79,6 +81,10 @@ const isActive = (href: string) => href !== '/' && path.startsWith(url(href)) &&
   .lang { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.08em; text-decoration: none; padding: 8px 10px; border-radius: 8px; }
   .lang:hover { color: var(--red); }
   .btn--header { padding: 14px 26px; }
+  /* Genvej for boligsøgende – Ejendomme skal være synlig fra alle sider */
+  .home-link { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: var(--pill); border: 1.5px solid var(--red); color: var(--red); font-weight: 500; font-size: 0.95rem; text-decoration: none; white-space: nowrap; transition: background 0.25s, color 0.25s; }
+  .home-link:hover { background: var(--red); color: #fff; }
+  @media (max-width: 1280px) { .home-link { display: none; } }
 
   .burger { display: none; width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--red); cursor: pointer; position: relative; }
   .burger span:not(.sr-only) { position: absolute; left: 13px; right: 13px; height: 2px; background: #fff; transition: transform 0.4s var(--ease); }
@@ -105,7 +111,12 @@ const isActive = (href: string) => href !== '/' && path.startsWith(url(href)) &&
     .site-nav.is-open li:nth-child(3) { transition-delay: 120ms; }
     .site-nav.is-open li:nth-child(4) { transition-delay: 180ms; }
     .site-nav.is-open li:nth-child(5) { transition-delay: 240ms; }
-    .site-nav__mobile-extra { display: block; padding-bottom: 24px; }
+    .site-nav__mobile-extra { display: flex; flex-wrap: wrap; gap: 12px; padding-bottom: 24px; }
+    /* Knapperne må ikke arve menupunkternes store skrift og understregning */
+    .site-nav .site-nav__mobile-extra .btn { display: inline-flex; font-size: 0.95rem; padding: 15px 26px; }
+    .site-nav .site-nav__mobile-extra .btn::after { content: none; }
+    .site-nav .site-nav__mobile-extra .btn--ghost { color: var(--ink); }
+    .site-nav .site-nav__mobile-extra .btn--ghost:hover { color: #fff; }
   }
 </style>
 

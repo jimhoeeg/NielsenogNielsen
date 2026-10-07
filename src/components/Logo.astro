@@ -2,7 +2,7 @@
 // Genskabelse af Nielsen & Nielsen-logoet (to dråber + ordmærke).
 // TODO: erstat med officiel SVG-logofil fra kunden.
 interface Props { sub?: string; inverted?: boolean; class?: string }
-const { sub = 'Investments', inverted = false, class: cls = '' } = Astro.props;
+const { sub = 'Gruppen', inverted = false, class: cls = '' } = Astro.props;
 ---
 <span class:list={['logo', { 'logo--inv': inverted }, cls]}>
   <svg class="logo__mark" viewBox="0 0 104 104" aria-hidden="true">

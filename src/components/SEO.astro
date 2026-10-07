@@ -1,5 +1,5 @@
 ---
-import { company } from '../data/site';
+import { company, brand } from '../data/site';
 import { absUrl } from '../lib/url';
 
 export interface Crumb { href?: string; label: string }
@@ -25,7 +25,7 @@ interface Props {
 const {
   title, description, lang, altHref,
   image = '/og-image.png',
-  imageAlt = 'Nielsen & Nielsen Investments – langsigtet kapital med industrielt DNA',
+  imageAlt = 'Nielsen & Nielsen Gruppen – investeringer og ejendomme siden 1974',
   type = 'website', pageType = 'WebPage', page = {}, crumbs = [], published, jsonLd = [], noindex = false,
 } = Astro.props;
 
@@ -35,7 +35,7 @@ const canonical = abs(Astro.url.pathname);
 const ogImage = abs(image);
 
 // Titel: maks. 60 tegn. Brandsuffix tilføjes kun, når der er plads.
-const brandLong = ' | Nielsen & Nielsen Investments';
+const brandLong = ' | Nielsen & Nielsen Gruppen';
 const brandShort = ' | Nielsen & Nielsen';
 const fullTitle = title.includes('Nielsen & Nielsen')
   ? title
@@ -55,13 +55,14 @@ const graph: Record<string, unknown>[] = [
   {
     '@type': 'Organization',
     '@id': orgId,
-    name: company.name,
-    legalName: company.legalName,
-    alternateName: 'Nielsen og Nielsen Investments',
+    name: brand.name,
+    legalName: brand.legalName,
+    alternateName: ['Nielsen og Nielsen Gruppen', 'Nielsen & Nielsen'],
+    identifier: { '@type': 'PropertyValue', propertyID: 'CVR', value: brand.cvr },
     url: abs('/'),
     logo: { '@type': 'ImageObject', url: abs('/logo.png'), width: 512, height: 512 },
     image: ogImage,
-    description: 'Familieejet investeringsselskab i Odense, der forvalter formuen for familierne bag Micro Matic.',
+    description: 'Familieejet gruppe i Odense, der samler investeringer og ejendomme for familierne bag Micro Matic.',
     foundingDate: String(company.founded),
     email: company.email,
     address: {
@@ -72,19 +73,14 @@ const graph: Record<string, unknown>[] = [
       addressCountry: company.country,
     },
     areaServed: 'DK',
-    parentOrganization: {
-      '@type': 'Organization',
-      name: company.groupName,
-      identifier: { '@type': 'PropertyValue', propertyID: 'CVR', value: company.groupCvr },
-    },
     sameAs: [company.linkedin],
-    knowsAbout: ['Langsigtet investering', 'Familieejet kapital', 'Aktivt ejerskab', 'Generationsskifte', 'Ejendomme'],
+    knowsAbout: ['Langsigtet investering', 'Familieejet kapital', 'Aktivt ejerskab', 'Generationsskifte', 'Lejeboliger', 'Ejendomsudvikling'],
   },
   {
     '@type': 'WebSite',
     '@id': siteId,
     url: abs('/'),
-    name: 'Nielsen & Nielsen',
+    name: brand.name,
     inLanguage: ['da-DK', 'en-GB'],
     publisher: { '@id': orgId },
   },

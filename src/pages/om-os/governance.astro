@@ -13,7 +13,7 @@ const nodes = {
   saan: { title: 'SAAN Holding A/S', text: 'Holdingselskab for familien Svend-Aage Nielsen.' },
   ccn: { title: 'C.C.N. Holding A/S', text: 'Holdingselskab for familien C.C. Nielsen.' },
   mm: { title: 'Micro Matic A/S', text: 'Global industrikoncern inden for dispensering af drikkevarer. Hovedsæde i Odense.', href: '/micro-matic/' },
-  grp: { title: 'Nielsen & Nielsen Gruppen A/S', text: 'Fælles investeringsselskab stiftet i 2024. Hver familie skød 112 mio. kr. ind. CVR 45150380.', href: '/investeringer/' },
+  grp: { title: 'Nielsen & Nielsen Gruppen A/S', text: 'Familiernes fælles gruppe, stiftet i 2024. Hver familie skød 112 mio. kr. ind. CVR 45150380.', href: '/om-os/' },
   inv: { title: 'Nielsen & Nielsen Investments A/S', text: 'Stiftet i 2024. Forvalter formuen i værdipapirer og udvalgte investeringer.', href: '/investeringer/' },
   ejd: { title: 'Nielsen & Nielsen Ejendomme A/S', text: 'Udvikler og driver lejeboliger på Fyn siden 1989.', href: '/ejendomme/' },
 };
@@ -60,16 +60,16 @@ const people = [
         <div class="org__row org__row--3" data-reveal style="--d:2">
           <button class="node node--accent" data-node="mm">Micro Matic A/S</button>
           <div class="org__col">
-            <button class="node node--accent" data-node="grp">Nielsen &amp; Nielsen Gruppen A/S</button>
+            <button class="node node--red" data-node="grp">Nielsen &amp; Nielsen Gruppen A/S</button>
             <div class="org__link org__link--short" aria-hidden="true"></div>
-            <button class="node node--red" data-node="inv">Nielsen &amp; Nielsen Investments A/S</button>
+            <button class="node node--accent" data-node="inv">Nielsen &amp; Nielsen Investments A/S</button>
           </div>
           <button class="node node--accent" data-node="ejd">Nielsen &amp; Nielsen Ejendomme A/S</button>
         </div>
         <div class="org__panel card" aria-live="polite" data-panel>
-          <h3 data-panel-title>Nielsen &amp; Nielsen Investments A/S</h3>
-          <p class="muted" data-panel-text>{nodes.inv.text}</p>
-          <a class="link-arrow" href={nodes.inv.href} data-panel-link>Læs mere</a>
+          <h3 data-panel-title>{nodes.grp.title}</h3>
+          <p class="muted" data-panel-text>{nodes.grp.text}</p>
+          <a class="link-arrow" href={nodes.grp.href} data-panel-link>Læs mere</a>
         </div>
         <figcaption class="org__note muted" id="org-note">Forenklet illustration. Strukturen er under afklaring.</figcaption>
       </figure>
@@ -110,7 +110,7 @@ const people = [
     if (n.href) a.href = n.href;
   };
   buttons.forEach((b) => b.addEventListener('click', () => select(b.dataset.node)));
-  select('inv');
+  select('grp');
 </script>
 
 <style>

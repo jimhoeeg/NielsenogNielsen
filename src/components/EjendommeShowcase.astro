@@ -1,0 +1,44 @@
+---
+import Logo from './Logo.astro';
+import Split from './Split.astro';
+import Icon from './Icon.astro';
+import AreaMap from './AreaMap.astro';
+import { url } from '../lib/url';
+import { ejendomme } from '../data/site';
+
+interface Props { heading?: string }
+const { heading = 'Boliger hvor mennesker trives' } = Astro.props;
+const years = new Date().getFullYear() - ejendomme.since;
+---
+<section class="section ejd" id="lejeboliger" aria-label={ejendomme.name}>
+  <div class="wrap ejd__grid">
+    <div class="ejd__text">
+      <div class="ejd__brand" data-reveal><Logo sub="Ejendomme" /></div>
+      <Split text={heading} />
+      <p class="lead" data-reveal style="--d:2">
+        Moderne lejeboliger med grønne omgivelser, gode forbindelser og gennemtænkt arkitektur. Udviklet og drevet af familierne siden {ejendomme.since}.
+      </p>
+      <dl class="ejd__facts" data-reveal style="--d:3">
+        <div><dt>Siden</dt><dd>{ejendomme.since}</dd></div>
+        <div><dt>Boligområder</dt><dd>{ejendomme.areas.length}</dd></div>
+        <div><dt>Års erfaring</dt><dd>{years}+</dd></div>
+      </dl>
+      <div class="btn-row" data-reveal style="--d:4">
+        <a class="btn" href={ejendomme.waitlist} target="_blank" rel="noopener"><Icon name="home" /> Skriv dig på ventelisten</a>
+        <a class="btn btn--ghost" href={url('/ejendomme/')}>Mød Ejendomme <Icon name="arrow" /></a>
+      </div>
+    </div>
+    <div data-reveal="right"><AreaMap areas={ejendomme.areas} /></div>
+  </div>
+</section>
+
+<style>
+  .ejd { scroll-margin-top: var(--header-h); }
+  .ejd__grid { display: grid; gap: clamp(32px, 5vw, 80px); align-items: center; }
+  @media (min-width: 1000px) { .ejd__grid { grid-template-columns: 5fr 6fr; } }
+  .ejd__brand { font-size: 13px; margin-bottom: 28px; }
+  .ejd__facts { display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 48px); margin: 28px 0 0; padding-top: 24px; border-top: 1px solid var(--line); }
+  .ejd__facts div { display: flex; flex-direction: column-reverse; }
+  .ejd__facts dt { font-size: 0.85rem; color: var(--muted); }
+  .ejd__facts dd { margin: 0; font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.6rem); font-weight: 300; color: var(--red); line-height: 1.1; }
+</style>

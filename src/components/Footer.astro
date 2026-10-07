@@ -3,7 +3,7 @@ import { url } from '../lib/url';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import NewsletterForm from './NewsletterForm.astro';
-import { company } from '../data/site';
+import { company, brand, ejendomme } from '../data/site';
 
 interface Props { lang?: 'da' | 'en' }
 const { lang = 'da' } = Astro.props;
@@ -14,14 +14,14 @@ const year = new Date().getFullYear();
   <div class="wrap">
     <div class="footer__top" data-reveal>
       <Logo />
-      <p class="footer__claim">{en ? 'Long-term capital with industrial DNA. Since 1974.' : 'Langsigtet kapital med industrielt DNA. Siden 1974.'}</p>
+      <p class="footer__claim">{en ? 'Investments and real estate. Family-owned since 1974.' : 'Investeringer og ejendomme. Familieejet siden 1974.'}</p>
     </div>
 
     <div class="footer__grid">
       <section data-reveal style="--d:1" aria-labelledby="f-contact">
         <h2 class="footer__h" id="f-contact">{en ? 'Contact' : 'Kontakt'}</h2>
         <address>
-          <strong>{company.legalName}</strong><br />
+          <strong>{brand.legalName}</strong><br />
           {company.street}<br />
           {company.zip} {company.city}
         </address>
@@ -29,8 +29,16 @@ const year = new Date().getFullYear();
         <p><a href={company.linkedin} class="footer__link" rel="noopener" target="_blank"><Icon name="linkedin" size={16} /> LinkedIn</a></p>
       </section>
 
+      <section data-reveal style="--d:2" aria-labelledby="f-homes">
+        <h2 class="footer__h" id="f-homes">{en ? 'Rental homes' : 'Lejeboliger'}</h2>
+        <p class="muted">{ejendomme.name}<br />{ejendomme.areas.map((a) => a.name).join(' · ')}</p>
+        <p><a href={`tel:${ejendomme.phone.replace(/\s/g, '')}`} class="footer__link"><Icon name="phone" size={16} /> {ejendomme.phone}</a></p>
+        <p><a href={`mailto:${ejendomme.email}`} class="footer__link"><Icon name="mail" size={16} /> {ejendomme.email}</a></p>
+        <p><a href={ejendomme.waitlist} class="footer__link footer__link--red" rel="noopener" target="_blank"><Icon name="home" size={16} /> {en ? 'Join the waiting list' : 'Skriv dig på ventelisten'}</a></p>
+      </section>
+
       <nav data-reveal style="--d:2" aria-labelledby="f-group">
-        <h2 class="footer__h" id="f-group">{en ? 'The group' : 'Gruppen'}</h2>
+        <h2 class="footer__h" id="f-group">{en ? 'Companies' : 'Selskaber'}</h2>
         <ul>
           <li><a href={url(en ? '/en/#approach' : '/investeringer/')}>Nielsen &amp; Nielsen Investments</a></li>
           <li><a href="https://nnejendomme.dk/" rel="noopener" target="_blank">Nielsen &amp; Nielsen Ejendomme<span class="sr-only"> (åbner i nyt vindue)</span> <Icon name="external" size={13} /></a></li>
@@ -68,7 +76,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer__bottom">
-      <span>© {year} {company.groupName} · CVR {company.groupCvr}</span>
+      <span>© {year} {brand.legalName} · CVR {brand.cvr}</span>
       <nav aria-label={en ? 'Legal' : 'Juridisk'}><a href={url('/privatlivspolitik/')}>{en ? 'Privacy policy' : 'Privatlivspolitik'}</a> · <a href={url('/tilgaengelighed/')}>{en ? 'Accessibility' : 'Tilgængelighed'}</a></nav>
     </div>
   </div>
@@ -78,7 +86,8 @@ const year = new Date().getFullYear();
   .footer { border-top: 1px solid var(--line); padding-block: clamp(64px, 8vw, 110px) 32px; background: #fff; }
   .footer__top { display: grid; justify-items: center; text-align: center; gap: 18px; font-size: 18px; margin-bottom: clamp(48px, 6vw, 80px); }
   .footer__claim { margin: 0; color: var(--muted); font-size: 1rem; }
-  .footer__grid { display: grid; gap: 40px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+  .footer__grid { display: grid; gap: 36px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+  @media (min-width: 1100px) { .footer__grid { grid-template-columns: 1.15fr 1.2fr 1fr 1fr 1.5fr; gap: 32px; } }
   .footer__h { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1.1rem; }
   .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
   .footer a { text-decoration: none; }
@@ -86,6 +95,7 @@ const year = new Date().getFullYear();
   .footer ul a :global(svg) { display: inline; vertical-align: -1px; opacity: 0.5; }
   address { font-style: normal; margin-bottom: 1rem; }
   .footer__link { display: inline-flex; align-items: center; gap: 8px; }
+  .footer__link--red { color: var(--red); font-weight: 500; }
   .footer__bottom { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: 0.85rem; color: var(--muted); }
   .footer__bottom a:hover { color: var(--red); }
 </style>

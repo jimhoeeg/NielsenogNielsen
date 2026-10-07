@@ -4,61 +4,120 @@ import PageHero from '../components/PageHero.astro';
 import Split from '../components/Split.astro';
 import Visual from '../components/Visual.astro';
 import Icon from '../components/Icon.astro';
+import Logo from '../components/Logo.astro';
 import AreaMap from '../components/AreaMap.astro';
+import { url } from '../lib/url';
+import { ejendomme, company } from '../data/site';
 
 const crumbs = [{ label: 'Ejendomme' }];
-
-// TODO: områdebeskrivelser og konkrete boligområder bekræftes af Nielsen & Nielsen Ejendomme.
-const areas = [
-  { name: 'Højby', text: 'Hvor det hele begyndte i 1989.', lat: 55.330, lon: 10.437 },
-  { name: 'Dyrup', text: 'Lejeboliger tæt på Odense med grønne omgivelser.', lat: 55.358, lon: 10.343, label: 'right' as const },
-  { name: 'Bellinge', text: 'Lejeboliger i landsbymiljø sydvest for Odense.', lat: 55.335, lon: 10.318, label: 'left' as const },
-  { name: 'Morud', text: 'Lejeboliger i Nordfyn med kort vej til Odense.', lat: 55.443, lon: 10.187 },
-];
+const areas = ejendomme.areas;
+const subject = {
+  mainEntity: {
+    '@type': 'Organization',
+    name: ejendomme.legalName,
+    url: ejendomme.url,
+    telephone: `+45 ${ejendomme.phone}`,
+    email: ejendomme.email,
+    foundingDate: String(ejendomme.since),
+    address: { '@type': 'PostalAddress', streetAddress: company.street, postalCode: company.zip, addressLocality: 'Odense SV', addressCountry: 'DK' },
+    areaServed: areas.map((a) => ({ '@type': 'Place', name: a.name, geo: { '@type': 'GeoCoordinates', latitude: a.lat, longitude: a.lon } })),
+    knowsAbout: ['Lejeboliger', 'Boligudlejning', 'Ejendomsudvikling'],
+  },
+};
 ---
 <Base
-  title="Ejendomme – lejeboliger på Fyn siden 1989"
+  title="Ejendomme – lejeboliger på Fyn"
+  description="Nielsen & Nielsen Ejendomme udvikler og udlejer moderne, bæredygtige lejeboliger i Højby, Dyrup, Bellinge og Morud på Fyn. Skriv dig på ventelisten."
   crumbs={crumbs}
-  description="Nielsen & Nielsen Ejendomme udvikler og driver moderne, bæredygtige lejeboliger i Højby, Dyrup, Bellinge og Morud på Fyn siden 1989."
+  page={subject}
 >
   <PageHero
     eyebrow="Ejendomme"
     title="Boliger hvor mennesker trives"
-    lead="Siden 1989 har Nielsen & Nielsen Ejendomme udviklet og drevet moderne lejeboliger med fokus på kvalitet, bæredygtighed og fællesskab."
+    lead={`Siden ${ejendomme.since} har Nielsen & Nielsen Ejendomme udviklet og drevet moderne lejeboliger med fokus på kvalitet, bæredygtighed og fællesskab.`}
     crumbs={crumbs}
   >
     <div class="btn-row" data-reveal style="--d:4">
-      <a class="btn" href="https://nnejendomme.dk/" target="_blank" rel="noopener">Gå til nnejendomme.dk <Icon name="external" /></a>
-      <a class="btn btn--ghost" href="https://nnejendomme.dk/ejendomme/venteliste/" target="_blank" rel="noopener">Skriv dig på ventelisten</a>
+      <a class="btn" href={ejendomme.waitlist} target="_blank" rel="noopener"><Icon name="home" /> Skriv dig på ventelisten</a>
+      <a class="btn btn--ghost" href={ejendomme.url} target="_blank" rel="noopener">Gå til nnejendomme.dk <Icon name="external" /></a>
     </div>
   </PageHero>
 
-  <section class="section section--sand">
+  <section class="section section--sand" aria-labelledby="about-h">
     <div class="wrap split-2">
       <Visual kind="ejendomme" class="ejd-visual" />
       <article class="prose">
-        <p class="eyebrow" data-reveal>Om Ejendomme</p>
-        <Split text="Grønne omgivelser og gennemtænkt arkitektur" />
-        <p data-reveal>Nielsen &amp; Nielsen Ejendomme er en familieejet virksomhed med rødder tilbage til 1989, hvor C.C. Nielsen og Svend-Aage Nielsen opførte de første boliger i Højby.</p>
+        <div class="brand" data-reveal><Logo sub="Ejendomme" /></div>
+        <h2 id="about-h" data-reveal>Grønne omgivelser og gennemtænkt arkitektur</h2>
+        <p data-reveal>Nielsen &amp; Nielsen Ejendomme er en familieejet virksomhed med rødder tilbage til {ejendomme.since}, hvor C.C. Nielsen og Svend-Aage Nielsen opførte de første boliger i Højby.</p>
         <p data-reveal>I dag skaber vi boliger, hvor mennesker trives, med grønne omgivelser, gode forbindelser og gennemtænkt arkitektur. Boligerne skal også bidrage positivt til lokalområdet.</p>
         <p data-reveal>Siden 2017 har næste generation stået i spidsen for virksomheden.</p>
       </article>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" aria-labelledby="values-h">
+    <div class="wrap">
+      <h2 class="eyebrow" id="values-h" data-reveal>Det bygger vi på</h2>
+      <div class="grid grid--4">
+        {ejendomme.values.map((v, i) => (
+          <article class="card value" data-reveal style={`--d:${i}`}>
+            <span class="value__drop" aria-hidden="true"></span>
+            <h3>{v.t}</h3>
+            <p class="muted">{v.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="lejeboliger" aria-labelledby="areas-h">
     <div class="wrap">
       <p class="eyebrow" data-reveal>Boligområder</p>
       <Split text="Fire områder på Fyn" />
-      <div class="map-wrap" data-reveal="scale"><AreaMap areas={areas} /></div>
-      <div class="grid grid--4" style="margin-top:40px">
-        {areas.map((a, i) => (
-          <article class="card area" data-reveal style={`--d:${i}`}>
-            <Icon name="pin" size={28} />
-            <h3>{a.name}</h3>
-            <p class="muted">{a.text}</p>
-          </article>
-        ))}
+      <div class="areas-grid">
+        <div data-reveal="scale"><AreaMap areas={areas} /></div>
+        <ul class="areas-list">
+          {areas.map((a, i) => (
+            <li class="card area" data-reveal style={`--d:${i}`}>
+              <Icon name="pin" size={24} />
+              <div>
+                <h3>{a.name}</h3>
+                <p class="muted">{a.text}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--night" aria-labelledby="tenant-h">
+    <div class="wrap tenant">
+      <div>
+        <p class="eyebrow" data-reveal>Søger du en bolig?</p>
+        <h2 id="tenant-h" data-reveal>Skriv dig på ventelisten</h2>
+        <p data-reveal>Ledige boliger formidles via ventelisten på nnejendomme.dk. Har du spørgsmål om en bolig eller dit lejemål, så kontakt Nielsen &amp; Nielsen Ejendomme direkte.</p>
+        <div class="btn-row" data-reveal>
+          <a class="btn" href={ejendomme.waitlist} target="_blank" rel="noopener"><Icon name="home" /> Til ventelisten</a>
+        </div>
+      </div>
+      <ul class="tenant__contact card" data-reveal="right">
+        <li><Icon name="phone" /> <a href={`tel:+45${ejendomme.phone.replace(/\s/g, '')}`}>{ejendomme.phone}</a></li>
+        <li><Icon name="mail" /> <a href={`mailto:${ejendomme.email}`}>{ejendomme.email}</a></li>
+        <li><Icon name="pin" /> <span>{company.street}, {company.zip} {company.city}</span></li>
+        <li><Icon name="external" /> <a href={ejendomme.contactUrl} target="_blank" rel="noopener">Kontaktformular på nnejendomme.dk</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="group-h">
+    <div class="wrap wrap--narrow center">
+      <h2 id="group-h" data-reveal>En del af Nielsen &amp; Nielsen Gruppen</h2>
+      <p class="muted" data-reveal>Ejendomme er et af gruppens tre ben sammen med Investments og ejerskabet af Micro Matic. Samme familier og samme langsigtede perspektiv.</p>
+      <div class="btn-row center-row" data-reveal>
+        <a class="btn btn--ghost" href={url('/om-os/')}>Om gruppen</a>
+        <a class="btn btn--ghost" href={url('/investeringer/')}>Investeringer</a>
       </div>
     </div>
   </section>
@@ -68,7 +127,26 @@ const areas = [
   .split-2 { display: grid; gap: clamp(32px, 6vw, 96px); align-items: center; }
   @media (min-width: 960px) { .split-2 { grid-template-columns: 1fr 1fr; } }
   :global(.ejd-visual) { aspect-ratio: 4 / 3; }
-  .area :global(svg) { color: var(--red); margin-bottom: 1rem; }
-  .area h3 { font-weight: 500; }
-  .map-wrap { margin-top: 40px; }
+  .brand { font-size: 13px; margin-bottom: 24px; }
+  .prose h2 { margin-top: 0; }
+  .value h3 { font-weight: 500; }
+  .value__drop { display: block; width: 36px; height: 36px; border-radius: 50% 50% 0 50%; background: var(--red); margin-bottom: 1.4rem; transition: border-radius 0.5s var(--ease), transform 0.5s var(--ease); }
+  .value:hover .value__drop { border-radius: 0 50% 50% 50%; transform: rotate(90deg); }
+  .areas-grid { display: grid; gap: 24px; margin-top: 40px; align-items: start; }
+  @media (min-width: 1000px) { .areas-grid { grid-template-columns: 3fr 2fr; } }
+  .areas-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .area { display: flex; gap: 16px; align-items: flex-start; padding: 20px 24px !important; }
+  .area :global(svg) { color: var(--red); flex: none; margin-top: 4px; }
+  .area h3 { font-weight: 500; font-size: 1.2rem; margin-bottom: 0.2em; }
+  .area p { margin: 0; }
+  .tenant { display: grid; gap: clamp(28px, 5vw, 80px); align-items: center; }
+  @media (min-width: 960px) { .tenant { grid-template-columns: 7fr 5fr; } }
+  .section--night h2 { color: #fff; }
+  .tenant__contact { list-style: none; margin: 0; display: grid; gap: 16px; background: #1f2333; border-color: transparent; color: #fff; }
+  .tenant__contact li { display: flex; gap: 12px; align-items: center; }
+  .tenant__contact :global(svg) { color: #ff8a78; flex: none; }
+  .tenant__contact a { color: #fff; text-decoration: none; }
+  .tenant__contact a:hover { color: #ff8a78; }
+  .center { text-align: center; }
+  .center-row { justify-content: center; }
 </style>

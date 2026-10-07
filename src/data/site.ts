@@ -1,6 +1,39 @@
 // Centralt indhold for sitet. Struktureret, så det senere kan flyttes 1:1 til et headless CMS (fx Sanity).
 // Alle fakta stammer fra offentlige kilder og SKAL valideres af Nielsen & Nielsen før lancering.
 
+// Sitets afsender/brand: gruppen samler Investments, Ejendomme og ejerskabet af Micro Matic.
+export const brand = {
+  name: 'Nielsen & Nielsen Gruppen',
+  legalName: 'Nielsen & Nielsen Gruppen A/S',
+  cvr: '45150380',
+};
+
+// Nielsen & Nielsen Ejendomme – kontaktdata fra nnejendomme.dk
+export const ejendomme = {
+  name: 'Nielsen & Nielsen Ejendomme',
+  legalName: 'Nielsen & Nielsen Ejendomme A/S',
+  url: 'https://nnejendomme.dk/',
+  waitlist: 'https://nnejendomme.dk/ejendomme/venteliste/',
+  contactUrl: 'https://nnejendomme.dk/kontakt-os/',
+  phone: '63 17 42 10',
+  email: 'ejendom@nielsen-nielsen.dk',
+  since: 1989,
+  // TODO: områdebeskrivelser og placeringer bekræftes af Nielsen & Nielsen Ejendomme.
+  areas: [
+    { name: 'Højby', text: 'Hvor det hele begyndte i 1989.', lat: 55.330, lon: 10.437 },
+    { name: 'Dyrup', text: 'Lejeboliger tæt på Odense med grønne omgivelser.', lat: 55.358, lon: 10.343, label: 'right' as const },
+    { name: 'Bellinge', text: 'Lejeboliger i landsbymiljø sydvest for Odense.', lat: 55.335, lon: 10.318, label: 'left' as const },
+    { name: 'Morud', text: 'Lejeboliger i Nordfyn med kort vej til Odense.', lat: 55.443, lon: 10.187 },
+  ],
+  // Værdier fra nnejendomme.dk ("kvalitet, bæredygtighed og fællesskab", "tryghed ... fremtidssikrede løsninger")
+  values: [
+    { t: 'Kvalitet', d: 'Gennemtænkt arkitektur og solide materialer, bygget til at holde i generationer.' },
+    { t: 'Bæredygtighed', d: 'Fremtidssikrede løsninger og grønne omgivelser, der bidrager positivt til lokalområdet.' },
+    { t: 'Fællesskab', d: 'Lav bebyggelse og fælles arealer, hvor naboer mødes.' },
+    { t: 'Tryghed', d: 'En familieejet udlejer med lokale rødder og et langsigtet perspektiv.' },
+  ],
+};
+
 export const company = {
   name: 'Nielsen & Nielsen Investments',
   legalName: 'Nielsen & Nielsen Investments A/S',
@@ -37,8 +70,8 @@ export const formEndpoints = {
 
 export const nav = [
   { href: '/investeringer/', label: 'Investeringer' },
-  { href: '/investeringer/portefolje/', label: 'Portefølje' },
   { href: '/ejendomme/', label: 'Ejendomme' },
+  { href: '/investeringer/portefolje/', label: 'Portefølje' },
   { href: '/om-os/', label: 'Om os' },
   { href: '/nyheder/', label: 'Nyheder' },
 ];
@@ -80,7 +113,7 @@ export const pillars = [
   {
     key: 'ejendomme',
     title: 'Ejendomme',
-    text: 'Moderne, bæredygtige lejeboliger på Fyn med fokus på kvalitet, tryghed og fællesskab siden 1989.',
+    text: 'Moderne, bæredygtige lejeboliger i Højby, Dyrup, Bellinge og Morud. Udviklet og drevet af familierne siden 1989.',
     href: '/ejendomme/',
     cta: 'Mød Ejendomme',
   },

@@ -1,22 +1,24 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import { company } from '../data/site';
+import { company, brand, ejendomme } from '../data/site';
 
 // Faktaside optimeret til søgemaskiner og AI-søgning (GEO): korte, citerbare svar.
 const facts: [string, string][] = [
-  ['Navn', company.legalName],
-  ['Moderselskab', `${company.groupName} (CVR ${company.groupCvr})`],
-  ['Stiftet', '2024'],
+  ['Navn', `${brand.legalName} (CVR ${brand.cvr})`],
+  ['Stiftet', '2024. Hver familie skød 112 mio. kr. ind'],
   ['Hjemsted', `${company.street}, ${company.zip} ${company.city}`],
   ['Ejere', 'Familierne efter Svend-Aage Nielsen og Carl Christian Nielsen'],
-  ['Aktiviteter', 'Investering i værdipapirer og udvalgte investeringer'],
-  ['Søsterselskaber', 'Micro Matic A/S, Nielsen & Nielsen Ejendomme A/S'],
+  ['Investments', 'Langsigtet forvaltning af familiernes formue i værdipapirer og udvalgte investeringer'],
+  ['Ejendomme', `Lejeboliger i ${ejendomme.areas.map((a) => a.name).join(', ')} siden ${ejendomme.since}`],
+  ['Micro Matic', 'Ejet af familierne siden 1974'],
 ];
 const faq = [
-  { q: 'Hvem ejer Nielsen & Nielsen Investments?', a: 'Nielsen & Nielsen Investments ejes af de to familier efter Svend-Aage Nielsen og Carl Christian Nielsen, som i 1974 overtog Micro Matic.' },
-  { q: 'Hvad laver Nielsen & Nielsen Investments?', a: 'Selskabet forvalter familiernes formue med et langsigtet perspektiv, primært i børsnoterede værdipapirer og udvalgte investeringer.' },
-  { q: 'Hvornår blev Nielsen & Nielsen Investments stiftet?', a: 'Selskabet blev stiftet i 2024 sammen med Nielsen & Nielsen Gruppen A/S, hvor hver familie skød 112 mio. kr. ind.' },
+  { q: 'Hvad er Nielsen & Nielsen Gruppen?', a: 'Nielsen & Nielsen Gruppen samler familierne bag Micro Matics investeringer og ejendomme. Gruppen blev stiftet i 2024, hvor hver af de to familier skød 112 mio. kr. ind.' },
+  { q: 'Hvem ejer Nielsen & Nielsen?', a: 'De to familier efter Svend-Aage Nielsen og Carl Christian Nielsen, som i 1974 overtog Micro Matic. I dag er anden og tredje generation med i ejerkredsen.' },
+  { q: 'Hvad laver Nielsen & Nielsen Investments?', a: 'Investments forvalter familiernes formue med et langsigtet perspektiv, primært i børsnoterede værdipapirer og udvalgte investeringer.' },
+  { q: 'Har Nielsen & Nielsen lejeboliger?', a: `Ja. Nielsen & Nielsen Ejendomme udvikler og udlejer moderne lejeboliger i ${ejendomme.areas.map((a) => a.name).join(', ')} på Fyn og har gjort det siden ${ejendomme.since}.` },
+  { q: 'Hvordan kommer jeg på ventelisten til en lejebolig?', a: `Du skriver dig på ventelisten via nnejendomme.dk. Du kan også kontakte Nielsen & Nielsen Ejendomme på telefon ${ejendomme.phone} eller ${ejendomme.email}.` },
   { q: 'Hvad er forbindelsen til Micro Matic?', a: 'Familierne bag Nielsen & Nielsen har ejet Micro Matic siden 1974. I dag er 18 familiemedlemmer fra anden og tredje generation med i ejerkredsen.' },
   { q: 'Hvordan præsenterer jeg min virksomhed for Nielsen & Nielsen?', a: 'Brug formularen "Præsentér din virksomhed" på kontaktsiden. Alle henvendelser behandles fortroligt.' },
 ];
@@ -26,8 +28,8 @@ const faqLd = {
 };
 ---
 <Base
-  title="Fakta om Nielsen & Nielsen Investments"
-  description="Kort om Nielsen & Nielsen Investments: ejere, struktur, historie og aktiviteter, samlet ét sted."
+  title="Fakta om Nielsen & Nielsen Gruppen"
+  description="Kort om Nielsen & Nielsen Gruppen: ejere, selskaber, historie, investeringer og lejeboliger på Fyn, samlet ét sted."
   pageType="FAQPage"
   page={faqLd}
   crumbs={crumbs}

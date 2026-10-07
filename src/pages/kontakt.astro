@@ -3,7 +3,7 @@ import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { company, formEndpoints } from '../data/site';
+import { company, brand, formEndpoints, ejendomme } from '../data/site';
 import { questions } from '../data/match';
 const mapQuery = encodeURIComponent(`${company.street}, ${company.zip} ${company.city}`);
 const crumbs = [{ label: 'Kontakt' }];
@@ -12,7 +12,7 @@ const crumbs = [{ label: 'Kontakt' }];
   title="Kontakt os – og præsentér din virksomhed"
   pageType="ContactPage"
   crumbs={crumbs}
-  description="Kontakt Nielsen & Nielsen Investments på Hvidkærvej 54 i Odense SV, eller præsentér din virksomhed fortroligt for os som langsigtet ejer."
+  description="Kontakt Nielsen & Nielsen Gruppen på Hvidkærvej 54 i Odense SV, præsentér din virksomhed fortroligt, eller find vej til vores lejeboliger."
 >
   <PageHero eyebrow="Kontakt" title="Lad os tage en snak" lead="Uanset om du er virksomhedsejer, rådgiver, samarbejdspartner eller journalist, hører vi gerne fra dig." crumbs={crumbs} />
 
@@ -22,7 +22,7 @@ const crumbs = [{ label: 'Kontakt' }];
         <div class="card" data-reveal>
           <h2 class="h-small">Kontaktoplysninger</h2>
           <address>
-            <strong>{company.legalName}</strong><br />{company.street}<br />{company.zip} {company.city}
+            <strong>{brand.legalName}</strong><br />{company.street}<br />{company.zip} {company.city}
           </address>
           <ul class="info-list">
             <li><Icon name="mail" /> <a href={`mailto:${company.email}`}>{company.email}</a></li>
@@ -33,8 +33,12 @@ const crumbs = [{ label: 'Kontakt' }];
         </div>
         <div class="card" data-reveal style="--d:1">
           <h2 class="h-small">Søger du en bolig?</h2>
-          <p class="muted">Henvendelser om lejeboliger går til Nielsen &amp; Nielsen Ejendomme.</p>
-          <a class="link-arrow" href="https://nnejendomme.dk/kontakt-os/" target="_blank" rel="noopener">nnejendomme.dk</a>
+          <p class="muted">Lejeboliger i {ejendomme.areas.map((a) => a.name).join(', ')} udlejes af {ejendomme.name}.</p>
+          <ul class="info-list">
+            <li><Icon name="phone" /> <a href={`tel:+45${ejendomme.phone.replace(/\s/g, '')}`}>{ejendomme.phone}</a></li>
+            <li><Icon name="mail" /> <a href={`mailto:${ejendomme.email}`}>{ejendomme.email}</a></li>
+            <li><Icon name="home" /> <a href={ejendomme.waitlist} target="_blank" rel="noopener">Skriv dig på ventelisten</a></li>
+          </ul>
         </div>
       </aside>
 
